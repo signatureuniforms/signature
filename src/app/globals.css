@@ -1,0 +1,101 @@
+@import url('https://api.fontshare.com/v2/css?f[]=plein@1&display=swap');
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
+
+@font-face {
+  font-family: '_Plein_Variable';
+  src: url('https://cdn.fontshare.com/wf/YRM3T6ZVFQ4V7FWSFXIRM7ZVUQ5RGQIW/DY3I525BO6MZGD2QT3NLKIL4YFZITQ6L/3PC4JVR7RF4NJSUTEXEP66H4CVZZEXS7.woff2') format('woff2');
+  font-weight: 300 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Plein Variable';
+  src: url('https://cdn.fontshare.com/wf/YRM3T6ZVFQ4V7FWSFXIRM7ZVUQ5RGQIW/DY3I525BO6MZGD2QT3NLKIL4YFZITQ6L/3PC4JVR7RF4NJSUTEXEP66H4CVZZEXS7.woff2') format('woff2');
+  font-weight: 300 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+/* Alias Playfair Display to Plein as requested for all headings and descriptions */
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('https://cdn.fontshare.com/wf/YRM3T6ZVFQ4V7FWSFXIRM7ZVUQ5RGQIW/DY3I525BO6MZGD2QT3NLKIL4YFZITQ6L/3PC4JVR7RF4NJSUTEXEP66H4CVZZEXS7.woff2') format('woff2');
+  font-weight: 300 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Regular-Light';
+  src: local('Regular-Light'), local('Regular Light');
+  font-weight: 300 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --font-heading: 'Regular-Light', serif;
+    --font-plein: 'Plein', '_Plein_Variable', 'Plein Variable', system-ui, sans-serif;
+
+    --color-black: #000000;
+    --color-white: #ffffff;
+    --color-gold: #FFD700;
+    --color-gold-dark: #E6C200;
+    --color-gold-light: #FFE44D;
+
+    --navbar-height: 88px;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    scrollbar-width: thin;
+    scrollbar-color: #000000 #000000;
+  }
+
+  body {
+    font-family: var(--font-plein);
+    background-color: #ffffff;
+    color: #000000;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-display, h1 *, h2 * {
+    font-family: 'Regular-Light', serif;
+    font-weight: 400;
+  }
+
+  p, span, div, a, button, input, textarea, select {
+    font-family: var(--font-plein);
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-display, h1 *, h2 * {
+    font-family: 'Regular-Light', serif;
+  }
+
+  ::selection {
+    background-color: #FFD700;
+    color: #000000;
+  }
+
+  ::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #000000;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #000000;
+    border-radius: 2px;
+    border: 1px solid #1f1f1f;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #111111;
+  }
+}
