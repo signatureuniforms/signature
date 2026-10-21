@@ -50,7 +50,7 @@ export default function FooterFeaturesBar({ items }: FooterFeaturesBarProps) {
     if (count === 1) {
       return 'flex justify-center items-center w-full'
     }
-    return 'flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-8 w-full'
+    return 'flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 sm:gap-8 w-fit max-w-full mx-auto sm:w-full sm:mx-0'
   }
 
   return (
@@ -70,7 +70,7 @@ export default function FooterFeaturesBar({ items }: FooterFeaturesBarProps) {
             <motion.div
               key={item.id || idx}
               variants={itemVariants}
-              className="flex items-center gap-3.5 sm:gap-4 group shrink-0"
+              className="flex items-center gap-3.5 sm:gap-4 group shrink-0 w-full sm:w-auto"
             >
               {/* Icon */}
               {item.icon_url && (
@@ -85,7 +85,7 @@ export default function FooterFeaturesBar({ items }: FooterFeaturesBarProps) {
               )}
 
               {/* Text: Heading + Description */}
-              <div className="min-w-0">
+              <div className="min-w-0 text-left">
                 <h3 className="text-xs sm:text-[13px] font-bold tracking-wide uppercase text-black leading-snug">
                   {item.heading}
                 </h3>
