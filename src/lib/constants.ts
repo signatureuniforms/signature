@@ -12,9 +12,13 @@ export const BRAND = {
 } as const
 
 export const COLORS = {
-  black: '#000000',
+  black: '#0A0A0A',
+  charcoal: '#171717',
   white: '#FFFFFF',
-  gold: '#FFD700',
+  gold: '#D4AF37',
+  goldHover: '#E5C158',
+  border: '#2A2A2A',
+  muted: '#A3A3A3',
 } as const
 
 // WhatsApp helpers

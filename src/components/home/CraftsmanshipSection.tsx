@@ -52,13 +52,13 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
 
   const renderIcon = (iconName: string) => {
     const IconComponent = ICON_MAP[iconName] || Award
-    return <IconComponent className="w-6 h-6 text-[#FFD700]" strokeWidth={1.75} />
+    return <IconComponent className="w-6 h-6 text-[#D4AF37]" strokeWidth={1.75} />
   }
 
   return (
     <section
       ref={sectionRef}
-      className="relative py-5 lg:pt-10 lg:pb-20 bg-black text-white w-full overflow-hidden"
+      className="relative py-5 lg:pt-10 lg:pb-20 bg-[#0A0A0A] text-white w-full overflow-hidden"
       aria-labelledby="craftsmanship-heading"
     >
       {/* Background Decorative Gold Ribbon Glows */}
@@ -66,9 +66,9 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
         className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
         aria-hidden="true"
       >
-        <div className="absolute top-1/4 -left-48 w-96 h-96 bg-[#FFD700]/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 -right-48 w-96 h-96 bg-[#FFD700]/5 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-gradient-to-r from-amber-500/10 via-yellow-500/5 to-amber-600/10 rounded-full blur-[100px] opacity-70" />
+        <div className="absolute top-1/4 -left-48 w-96 h-96 bg-[#D4AF37]/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 -right-48 w-96 h-96 bg-[#D4AF37]/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-gradient-to-r from-[#D4AF37]/10 via-[#E5C158]/5 to-[#D4AF37]/10 rounded-full blur-[100px] opacity-70" />
 
         {/* Ambient subtle golden curve waves */}
         <svg
@@ -92,9 +92,9 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
           />
           <defs>
             <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#FFE066" stopOpacity="0.4" />
-              <stop offset="50%" stopColor="#FFD700" stopOpacity="0.8" />
-              <stop offset="100%" stopColor="#B38600" stopOpacity="0.1" />
+              <stop offset="0%" stopColor="#E5C158" stopOpacity="0.4" />
+              <stop offset="50%" stopColor="#D4AF37" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#997A1E" stopOpacity="0.1" />
             </linearGradient>
           </defs>
         </svg>
@@ -116,7 +116,7 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
         >
           {/* Subheading / Eyebrow */}
           {data.eyebrow && (
-            <span className="text-xs font-semibold tracking-[0.2em] uppercase text-[#FFD700] block mb-3 font-sans">
+            <span className="text-xs font-semibold tracking-[0.2em] uppercase text-[#D4AF37] block mb-3 font-sans">
               {data.eyebrow}
             </span>
           )}
@@ -132,7 +132,7 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
 
           {/* Description */}
           {data.description && (
-            <p className="text-white/75 text-xs sm:text-sm leading-relaxed whitespace-pre-line max-w-2xl mx-auto">
+            <p className="text-[#A3A3A3] text-xs sm:text-sm leading-relaxed whitespace-pre-line max-w-2xl mx-auto">
               {data.description}
             </p>
           )}
@@ -158,20 +158,20 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
                   delay: shouldReduceMotion ? 0 : 0.35 + idx * 0.2,
                   ease: editorialEase,
                 }}
-                className="group relative rounded-2xl bg-white hover:bg-neutral-50 border border-gray-100 p-5 sm:p-6 transition-all duration-300 shadow-[0_12px_40px_rgba(0,0,0,0.6)]"
+                className="group relative rounded-2xl bg-[#171717] hover:bg-[#1a1a1a] border border-[#2A2A2A] hover:border-[#D4AF37]/50 p-5 sm:p-6 transition-all duration-300 shadow-xl"
               >
                 {/* Glowing Circular Icon */}
-                <div className="w-14 h-14 rounded-full border border-[#FFD700]/50 bg-black flex items-center justify-center shadow-[0_0_20px_rgba(255,215,0,0.18)] group-hover:scale-105 transition-all duration-300 mb-4">
+                <div className="w-14 h-14 rounded-full border border-[#D4AF37]/40 bg-[#0A0A0A] flex items-center justify-center shadow-[0_0_20px_rgba(212,175,55,0.15)] group-hover:scale-105 transition-all duration-300 mb-4">
                   {renderIcon(feat.icon_name)}
                 </div>
 
                 {/* Feature Title */}
-                <h3 className="text-xs font-bold tracking-wider uppercase text-gray-950 mb-2 font-sans">
+                <h3 className="text-xs font-bold tracking-wider uppercase text-white mb-2 font-sans">
                   {feat.title}
                 </h3>
 
                 {/* Feature Description */}
-                <p className="text-[11px] text-gray-600 font-normal leading-relaxed">
+                <p className="text-[11px] text-[#A3A3A3] font-normal leading-relaxed">
                   {feat.description}
                 </p>
               </motion.div>
@@ -196,7 +196,7 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
                   delay: shouldReduceMotion ? 0 : 0.25,
                   ease: editorialEase,
                 }}
-                className="relative w-full aspect-[16/10] sm:aspect-[16/10] rounded-none overflow-hidden bg-neutral-900 shadow-2xl"
+                className="relative w-full aspect-[16/10] sm:aspect-[16/10] rounded-xl overflow-hidden bg-[#171717] border border-[#2A2A2A] shadow-2xl"
               >
                 {data.main_image_url ? (
                   <img
@@ -206,12 +206,12 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
                     loading="lazy"
                   />
                 ) : (
-                  <div className="w-full h-full bg-neutral-900 flex items-center justify-center text-neutral-600">
-                    <Sparkles className="w-10 h-10 opacity-30 text-[#FFD700]" />
+                  <div className="w-full h-full bg-[#171717] flex items-center justify-center text-neutral-600">
+                    <Sparkles className="w-10 h-10 opacity-30 text-[#D4AF37]" />
                   </div>
                 )}
                 {/* Subtle dark gradient overlay on bottom for contrast */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
               </motion.div>
 
               {/* 2. Left-Side Inset Image (Comes Second: Small to Large at current place) */}
@@ -231,7 +231,7 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
                     ease: editorialEase,
                   }}
                   style={{ transformOrigin: 'center center' }}
-                  className="absolute -bottom-8 -left-3 sm:-bottom-10 sm:-left-6 w-36 sm:w-48 md:w-52 aspect-[4/3] rounded-2xl overflow-hidden shadow-[0_20px_45px_rgba(0,0,0,0.85)] bg-neutral-900 z-20 group"
+                  className="absolute -bottom-8 -left-3 sm:-bottom-10 sm:-left-6 w-36 sm:w-48 md:w-52 aspect-[4/3] rounded-2xl overflow-hidden shadow-[0_20px_45px_rgba(0,0,0,0.85)] bg-[#171717] border border-[#2A2A2A] z-20 group"
                 >
                   <img
                     src={data.inset_image_1_url}
@@ -259,7 +259,7 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
                     ease: editorialEase,
                   }}
                   style={{ transformOrigin: 'center center' }}
-                  className="absolute -bottom-8 -right-3 sm:-bottom-10 sm:-right-6 w-40 sm:w-56 md:w-64 aspect-[16/10] rounded-2xl overflow-hidden shadow-[0_20px_45px_rgba(0,0,0,0.85)] bg-neutral-900 z-20 group"
+                  className="absolute -bottom-8 -right-3 sm:-bottom-10 sm:-right-6 w-40 sm:w-56 md:w-64 aspect-[16/10] rounded-2xl overflow-hidden shadow-[0_20px_45px_rgba(0,0,0,0.85)] bg-[#171717] border border-[#2A2A2A] z-20 group"
                 >
                   <img
                     src={data.inset_image_2_url}
@@ -290,20 +290,20 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
                   delay: shouldReduceMotion ? 0 : 0.35 + idx * 0.2,
                   ease: editorialEase,
                 }}
-                className="group relative rounded-2xl bg-white hover:bg-neutral-50 border border-gray-100 p-5 sm:p-6 transition-all duration-300 shadow-[0_12px_40px_rgba(0,0,0,0.6)]"
+                className="group relative rounded-2xl bg-[#171717] hover:bg-[#1a1a1a] border border-[#2A2A2A] hover:border-[#D4AF37]/50 p-5 sm:p-6 transition-all duration-300 shadow-xl"
               >
                 {/* Glowing Circular Icon */}
-                <div className="w-14 h-14 rounded-full border border-[#FFD700]/50 bg-black flex items-center justify-center shadow-[0_0_20px_rgba(255,215,0,0.18)] group-hover:scale-105 transition-all duration-300 mb-4">
+                <div className="w-14 h-14 rounded-full border border-[#D4AF37]/40 bg-[#0A0A0A] flex items-center justify-center shadow-[0_0_20px_rgba(212,175,55,0.15)] group-hover:scale-105 transition-all duration-300 mb-4">
                   {renderIcon(feat.icon_name)}
                 </div>
 
                 {/* Feature Title */}
-                <h3 className="text-xs font-bold tracking-wider uppercase text-gray-950 mb-2 font-sans">
+                <h3 className="text-xs font-bold tracking-wider uppercase text-white mb-2 font-sans">
                   {feat.title}
                 </h3>
 
                 {/* Feature Description */}
-                <p className="text-[11px] text-gray-600 font-normal leading-relaxed">
+                <p className="text-[11px] text-[#A3A3A3] font-normal leading-relaxed">
                   {feat.description}
                 </p>
               </motion.div>

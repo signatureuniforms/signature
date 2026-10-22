@@ -181,7 +181,7 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
   return (
     <section
       ref={sectionRef}
-      className="py-12 sm:py-5 lg:py-10 bg-black w-full overflow-hidden"
+      className="py-12 sm:py-5 lg:py-10 bg-[#0A0A0A] w-full overflow-hidden"
       aria-labelledby="shop-categories-heading"
     >
       <div className="w-full mx-auto">
@@ -199,7 +199,7 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
             >
               Uniforms We Specialize In
             </h2>
-            <p className="text-xs sm:text-sm text-white/60 font-light font-sans max-w-xl mx-auto leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#A3A3A3] font-light font-sans max-w-xl mx-auto leading-relaxed">
               Explore our range of bespoke uniforms tailored for schools, colleges, healthcare, corporate, and industry.
             </p>
           </div>
@@ -212,7 +212,7 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
               onMouseEnter={handlePause}
               onMouseLeave={handleResume}
               aria-label="Previous category"
-              className="p-1.5 sm:p-2 text-white hover:text-[#FFD700] transition-colors cursor-pointer select-none"
+              className="p-1.5 sm:p-2 text-white hover:text-[#D4AF37] transition-colors cursor-pointer select-none"
             >
               <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 stroke-[1.5]" />
             </button>
@@ -222,7 +222,7 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
               onMouseEnter={handlePause}
               onMouseLeave={handleResume}
               aria-label="Next category"
-              className="p-1.5 sm:p-2 text-white hover:text-[#FFD700] transition-colors cursor-pointer select-none"
+              className="p-1.5 sm:p-2 text-white hover:text-[#D4AF37] transition-colors cursor-pointer select-none"
             >
               <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 stroke-[1.5]" />
             </button>
@@ -267,7 +267,7 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
                   href={`/categories/${cat.slug}`}
                   onMouseEnter={handlePause}
                   onMouseLeave={handleResume}
-                  className="group relative block w-full h-[460px] sm:h-[500px] lg:h-[540px] overflow-hidden bg-neutral-900 cursor-pointer"
+                  className="group relative block w-full h-[460px] sm:h-[500px] lg:h-[540px] rounded-xl overflow-hidden bg-[#171717] border border-[#2A2A2A] hover:border-[#D4AF37]/50 transition-all cursor-pointer"
                   aria-label={cat.name}
                 >
                   {/* Background Image - Served in pristine full-resolution directly from Cloudinary CDN */}
@@ -280,7 +280,7 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                     />
                   ) : (
-                    <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 via-neutral-950 to-black flex items-center justify-center">
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#171717] via-[#0A0A0A] to-black flex items-center justify-center">
                       <span
                         className="text-white/15 text-7xl font-normal font-display select-none"
                         style={{ fontFamily: "'Regular-Light', serif", fontWeight: 400 }}
@@ -299,13 +299,13 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
                   {/* Bottom Text Content (Title & Subtitle centered) */}
                   <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 flex flex-col items-center justify-end text-center z-10 pointer-events-none">
                     <h3
-                      className="text-2xl sm:text-2xl text-white font-normal font-display tracking-wide mb-1.5 transition-colors group-hover:text-[#FFD700]"
+                      className="text-2xl sm:text-2xl text-white font-normal font-display tracking-wide mb-1.5 transition-colors group-hover:text-[#D4AF37]"
                       style={{ fontFamily: "'Regular-Light', serif", fontWeight: 400 }}
                     >
                       {cat.name}
                     </h3>
                     {cat.description && (
-                      <p className="text-white/85 text-xs sm:text-sm font-normal leading-relaxed line-clamp-2 max-w-sm mx-auto">
+                      <p className="text-[#A3A3A3] text-xs sm:text-sm font-normal leading-relaxed line-clamp-2 max-w-sm mx-auto">
                         {cat.description}
                       </p>
                     )}

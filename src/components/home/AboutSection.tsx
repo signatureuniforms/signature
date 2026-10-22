@@ -35,7 +35,7 @@ export default function AboutSection({ data, showCta = true }: AboutSectionProps
     <section
       ref={sectionRef}
       id="about-section"
-      className="w-full bg-black text-white py-10 lg:py-20 overflow-hidden"
+      className="w-full bg-[#0A0A0A] text-white py-10 lg:py-20 overflow-hidden"
       aria-labelledby="about-section-heading"
     >
       <div className="w-full px-2 sm:px-6 md:px-8 lg:px-10">
@@ -60,7 +60,7 @@ export default function AboutSection({ data, showCta = true }: AboutSectionProps
                   delay: shouldReduceMotion ? 0 : isInView ? 0.05 : 0,
                   ease: editorialEase,
                 }}
-                className="text-xs font-semibold tracking-[0.2em] uppercase text-[#FFD700] block mb-4"
+                className="text-xs font-semibold tracking-[0.2em] uppercase text-[#D4AF37] block mb-4"
               >
                 {data.subheading}
               </motion.span>
@@ -106,7 +106,7 @@ export default function AboutSection({ data, showCta = true }: AboutSectionProps
                 ease: editorialEase,
               }}
               style={{ transformOrigin: data.image_url ? 'left' : 'center' }}
-              className={`w-12 h-[2px] bg-[#FFD700] mb-6 ${data.image_url ? '' : 'mx-auto'}`}
+              className={`w-12 h-[2px] bg-[#D4AF37] mb-6 ${data.image_url ? '' : 'mx-auto'}`}
               aria-hidden="true"
             />
 
@@ -126,7 +126,7 @@ export default function AboutSection({ data, showCta = true }: AboutSectionProps
                   delay: shouldReduceMotion ? 0 : isInView ? 0.35 : 0,
                   ease: editorialEase,
                 }}
-                className="text-white/75 text-xs sm:text-sm leading-relaxed whitespace-pre-line mb-8 max-w-2xl"
+                className="text-[#A3A3A3] text-xs sm:text-sm leading-relaxed whitespace-pre-line mb-8 max-w-2xl"
               >
                 {data.description}
               </motion.p>
@@ -153,7 +153,7 @@ export default function AboutSection({ data, showCta = true }: AboutSectionProps
                 <Link
                   href="/about"
                   id="about-view-more-cta"
-                  className="btn-gold-sweep inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-white text-black font-semibold text-sm rounded-none tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 hover:shadow-[0_4px_20px_rgba(255,215,0,0.3)] cursor-pointer group"
+                  className="btn-gold-sweep inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0A0A] font-semibold text-sm rounded-none tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 hover:shadow-[0_4px_20px_rgba(212,175,55,0.3)] cursor-pointer group"
                   aria-label="View more about Signature Uniforms"
                 >
                   <span>View More</span>

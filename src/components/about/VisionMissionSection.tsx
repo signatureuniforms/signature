@@ -26,11 +26,11 @@ export default function VisionMissionSection({ data }: VisionMissionSectionProps
     <section
       ref={sectionRef}
       id="vision-mission-section"
-      className="w-full bg-black text-white py-14 sm:py-20 lg:py-24 overflow-hidden relative"
+      className="w-full bg-[#0A0A0A] text-white py-14 sm:py-20 lg:py-24 overflow-hidden relative"
       aria-label="Vision and Mission"
     >
       {/* Background ambient lighting */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#FFD700]/[0.025] rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#D4AF37]/[0.025] rounded-full blur-[140px] pointer-events-none" />
 
       <div className="w-full px-2 sm:px-6 md:px-8 lg:px-10 relative z-10">
         {/* Optional Section Header */}
@@ -41,7 +41,7 @@ export default function VisionMissionSection({ data }: VisionMissionSectionProps
                 initial={{ opacity: 0, y: 20 }}
                 animate={shouldReduceMotion ? { opacity: 1, y: 0 } : isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.6, ease: editorialEase }}
-                className="text-xs font-semibold tracking-[0.25em] uppercase text-[#FFD700] block mb-3"
+                className="text-xs font-semibold tracking-[0.25em] uppercase text-[#D4AF37] block mb-3"
               >
                 {data.section_subheading}
               </motion.span>
@@ -68,14 +68,14 @@ export default function VisionMissionSection({ data }: VisionMissionSectionProps
               initial={{ opacity: 0, y: 30 }}
               animate={shouldReduceMotion ? { opacity: 1, y: 0 } : isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 0.7, delay: 0.15, ease: editorialEase }}
-              className="group relative rounded-none p-8 sm:p-10 bg-white/10  transition-all duration-300 shadow-xl hover:shadow-[0_8px_32px_rgba(255,215,0,0.06)] flex flex-col justify-between"
+              className="group relative rounded-none p-8 sm:p-10 bg-[#171717] border border-[#2A2A2A] hover:border-[#D4AF37]/40 transition-all duration-300 shadow-xl hover:shadow-[0_8px_32px_rgba(212,175,55,0.08)] flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#FFD700] group-hover:bg-[#FFD700]/10 transition-colors">
+                  <div className="w-12 h-12 rounded-2xl bg-[#0A0A0A] border border-[#2A2A2A] flex items-center justify-center text-[#D4AF37] group-hover:border-[#D4AF37]/50 transition-colors">
                     <Eye className="w-5 h-5 stroke-[1.75]" />
                   </div>
-                  <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#FFD700]">
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#D4AF37]">
                     Vision
                   </span>
                 </div>
@@ -86,9 +86,9 @@ export default function VisionMissionSection({ data }: VisionMissionSectionProps
                 >
                   {data.vision_heading || 'Our Vision'}
                 </h3>
-                <div className="w-12 h-[2px] bg-[#FFD700] mb-6" />
+                <div className="w-12 h-[2px] bg-[#D4AF37] mb-6" />
 
-                <p className="text-white/75 text-sm sm:text-base leading-relaxed whitespace-pre-line font-light">
+                <p className="text-[#A3A3A3] text-sm sm:text-base leading-relaxed whitespace-pre-line font-light">
                   {data.vision_description}
                 </p>
               </div>
@@ -101,14 +101,14 @@ export default function VisionMissionSection({ data }: VisionMissionSectionProps
               initial={{ opacity: 0, y: 30 }}
               animate={shouldReduceMotion ? { opacity: 1, y: 0 } : isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 0.7, delay: 0.25, ease: editorialEase }}
-              className="group relative rounded-none p-8 sm:p-10 bg-white/10 transition-all duration-300 shadow-xl hover:shadow-[0_8px_32px_rgba(255,215,0,0.06)] flex flex-col justify-between"
+              className="group relative rounded-none p-8 sm:p-10 bg-[#171717] border border-[#2A2A2A] hover:border-[#D4AF37]/40 transition-all duration-300 shadow-xl hover:shadow-[0_8px_32px_rgba(212,175,55,0.08)] flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#FFD700] group-hover:bg-[#FFD700]/10 transition-colors">
+                  <div className="w-12 h-12 rounded-2xl bg-[#0A0A0A] border border-[#2A2A2A] flex items-center justify-center text-[#D4AF37] group-hover:border-[#D4AF37]/50 transition-colors">
                     <Compass className="w-5 h-5 stroke-[1.75]" />
                   </div>
-                  <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#FFD700]">
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#D4AF37]">
                     Mission
                   </span>
                 </div>
@@ -119,9 +119,9 @@ export default function VisionMissionSection({ data }: VisionMissionSectionProps
                 >
                   {data.mission_heading || 'Our Mission'}
                 </h3>
-                <div className="w-12 h-[2px] bg-[#FFD700] mb-6" />
+                <div className="w-12 h-[2px] bg-[#D4AF37] mb-6" />
 
-                <p className="text-white/75 text-sm sm:text-base leading-relaxed whitespace-pre-line font-light">
+                <p className="text-[#A3A3A3] text-sm sm:text-base leading-relaxed whitespace-pre-line font-light">
                   {data.mission_description}
                 </p>
               </div>

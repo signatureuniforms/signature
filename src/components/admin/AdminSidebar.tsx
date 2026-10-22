@@ -8,7 +8,7 @@ import {
   LayoutDashboard, Video, Grid3x3, Package,
   MessageSquare, Settings, LogOut, ChevronDown,
   ChevronRight, FileText, Star, Menu, X, Info, Award, Film,
-  ShieldCheck, Sparkles, Target
+  ShieldCheck, Sparkles, Target, GitBranch
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
@@ -44,6 +44,7 @@ const NAV_SECTIONS = [
       { label: 'Craftsmanship', href: '/admin/craftsmanship', icon: Sparkles },
       { label: 'Video Banner', href: '/admin/video-banner', icon: Film },
       { label: 'Footer Features', href: '/admin/footer-features', icon: ShieldCheck },
+      { label: 'Process Page', href: '/admin/process', icon: GitBranch },
     ],
   },
   {
@@ -75,7 +76,7 @@ export default function AdminSidebar() {
   const renderSidebarContent = () => (
     <div className="flex flex-col h-full">
       {/* Logo */}
-      <div className="px-6 py-5 border-b border-white/10">
+      <div className="px-6 py-5 border-b border-[#2A2A2A]">
         {!collapsed ? (
           <div className="flex items-center justify-center gap-3">
             <img src="/logo/logo.png" alt="Signature Uniforms" className="h-10 w-auto object-contain" />
@@ -91,7 +92,7 @@ export default function AdminSidebar() {
         {NAV_SECTIONS.map((section) => (
           <div key={section.label} className="mb-6">
             {!collapsed && (
-              <p className="text-white/30 text-xs font-semibold uppercase tracking-widest px-3 mb-2">
+              <p className="text-[#A3A3A3]/60 text-xs font-semibold uppercase tracking-widest px-3 mb-2">
                 {section.label}
               </p>
             )}
@@ -105,8 +106,8 @@ export default function AdminSidebar() {
                       href={item.href}
                       className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
                         active
-                          ? 'text-white bg-[#C59B27] shadow-md'
-                          : 'text-white/70 hover:text-white hover:bg-white/10'
+                          ? 'text-[#0A0A0A] bg-[#D4AF37] shadow-md font-bold'
+                          : 'text-[#A3A3A3] hover:text-white hover:bg-[#171717]'
                       }`}
                       aria-current={active ? 'page' : undefined}
                       onClick={() => setMobileOpen(false)}
@@ -123,11 +124,11 @@ export default function AdminSidebar() {
       </nav>
 
       {/* Logout */}
-      <div className="px-3 py-4 border-t border-white/10">
+      <div className="px-3 py-4 border-t border-[#2A2A2A]">
         <button
           onClick={handleLogout}
           disabled={loggingOut}
-          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer w-full text-left text-white/70 hover:text-red-400 hover:bg-white/5"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer w-full text-left text-[#A3A3A3] hover:text-red-400 hover:bg-[#171717]"
           aria-label="Sign out"
         >
           <LogOut size={17} className="flex-shrink-0" />
@@ -141,14 +142,14 @@ export default function AdminSidebar() {
     <>
       {/* Desktop sidebar */}
       <aside
-        className="hidden lg:flex flex-col bg-black h-screen sticky top-0 flex-shrink-0 transition-all duration-300"
+        className="hidden lg:flex flex-col bg-[#0A0A0A] border-r border-[#2A2A2A] h-screen sticky top-0 flex-shrink-0 transition-all duration-300"
         style={{ width: collapsed ? '72px' : '240px' }}
       >
         {renderSidebarContent()}
         {/* Collapse toggle */}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="absolute -right-3 top-8 w-6 h-6 rounded-full bg-black border border-white/10 flex items-center justify-center text-white/50 hover:text-white transition-colors z-10"
+          className="absolute -right-3 top-8 w-6 h-6 rounded-full bg-[#171717] border border-[#2A2A2A] flex items-center justify-center text-[#A3A3A3] hover:text-white transition-colors z-10"
           aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
           <ChevronRight size={12} className={`transition-transform ${collapsed ? '' : 'rotate-180'}`} />
@@ -156,8 +157,8 @@ export default function AdminSidebar() {
       </aside>
 
       {/* Mobile top bar */}
-      <div className="lg:hidden fixed top-0 inset-x-0 z-50 bg-black h-14 flex items-center justify-between px-4 border-b border-white/10">
-        <span style={{ fontFamily: 'Playfair Display, serif', color: '#FFD700', fontWeight: 700 }}>Signature Admin</span>
+      <div className="lg:hidden fixed top-0 inset-x-0 z-50 bg-[#0A0A0A] h-14 flex items-center justify-between px-4 border-b border-[#2A2A2A]">
+        <span style={{ fontFamily: 'Playfair Display, serif', color: '#D4AF37', fontWeight: 700 }}>Signature Admin</span>
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
           className="text-white p-1"
@@ -177,7 +178,7 @@ export default function AdminSidebar() {
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'tween', duration: 0.25 }}
-              className="lg:hidden fixed inset-y-0 left-0 z-50 w-64 bg-black overflow-y-auto"
+              className="lg:hidden fixed inset-y-0 left-0 z-50 w-64 bg-[#0A0A0A] border-r border-[#2A2A2A] overflow-y-auto"
             >
               {renderSidebarContent()}
             </motion.div>
@@ -186,7 +187,7 @@ export default function AdminSidebar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="lg:hidden fixed inset-0 z-40 bg-black/60"
+              className="lg:hidden fixed inset-0 z-40 bg-black/70"
               onClick={() => setMobileOpen(false)}
             />
           </>

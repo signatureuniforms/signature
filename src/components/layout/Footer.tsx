@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Phone, Mail, MapPin, ArrowUpRight, MessageCircle, Clock } from 'lucide-react'
-import { BRAND, buildWhatsAppUrl } from '@/lib/constants'
+import { BRAND } from '@/lib/constants'
 import { createClient } from '@/lib/supabase/server'
 import FooterFeaturesBar from '@/components/layout/FooterFeaturesBar'
+import FooterSections from '@/components/layout/FooterSections'
 import type { FooterFeatureItem, FooterFeaturesContent } from '@/types'
 
 const QUICK_LINKS = [
@@ -90,7 +90,7 @@ export default async function Footer() {
       {/* Footer Top Features Bar */}
       <FooterFeaturesBar items={features} />
 
-      <footer className="bg-black text-white border-t border-neutral-900" role="contentinfo">
+      <footer className="bg-[#0A0A0A] text-white" role="contentinfo">
         {/* Main footer content */}
         <div className="w-full px-2 sm:px-6 md:px-8 lg:px-10 py-12 lg:py-16">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10">
@@ -105,136 +105,37 @@ export default async function Footer() {
                   className="h-12 sm:h-14 w-auto object-contain"
                 />
               </Link>
-              <p className="text-xs text-white/50 leading-relaxed max-w-sm">
+              <p className="text-xs text-[#A3A3A3] leading-relaxed max-w-sm">
                 {footerDesc}
               </p>
             </div>
 
-            {/* Quick links */}
-            <div className="lg:col-span-2">
-              <h3 className="text-xs font-semibold text-white uppercase tracking-[0.2em] mb-4">
-                Quick Links
-              </h3>
-              <ul className="space-y-2.5">
-                {QUICK_LINKS.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-xs text-white/55 hover:text-[#FFD700] transition-colors duration-200 inline-flex items-center gap-1 group"
-                    >
-                      <span>{link.label}</span>
-                      <ArrowUpRight
-                        size={11}
-                        className="opacity-0 group-hover:opacity-100 transition-opacity"
-                      />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Uniform Categories */}
-            <div className="lg:col-span-3">
-              <h3 className="text-xs font-semibold text-white uppercase tracking-[0.2em] mb-4">
-                Uniform Categories
-              </h3>
-              <ul className="space-y-2.5">
-                {CATEGORY_LINKS.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-xs text-white/55 hover:text-[#FFD700] transition-colors duration-200 inline-flex items-center gap-1 group"
-                    >
-                      <span>{link.label}</span>
-                      <ArrowUpRight
-                        size={11}
-                        className="opacity-0 group-hover:opacity-100 transition-opacity"
-                      />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Contact */}
-            <div className="lg:col-span-3">
-              <h3 className="text-xs font-semibold text-white uppercase tracking-[0.2em] mb-4">
-                Contact Details
-              </h3>
-              <ul className="space-y-3">
-                <li>
-                  <a
-                    href={`tel:${phone}`}
-                    className="flex items-start gap-2.5 text-xs text-white/55 hover:text-[#FFD700] transition-colors"
-                  >
-                    <Phone size={13} className="mt-0.5 flex-shrink-0 text-[#FFD700]" />
-                    <span>{phone.startsWith('+') ? phone : `(+91) ${phone}`}</span>
-                  </a>
-                </li>
-                {secondaryPhone && secondaryPhone !== phone && (
-                  <li>
-                    <a
-                      href={`tel:${secondaryPhone}`}
-                      className="flex items-start gap-2.5 text-xs text-white/55 hover:text-[#FFD700] transition-colors"
-                    >
-                      <Phone size={13} className="mt-0.5 flex-shrink-0 text-[#FFD700]" />
-                      <span>{secondaryPhone.startsWith('+') ? secondaryPhone : `(+91) ${secondaryPhone}`}</span>
-                    </a>
-                  </li>
-                )}
-                {whatsappNumber && (
-                  <li>
-                    <a
-                      href={buildWhatsAppUrl('Hello, I would like to make an enquiry from your website.', whatsappNumber)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-start gap-2.5 text-xs text-white/55 hover:text-[#FFD700] transition-colors"
-                    >
-                      <MessageCircle size={13} className="mt-0.5 flex-shrink-0 text-[#FFD700]" />
-                      <span>{whatsappNumber}</span>
-                    </a>
-                  </li>
-                )}
-                <li>
-                  <a
-                    href={`mailto:${email}`}
-                    className="flex items-start gap-2.5 text-xs text-white/55 hover:text-[#FFD700] transition-colors break-all"
-                  >
-                    <Mail size={13} className="mt-0.5 flex-shrink-0 text-[#FFD700]" />
-                    <span>{email}</span>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={mapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-start gap-2.5 text-xs text-white/55 hover:text-[#FFD700] transition-colors"
-                  >
-                    <MapPin size={13} className="mt-0.5 flex-shrink-0 text-[#FFD700]" />
-                    <span className="leading-relaxed">{address}</span>
-                  </a>
-                </li>
-                {workingHours && (
-                  <li className="flex items-start gap-2.5 text-xs text-white/55">
-                    <Clock size={13} className="mt-0.5 flex-shrink-0 text-[#FFD700]" />
-                    <span>{workingHours}</span>
-                  </li>
-                )}
-              </ul>
-            </div>
+            {/* Navigation and Contact Sections (Mobile accordion, Desktop grid columns) */}
+            <FooterSections
+              quickLinks={QUICK_LINKS}
+              categoryLinks={CATEGORY_LINKS}
+              contact={{
+                phone,
+                secondaryPhone,
+                whatsappNumber,
+                email,
+                address,
+                mapsUrl,
+                workingHours,
+              }}
+            />
           </div>
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-white/10">
+        <div className="border-t border-[#2A2A2A]">
           <div className="w-full px-2 sm:px-6 md:px-8 lg:px-10 py-4 flex flex-col sm:flex-row items-center justify-between gap-2.5">
-            <p className="text-[11px] text-white/40 text-center sm:text-left">{copyright}</p>
+            <p className="text-[11px] text-[#A3A3A3]/70 text-center sm:text-left">{copyright}</p>
             <div className="flex items-center gap-5">
-              <Link href="/privacy-policy" className="text-[11px] text-white/40 hover:text-white/70 transition-colors">
+              <Link href="/privacy-policy" className="text-[11px] text-[#A3A3A3]/70 hover:text-white transition-colors">
                 Privacy Policy
               </Link>
-              <Link href="/terms" className="text-[11px] text-white/40 hover:text-white/70 transition-colors">
+              <Link href="/terms" className="text-[11px] text-[#A3A3A3]/70 hover:text-white transition-colors">
                 Terms &amp; Conditions
               </Link>
             </div>

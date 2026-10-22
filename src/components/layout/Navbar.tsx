@@ -72,8 +72,8 @@ export default function Navbar() {
         style={{ height: 'var(--navbar-height)' }}
         initial={false}
         animate={{
-          boxShadow: isSolid ? '0 4px 20px rgba(0,0,0,0.5)' : '0 0px 0px rgba(0,0,0,0)',
-          borderBottomColor: isSolid ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0)',
+          boxShadow: isSolid ? '0 4px 20px rgba(0,0,0,0.6)' : '0 0px 0px rgba(0,0,0,0)',
+          borderBottomColor: isSolid ? '#2A2A2A' : 'rgba(255,255,255,0)',
         }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       >
@@ -83,7 +83,7 @@ export default function Navbar() {
           aria-hidden="true"
         >
           <motion.div
-            className="w-full h-full bg-black"
+            className="w-full h-full bg-[#0A0A0A]"
             initial={false}
             animate={{
               y: isSolid ? '0%' : '100%',
@@ -123,9 +123,9 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="relative px-4 py-2 text-[14px] uppercase transition-colors duration-200 rounded-xl hover:text-[#FFD700] !font-sans"
+                  className="relative px-4 py-2 text-[14px] uppercase transition-colors duration-200 rounded-xl hover:text-[#E5C158] !font-sans"
                   style={{
-                    color: isActive ? '#ffd900ff' : '#ffffff',
+                    color: isActive ? '#D4AF37' : '#ffffff',
                   }}
                   aria-current={isActive ? 'page' : undefined}
                 >
@@ -140,7 +140,7 @@ export default function Navbar() {
             <Link
               href="/contact"
               id="navbar-enquiry-now-cta"
-              className="btn-gold-sweep inline-flex items-center justify-center gap-2 py-2.5 px-6 bg-white text-black font-semibold text-[15px] rounded-none tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 hover:shadow-[0_4px_16px_rgba(255,215,0,0.3)] cursor-pointer"
+              className="btn-gold-sweep inline-flex items-center justify-center gap-2 py-2.5 px-6 bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0A0A] font-semibold text-[15px] rounded-none tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 hover:shadow-[0_4px_16px_rgba(212,175,55,0.3)] cursor-pointer"
             >
               Enquiry Now
             </Link>
@@ -170,7 +170,7 @@ export default function Navbar() {
             animate={{ y: '0%' }}
             exit={{ y: '100%' }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-[100] bg-black text-white flex flex-col justify-between h-[100dvh] w-full overflow-hidden p-6 sm:p-8 lg:hidden select-none"
+            className="fixed inset-0 z-[100] bg-[#0A0A0A] text-white flex flex-col justify-between h-[100dvh] w-full overflow-hidden p-6 sm:p-8 lg:hidden select-none"
             role="dialog"
             aria-modal="true"
             aria-label="Mobile Navigation Menu"
@@ -196,7 +196,7 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => setMobileOpen(false)}
-                className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 flex items-center justify-center text-white transition-all cursor-pointer border border-white/10"
+                className="w-11 h-11 rounded-full bg-white/5 hover:bg-white/10 active:scale-95 flex items-center justify-center text-white transition-all cursor-pointer border border-[#2A2A2A]"
                 aria-label="Close menu"
               >
                 <X size={22} />
@@ -256,8 +256,8 @@ export default function Navbar() {
                       onClick={() => setMobileOpen(false)}
                       className={`inline-block py-2.5 px-4 text-base sm:text-lg uppercase transition-all duration-200 cursor-pointer ${
                         isActive
-                          ? 'text-[#FFD700] font-normal'
-                          : 'text-white/85 hover:text-[#FFD700]'
+                          ? 'text-[#D4AF37] font-normal'
+                          : 'text-white/85 hover:text-[#E5C158]'
                       }`}
                       style={{ fontFamily: "'Regular-Light', serif", letterSpacing: '0.22em' }}
                       aria-current={isActive ? 'page' : undefined}
@@ -291,7 +291,7 @@ export default function Navbar() {
                 <Link
                   href="/contact"
                   onClick={() => setMobileOpen(false)}
-                  className="btn-gold-sweep flex items-center justify-center w-full py-3.5 px-6 bg-white text-black font-semibold text-sm rounded-none tracking-widest uppercase transition-all duration-300 shadow-xl active:scale-98 cursor-pointer"
+                  className="btn-gold-sweep flex items-center justify-center w-full py-3.5 px-6 bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0A0A] font-semibold text-sm rounded-none tracking-widest uppercase transition-all duration-300 shadow-xl active:scale-98 cursor-pointer"
                   id="mobile-enquiry-now-cta"
                 >
                   <span>Enquiry Now</span>

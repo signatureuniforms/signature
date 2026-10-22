@@ -92,16 +92,16 @@ export default function HomeContactSection({ contactInfo }: HomeContactSectionPr
     <section
       ref={sectionRef}
       id="home-contact-section"
-      className="relative w-full bg-black text-white py-12 lg:py-20 overflow-hidden"
+      className="relative w-full bg-[#0A0A0A] text-white py-12 lg:py-20 overflow-hidden"
       aria-labelledby="home-contact-heading"
     >
       {/* Background Subtle Ambient Glow */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
-        <div className="absolute top-1/3 -left-40 w-80 h-80 bg-[#FFD700]/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 -right-40 w-80 h-80 bg-[#FFD700]/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/3 -left-40 w-80 h-80 bg-[#D4AF37]/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 -right-40 w-80 h-80 bg-[#D4AF37]/5 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-2 sm:px-6 lg:px-8">
+      <div className="relative z-10 max-w-4xl mx-auto px-2 sm:px-6 lg:px-8">
         {/* Section Header: Styled identically to About Section */}
         <div className="mb-10 lg:mb-14">
           <motion.span
@@ -117,7 +117,7 @@ export default function HomeContactSection({ contactInfo }: HomeContactSectionPr
               duration: shouldReduceMotion ? 0 : 0.7,
               ease: editorialEase,
             }}
-            className="text-xs font-semibold tracking-[0.2em] uppercase text-[#FFD700] block mb-3 font-sans"
+            className="text-xs font-semibold tracking-[0.2em] uppercase text-[#D4AF37] block mb-3 font-sans"
           >
             Get In Touch
           </motion.span>
@@ -159,14 +159,13 @@ export default function HomeContactSection({ contactInfo }: HomeContactSectionPr
               ease: editorialEase,
             }}
             style={{ transformOrigin: 'left' }}
-            className="w-16 h-[2px] bg-[#FFD700]"
+            className="w-16 h-[2px] bg-[#D4AF37]"
             aria-hidden="true"
           />
         </div>
 
-        {/* 2-Column Main Layout: Left Form + Right Contact Info */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 xl:gap-20 items-start">
-          {/* LEFT COLUMN: Contact Form */}
+        {/* Contact Form Container (Contact Info column removed as requested) */}
+        <div className="w-full">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={
@@ -181,7 +180,7 @@ export default function HomeContactSection({ contactInfo }: HomeContactSectionPr
               delay: shouldReduceMotion ? 0 : 0.25,
               ease: editorialEase,
             }}
-            className="lg:col-span-8 space-y-4"
+            className="w-full space-y-4"
           >
             {result && (
               <div
@@ -212,7 +211,7 @@ export default function HomeContactSection({ contactInfo }: HomeContactSectionPr
                   value={form.name}
                   onChange={(e) => setForm(prev => ({ ...prev, name: e.target.value }))}
                   required
-                  className="w-full px-4 py-3.5 sm:py-4 bg-[#18181c] hover:bg-[#1e1e23] focus:bg-[#222228] border-0 rounded text-white placeholder:text-neutral-400 text-base sm:text-sm font-sans transition-all duration-200 outline-none focus:outline-none"
+                  className="w-full px-4 py-3.5 sm:py-4 bg-[#171717] hover:bg-[#1a1a1a] focus:bg-[#171717] rounded text-white placeholder:text-[#A3A3A3] text-base sm:text-sm font-sans transition-all duration-200 outline-none focus:outline-none"
                 />
               </div>
 
@@ -225,7 +224,7 @@ export default function HomeContactSection({ contactInfo }: HomeContactSectionPr
                   placeholder="your e-mail"
                   value={form.email}
                   onChange={(e) => setForm(prev => ({ ...prev, email: e.target.value }))}
-                  className="w-full px-4 py-3.5 sm:py-4 bg-[#18181c] hover:bg-[#1e1e23] focus:bg-[#222228] border-0 rounded text-white placeholder:text-neutral-400 text-base sm:text-sm font-sans transition-all duration-200 outline-none focus:outline-none"
+                  className="w-full px-4 py-3.5 sm:py-4 bg-[#171717] hover:bg-[#1a1a1a] focus:bg-[#171717] rounded text-white placeholder:text-[#A3A3A3] text-base sm:text-sm font-sans transition-all duration-200 outline-none focus:outline-none"
                 />
               </div>
 
@@ -239,129 +238,23 @@ export default function HomeContactSection({ contactInfo }: HomeContactSectionPr
                   value={form.enquiry}
                   onChange={(e) => setForm(prev => ({ ...prev, enquiry: e.target.value }))}
                   required
-                  className="w-full px-4 py-3.5 sm:py-4 bg-[#18181c] hover:bg-[#1e1e23] focus:bg-[#222228] border-0 rounded text-white placeholder:text-neutral-400 text-base sm:text-sm font-sans transition-all duration-200 outline-none focus:outline-none resize-y"
+                  className="w-full px-4 py-3.5 sm:py-4 bg-[#171717] hover:bg-[#1a1a1a] focus:bg-[#171717] rounded text-white placeholder:text-[#A3A3A3] text-base sm:text-sm font-sans transition-all duration-200 outline-none focus:outline-none resize-y"
                 />
               </div>
 
               {/* Submit Button */}
-              <div className="pt-1">
+              <div className="pt-1 flex justify-center">
                 <button
                   type="submit"
                   disabled={submitting}
                   id="contact-form-submit"
-                  className="btn-gold-sweep inline-flex items-center justify-center gap-2 px-7 py-3 bg-[#131b26] active:scale-[0.99] text-white font-semibold text-xs uppercase tracking-widest rounded-none transition-all duration-200 cursor-pointer disabled:opacity-50 shadow-md"
+                  className="btn-gold-sweep inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-[#D4AF37] hover:bg-[#E5C158] active:scale-[0.99] text-[#0A0A0A] font-bold text-xs uppercase tracking-widest rounded-none transition-all duration-200 cursor-pointer disabled:opacity-50 shadow-md"
                 >
-                  {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin text-[#FFD700]" />}
+                  {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin text-[#0A0A0A]" />}
                   <span>{submitting ? 'Sending...' : 'Sent Now'}</span>
                 </button>
               </div>
             </form>
-          </motion.div>
-
-          {/* RIGHT COLUMN: Contact Info */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={
-              shouldReduceMotion
-                ? { opacity: 1, y: 0 }
-                : isInView
-                ? { opacity: 1, y: 0 }
-                : { opacity: 0, y: 30 }
-            }
-            transition={{
-              duration: shouldReduceMotion ? 0 : 0.8,
-              delay: shouldReduceMotion ? 0 : 0.35,
-              ease: editorialEase,
-            }}
-            className="lg:col-span-4 space-y-6 pt-2"
-          >
-            {/* Contact Info Header */}
-            <h3
-              className="text-base sm:text-lg font-serif tracking-[0.18em] text-white uppercase leading-tight font-normal"
-              style={{ fontFamily: "'Regular-Light', serif", letterSpacing: '0.18em' }}
-            >
-              Contact Info
-            </h3>
-
-            {/* Address */}
-            {address && (
-              <p className="text-xs sm:text-sm text-neutral-300 font-light leading-relaxed">
-                {address}
-              </p>
-            )}
-
-            {/* Detailed Info Lines matching the reference screenshot */}
-            <div className="space-y-2.5 text-xs sm:text-sm text-neutral-300 font-light leading-relaxed">
-              {phone && (
-                <div className="flex items-baseline gap-2">
-                  <span className="text-white font-normal">Phone :</span>
-                  <a
-                    href={`tel:${phone}`}
-                    className="text-neutral-300 hover:text-[#FFD700] transition-colors"
-                  >
-                    {phone.startsWith('+') ? phone : `(+91) ${phone}`}
-                  </a>
-                  {secondaryPhone && secondaryPhone !== phone && (
-                    <>
-                      <span className="text-neutral-500">/</span>
-                      <a
-                        href={`tel:${secondaryPhone}`}
-                        className="text-neutral-300 hover:text-[#FFD700] transition-colors"
-                      >
-                        {secondaryPhone.startsWith('+') ? secondaryPhone : `(+91) ${secondaryPhone}`}
-                      </a>
-                    </>
-                  )}
-                </div>
-              )}
-
-              {whatsappNumber && (
-                <div className="flex items-baseline gap-2">
-                  <span className="text-white font-normal">WhatsApp :</span>
-                  <a
-                    href={buildWhatsAppUrl('Hello Signature Uniforms, I would like to make an enquiry.', whatsappNumber)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-neutral-300 hover:text-[#FFD700] transition-colors"
-                  >
-                    {whatsappNumber}
-                  </a>
-                </div>
-              )}
-
-              {email && (
-                <div className="flex items-baseline gap-2">
-                  <span className="text-white font-normal">Email :</span>
-                  <a
-                    href={`mailto:${email}`}
-                    className="text-neutral-300 hover:text-[#FFD700] transition-colors break-all"
-                  >
-                    {email}
-                  </a>
-                </div>
-              )}
-
-              {workingHours && (
-                <div className="flex items-baseline gap-2">
-                  <span className="text-white font-normal">Hours :</span>
-                  <span className="text-neutral-300">{workingHours}</span>
-                </div>
-              )}
-
-              {web && (
-                <div className="flex items-baseline gap-2">
-                  <span className="text-white font-normal">Web :</span>
-                  <a
-                    href={web.startsWith('http') ? web : `https://${web}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-neutral-300 hover:text-[#FFD700] transition-colors"
-                  >
-                    {web.replace(/^https?:\/\//, '')}
-                  </a>
-                </div>
-              )}
-            </div>
           </motion.div>
         </div>
       </div>

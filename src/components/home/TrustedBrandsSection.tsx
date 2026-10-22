@@ -26,7 +26,7 @@ export default function TrustedBrandsSection({ data }: TrustedBrandsSectionProps
   return (
     <section
       ref={sectionRef}
-      className="py-12 sm:py-16 lg:py-20 bg-black w-full overflow-hidden"
+      className="py-12 sm:py-16 lg:py-20 bg-[#0A0A0A] w-full overflow-hidden"
       aria-labelledby="trusted-brands-heading"
     >
       <div className="w-full px-2 sm:px-6 md:px-8 lg:px-10">
@@ -46,7 +46,7 @@ export default function TrustedBrandsSection({ data }: TrustedBrandsSectionProps
           }}
           className="text-center mb-10 sm:mb-14"
         >
-          <span className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.3em] text-[#FFD700]/80 block mb-2 font-medium">
+          <span className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.3em] text-[#D4AF37] block mb-2 font-medium">
             Partners & Fabric Mills
           </span>
           <h2
@@ -62,8 +62,8 @@ export default function TrustedBrandsSection({ data }: TrustedBrandsSectionProps
         {/* Mobile View: Infinite Continuous Horizontal Slider in the Same Row */}
         <div className="md:hidden relative w-full overflow-hidden py-4 -mx-2 sm:-mx-6">
           {/* Gradient fade edge masks for smooth entrance & exit */}
-          <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-black to-transparent z-10" />
-          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-black to-transparent z-10" />
+          <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-[#0A0A0A] to-transparent z-10" />
+          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-[#0A0A0A] to-transparent z-10" />
 
           <div className="animate-infinite-scroll flex items-center gap-8 sm:gap-10">
             {[...data.logos, ...data.logos, ...data.logos, ...data.logos].map((brand, idx) => (
@@ -110,7 +110,7 @@ export default function TrustedBrandsSection({ data }: TrustedBrandsSectionProps
               <img
                 src={brand.image_url}
                 alt={brand.name || 'Trusted Brand'}
-                className="h-10 md:h-12 lg:h-14 w-auto max-w-[150px] sm:max-w-[180px] object-contain opacity-75 group-hover:opacity-100 transition-all duration-300 filter drop-shadow-[0_2px_10px_rgba(255,255,255,0.05)] group-hover:drop-shadow-[0_4px_16px_rgba(255,215,0,0.15)]"
+                className="h-10 md:h-12 lg:h-14 w-auto max-w-[150px] sm:max-w-[180px] object-contain opacity-75 group-hover:opacity-100 transition-all duration-300 filter drop-shadow-[0_2px_10px_rgba(255,255,255,0.05)] group-hover:drop-shadow-[0_4px_16px_rgba(212,175,55,0.25)]"
                 loading="lazy"
               />
             </motion.div>

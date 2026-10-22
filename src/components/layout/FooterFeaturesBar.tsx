@@ -55,7 +55,7 @@ export default function FooterFeaturesBar({ items }: FooterFeaturesBarProps) {
 
   return (
     <section
-      className="w-full bg-[#EBEBEB] text-black border-t border-neutral-300 py-6 sm:py-8 overflow-hidden"
+      className="w-full bg-[#171717] text-white py-6 sm:py-8 overflow-hidden"
       aria-label="Features and Benefits"
     >
       <div className="w-full px-2 sm:px-6 md:px-8 lg:px-10">
@@ -78,7 +78,7 @@ export default function FooterFeaturesBar({ items }: FooterFeaturesBarProps) {
                   <img
                     src={item.icon_url}
                     alt={item.heading || 'Feature Icon'}
-                    className="max-h-full max-w-full object-contain filter contrast-125"
+                    className="max-h-full max-w-full object-contain filter invert contrast-125"
                     loading="lazy"
                   />
                 </div>
@@ -86,10 +86,10 @@ export default function FooterFeaturesBar({ items }: FooterFeaturesBarProps) {
 
               {/* Text: Heading + Description */}
               <div className="min-w-0 text-left">
-                <h3 className="text-xs sm:text-[13px] font-bold tracking-wide uppercase text-black leading-snug">
+                <h3 className="text-xs sm:text-[13px] font-bold tracking-wide uppercase text-white leading-snug">
                   {item.heading}
                 </h3>
-                <p className="text-[11px] sm:text-xs text-black/75 leading-relaxed mt-0.5 font-sans font-normal">
+                <p className="text-[11px] sm:text-xs text-[#A3A3A3] leading-relaxed mt-0.5 font-sans font-normal">
                   {item.description}
                 </p>
               </div>

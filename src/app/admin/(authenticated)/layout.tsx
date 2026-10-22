@@ -40,7 +40,7 @@ export default function AuthenticatedAdminLayout({
             </Link>
 
             <div className="flex items-center gap-2 pl-2 border-l border-gray-200">
-              <div className="w-8 h-8 rounded-full bg-black text-[#FFD700] flex items-center justify-center font-bold text-xs ring-2 ring-gray-100">
+              <div className="w-8 h-8 rounded-full bg-black text-[#D4AF37] flex items-center justify-center font-bold text-xs ring-2 ring-gray-100">
                 SU
               </div>
               <div className="hidden sm:block text-left">

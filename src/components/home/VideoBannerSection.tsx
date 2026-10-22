@@ -62,7 +62,7 @@ export default function VideoBannerSection({ data }: VideoBannerSectionProps) {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full overflow-hidden bg-black text-white py-5 lg:py-10 h-[60vh] sm:h-[70vh] min-h-[480px] max-h-[750px]"
+      className="relative w-full overflow-hidden bg-[#0A0A0A] text-white py-5 lg:py-10 h-[60vh] sm:h-[70vh] min-h-[480px] max-h-[750px]"
       aria-label={data.heading || 'Video Showcase'}
     >
       {/* Background Video (Buffered once and looped from browser cache) */}
@@ -121,10 +121,10 @@ export default function VideoBannerSection({ data }: VideoBannerSectionProps) {
                 className="group relative inline-flex flex-col items-start text-xs tracking-[0.25em] text-white uppercase transition-colors cursor-pointer"
                 id="video-banner-contact-cta"
               >
-                <span className="pb-1 transition-opacity group-hover:opacity-85 font-medium">
+                <span className="pb-1 transition-opacity group-hover:text-[#D4AF37] font-medium">
                   CONTACT NOW
                 </span>
-                <span className="w-full h-[1.5px] bg-white transition-all duration-300 group-hover:scale-x-110 group-hover:bg-[#FFD700]" />
+                <span className="w-full h-[1.5px] bg-white transition-all duration-300 group-hover:scale-x-110 group-hover:bg-[#D4AF37]" />
               </button>
             </motion.div>
           </motion.div>

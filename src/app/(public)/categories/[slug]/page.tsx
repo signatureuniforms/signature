@@ -5,7 +5,6 @@ import { ArrowLeft, MessageCircle, Package } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { buildProductWhatsAppMessage, buildWhatsAppUrl } from '@/lib/constants'
 import type { Product } from '@/types'
-import HomeContactSection from '@/components/home/HomeContactSection'
 import { BulkQuoteButton } from '@/components/common/BulkQuotationDrawer'
 
 interface Props {
@@ -73,19 +72,10 @@ export default async function CategoryDetailPage({ params }: Props) {
       '',
   }))
 
-  // Fetch site contact info
-  const { data: contactSetting } = await supabase
-    .from('site_settings')
-    .select('value')
-    .eq('key', 'site_contact')
-    .maybeSingle()
-
-  const contactInfo = (contactSetting?.value as Record<string, string> | null) ?? null
-
   return (
-    <div className="bg-black text-white min-h-screen">
+    <div className="bg-[#0A0A0A] text-white min-h-screen">
       {/* Category Header */}
-      <section className="relative bg-black text-white pt-32 sm:pt-36 pb-14 sm:pb-16 px-4 sm:px-6 md:px-8 lg:px-10 w-full overflow-hidden min-h-[300px] flex items-center">
+      <section className="relative bg-[#0A0A0A] text-white pt-32 sm:pt-36 pb-14 sm:pb-16 px-4 sm:px-6 md:px-8 lg:px-10 w-full overflow-hidden min-h-[300px] flex items-center">
         {/* Background Category Image with Vignette & Gradients */}
         {categoryImageUrl && (
           <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
@@ -102,10 +92,11 @@ export default async function CategoryDetailPage({ params }: Props) {
 
         <div className="relative z-10 w-full flex flex-col lg:flex-row lg:items-end justify-between gap-8">
           {/* Left: Navigation, Title & Description */}
+          {/* Left: Navigation, Title & Description */}
           <div className="flex-1 w-full space-y-4">
             <Link
               href="/categories"
-              className="inline-flex items-center gap-1.5 text-xs text-white/70 hover:text-[#FFD700] transition-colors group"
+              className="inline-flex items-center gap-1.5 text-xs text-[#A3A3A3] hover:text-[#D4AF37] transition-colors group"
             >
               <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" />
               <span>All Categories</span>
@@ -117,7 +108,7 @@ export default async function CategoryDetailPage({ params }: Props) {
               >
                 {category.name}
               </h1>
-              <p className="text-white/70 text-xs sm:text-sm mt-3 leading-relaxed max-w-3xl">
+              <p className="text-[#A3A3A3] text-xs sm:text-sm mt-3 leading-relaxed max-w-3xl">
                 {category.description || 'Precision crafted uniform apparel designed for long-lasting performance and maximum comfort.'}
               </p>
             </div>
@@ -127,7 +118,7 @@ export default async function CategoryDetailPage({ params }: Props) {
           <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 shrink-0">
             <BulkQuoteButton
               category={category.name}
-              className="btn-gold-sweep inline-flex items-center justify-center gap-2 px-6 py-3 rounded-none bg-white text-black font-semibold text-xs sm:text-sm tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 shadow-md hover:shadow-[0_4px_16px_rgba(255,215,0,0.3)] whitespace-nowrap cursor-pointer"
+              className="btn-gold-sweep inline-flex items-center justify-center gap-2 px-6 py-3 rounded-none bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0A0A] font-semibold text-xs sm:text-sm tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 shadow-md hover:shadow-[0_4px_16px_rgba(212,175,55,0.3)] whitespace-nowrap cursor-pointer"
             >
               Request a Bulk Quotation
             </BulkQuoteButton>
@@ -145,24 +136,24 @@ export default async function CategoryDetailPage({ params }: Props) {
       </section>
 
       {/* Products Grid Section */}
-      <section className="w-full px-2 sm:px-6 md:px-8 lg:px-10 py-14 sm:py-16">
+      <section className="w-full px-2 sm:px-6 md:px-8 lg:px-10 py-14 sm:py-16 pb-20 sm:pb-24">
         {/* Count Bar */}
-        <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/10">
-          <span className="text-xs font-semibold text-white/60 uppercase tracking-wider">
+        <div className="flex items-center justify-between mb-8 pb-4">
+          <span className="text-xs font-semibold text-[#A3A3A3] uppercase tracking-wider">
             Showing {productList.length} {productList.length === 1 ? 'product' : 'products'}
           </span>
         </div>
 
         {productList.length === 0 ? (
-          <div className="py-20 text-center text-white/60">
-            <Package className="w-12 h-12 mx-auto text-white/30 mb-3" />
+          <div className="py-20 text-center text-[#A3A3A3]">
+            <Package className="w-12 h-12 mx-auto text-[#A3A3A3]/40 mb-3" />
             <h3 className="text-base font-semibold text-white">No products currently listed in this category</h3>
-            <p className="text-xs text-white/50 mt-1 max-w-sm mx-auto">
+            <p className="text-xs text-[#A3A3A3] mt-1 max-w-sm mx-auto">
               We manufacture customized uniforms to your exact school or corporate specifications. Contact us directly to discuss patterns and swatches.
             </p>
             <Link
               href="/contact"
-              className="btn-gold-sweep mt-6 inline-flex items-center gap-2 px-6 py-2.5 bg-black text-white text-xs font-semibold rounded-none cursor-pointer"
+              className="btn-gold-sweep mt-6 inline-flex items-center gap-2 px-6 py-2.5 bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0A0A] text-xs font-semibold rounded-none cursor-pointer"
             >
               <span>Submit Specification</span>
             </Link>
@@ -175,10 +166,10 @@ export default async function CategoryDetailPage({ params }: Props) {
               return (
                 <div
                   key={product.id}
-                  className="group bg-white transition-all duration-300 rounded-none flex flex-col justify-between overflow-hidden shadow-lg hover:shadow-[0_8px_30px_rgba(255,215,0,0.15)]"
+                  className="group bg-[#171717] border border-[#2A2A2A] hover:border-[#D4AF37]/50 transition-all duration-300 rounded-none flex flex-col justify-between overflow-hidden shadow-lg hover:shadow-[0_8px_30px_rgba(212,175,55,0.15)]"
                 >
-                  <Link href={`/products/${product.slug}`} className="block">
-                    <div className="aspect-[4/3] bg-zinc-100 relative overflow-hidden rounded-none">
+                  <div className="block">
+                    <div className="aspect-[4/3] bg-neutral-900 relative overflow-hidden rounded-none">
                       {product.primary_image_url ? (
                         <img
                           src={product.primary_image_url}
@@ -186,30 +177,30 @@ export default async function CategoryDetailPage({ params }: Props) {
                           className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 rounded-none"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-zinc-400 rounded-none">
+                        <div className="w-full h-full flex items-center justify-center text-zinc-600 rounded-none">
                           <Package className="w-8 h-8" />
                         </div>
                       )}
                     </div>
 
-                    {/* Content Section with White Background */}
-                    <div className="p-4 sm:p-5 pb-3 bg-white">
-                      <h3 className="font-semibold text-black text-base group-hover:text-[#C59B27] transition-colors line-clamp-1">
+                    {/* Content Section with Charcoal Background */}
+                    <div className="p-4 sm:p-5 pb-3 bg-[#171717]">
+                      <h3 className="font-semibold text-white text-base group-hover:text-[#D4AF37] transition-colors line-clamp-1">
                         {product.name}
                       </h3>
-                      <p className="text-xs text-neutral-600 mt-1.5 line-clamp-2 leading-relaxed font-light">
+                      <p className="text-xs text-[#A3A3A3] mt-1.5 line-clamp-2 leading-relaxed font-light">
                         {product.short_description || product.fabric_composition || 'Premium durable stitch uniform.'}
                       </p>
                     </div>
-                  </Link>
+                  </div>
 
                   {/* Two Buttons: Request a Quotation and WhatsApp */}
-                  <div className="p-4 sm:p-5 pt-0 mt-auto bg-white">
+                  <div className="p-4 sm:p-5 pt-0 mt-auto bg-[#171717]">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       <BulkQuoteButton
                         category={category.name}
                         productName={product.name}
-                        className="btn-gold-sweep inline-flex items-center justify-center gap-1.5 py-2.5 px-3 bg-black text-white font-semibold text-xs tracking-wide transition-all duration-200 rounded-none text-center cursor-pointer whitespace-nowrap shadow-sm"
+                        className="btn-gold-sweep inline-flex items-center justify-center gap-1.5 py-2.5 px-3 bg-[#0A0A0A] hover:bg-[#D4AF37] text-white hover:text-[#0A0A0A] font-semibold text-xs tracking-wide transition-all duration-200 rounded-none text-center cursor-pointer whitespace-nowrap shadow-sm border border-[#2A2A2A]"
                       >
                         <span>Request a Quotation</span>
                       </BulkQuoteButton>
@@ -230,9 +221,6 @@ export default async function CategoryDetailPage({ params }: Props) {
           </div>
         )}
       </section>
-
-      {/* Bottom Contact Section Reused from Homepage */}
-      <HomeContactSection contactInfo={contactInfo} />
     </div>
   )
 }

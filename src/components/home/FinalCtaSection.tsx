@@ -9,7 +9,7 @@ export default function FinalCtaSection() {
   const waUrl = buildWhatsAppUrl('Hello, I would like to discuss a bulk uniform order.')
 
   return (
-    <section className="py-24 lg:py-32 bg-black w-full" aria-labelledby="final-cta-heading">
+    <section className="py-24 lg:py-32 bg-[#0A0A0A] w-full" aria-labelledby="final-cta-heading">
       <div className="w-full px-2 sm:px-6 md:px-8 lg:px-10 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -17,7 +17,7 @@ export default function FinalCtaSection() {
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.55 }}
         >
-          <span className="text-xs font-semibold tracking-[0.18em] uppercase text-[#FFD700] block mb-5">Get Started</span>
+          <span className="text-xs font-semibold tracking-[0.18em] uppercase text-[#D4AF37] block mb-5">Get Started</span>
           <h2
             id="final-cta-heading"
             className="text-white mb-5 leading-tight mx-auto max-w-2xl font-display text-3xl sm:text-4xl lg:text-5xl font-normal"
@@ -25,13 +25,13 @@ export default function FinalCtaSection() {
           >
             Planning Your Next Uniform Order?
           </h2>
-          <p className="text-white/65 text-lg mb-12 max-w-xl mx-auto leading-relaxed">
+          <p className="text-[#A3A3A3] text-lg mb-12 max-w-xl mx-auto leading-relaxed">
             Tell us what you need. We will help you plan the right uniform solution — from fabric selection to institution-wide delivery.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/enquiry/school-bulk"
-              className="btn-gold-sweep inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-black font-semibold text-sm rounded-none tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 hover:shadow-[0_4px_16px_rgba(255,215,0,0.3)] cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0A0A] font-bold text-sm rounded-xl tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 shadow-lg cursor-pointer"
               id="final-cta-primary"
             >
               Request Bulk Pricing
@@ -41,7 +41,7 @@ export default function FinalCtaSection() {
               href={waUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-transparent hover:bg-white/10 text-white font-semibold text-sm rounded-2xl border border-white/60 hover:border-white tracking-wide transition-all duration-200 cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-transparent hover:bg-[#171717] text-white font-semibold text-sm rounded-xl border border-[#2A2A2A] hover:border-[#D4AF37] tracking-wide transition-all duration-200 cursor-pointer"
               id="final-cta-whatsapp"
             >
               <MessageCircle size={17} />

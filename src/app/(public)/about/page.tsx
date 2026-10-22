@@ -4,7 +4,6 @@ import AboutSection from '@/components/home/AboutSection'
 import VisionMissionSection from '@/components/about/VisionMissionSection'
 import TrustedBrandsSection from '@/components/home/TrustedBrandsSection'
 import WhyChooseUsSection from '@/components/home/WhyChooseUsSection'
-import HomeContactSection from '@/components/home/HomeContactSection'
 import type { AboutSectionContent, VisionMissionContent, TrustedBrandsContent, WhyChooseUsContent } from '@/types'
 
 export const metadata: Metadata = {
@@ -18,7 +17,7 @@ export const revalidate = 60
 async function getAboutPageData() {
   const supabase = await createClient()
 
-  const [aboutRes, vmRes, brandsRes, whyContentRes, whyRes, settingsRes] = await Promise.allSettled([
+  const [aboutRes, vmRes, brandsRes, whyContentRes, whyRes] = await Promise.allSettled([
     // 1. About section content
     supabase
       .from('page_content')
@@ -61,20 +60,7 @@ async function getAboutPageData() {
       .select('*, image:media_assets(*)')
       .eq('is_published', true)
       .order('position', { ascending: true }),
-
-    // 6. Site settings for contact info
-    supabase
-      .from('site_settings')
-      .select('key, value')
-      .in('key', ['phone', 'email', 'address', 'whatsapp_number', 'city', 'state', 'pincode', 'website']),
   ])
-
-  const contactInfo: Record<string, string> = {}
-  if (settingsRes.status === 'fulfilled' && settingsRes.value.data) {
-    settingsRes.value.data.forEach((s: { key: string; value: string | null }) => {
-      if (s.value) contactInfo[s.key] = s.value
-    })
-  }
 
   return {
     about:
@@ -94,15 +80,14 @@ async function getAboutPageData() {
         ? (whyContentRes.value.data.content as WhyChooseUsContent)
         : null,
     whyItems: whyRes.status === 'fulfilled' ? (whyRes.value.data ?? []) : [],
-    contactInfo,
   }
 }
 
 export default async function AboutPage() {
-  const { about, visionMission, brands, whyContent, whyItems, contactInfo } = await getAboutPageData()
+  const { about, visionMission, brands, whyContent, whyItems } = await getAboutPageData()
 
   return (
-    <div className="bg-black text-white min-h-screen pt-14 sm:pt-16 lg:pt-20">
+    <div className="bg-[#0A0A0A] text-white min-h-screen pt-14 sm:pt-16 lg:pt-20 pb-16 sm:pb-24">
       {/* 1. About Section (Reused from Home page) */}
       <AboutSection data={about} showCta={false} />
 
@@ -114,9 +99,6 @@ export default async function AboutPage() {
 
       {/* 4. Why Choose Us Section (Reused) */}
       <WhyChooseUsSection items={whyItems} content={whyContent} />
-
-      {/* 5. Contact Section (Reused from Home page) */}
-      <HomeContactSection contactInfo={contactInfo} />
     </div>
   )
 }

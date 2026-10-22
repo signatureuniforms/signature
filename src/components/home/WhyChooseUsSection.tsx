@@ -106,7 +106,7 @@ export default function WhyChooseUsSection({ items, content }: WhyChooseUsSectio
   // Accordion Header component
   const renderHeader = () => (
     <motion.div variants={itemVariants} className="mb-8 lg:mb-10 text-left">
-      <span className="text-xs font-semibold tracking-[0.2em] uppercase text-[#FFD700] block mb-2 font-sans">
+      <span className="text-xs font-semibold tracking-[0.2em] uppercase text-[#D4AF37] block mb-2 font-sans">
         {eyebrowText}
       </span>
       <h2
@@ -116,7 +116,7 @@ export default function WhyChooseUsSection({ items, content }: WhyChooseUsSectio
       >
         {headingText}
       </h2>
-      <div className="w-12 h-[1.5px] bg-[#FFD700] mt-3" />
+      <div className="w-12 h-[1.5px] bg-[#D4AF37] mt-3" />
     </motion.div>
   )
 
@@ -124,7 +124,7 @@ export default function WhyChooseUsSection({ items, content }: WhyChooseUsSectio
   const renderAccordion = () => (
     <motion.div
       variants={containerVariants}
-      className="divide-y divide-white/10 border-y border-white/10"
+      className="divide-y divide-[#2A2A2A]"
     >
       {items.map((item, index) => {
         const isOpen = openIndex === index
@@ -142,12 +142,12 @@ export default function WhyChooseUsSection({ items, content }: WhyChooseUsSectio
               className="w-full py-4 sm:py-5 flex items-center justify-between text-left group cursor-pointer focus:outline-none transition-colors"
               aria-expanded={isOpen}
             >
-              <span className="text-xs sm:text-sm font-medium tracking-wide uppercase text-white group-hover:text-[#FFD700] transition-colors pr-4">
+              <span className="text-xs sm:text-sm font-medium tracking-wide uppercase text-white group-hover:text-[#D4AF37] transition-colors pr-4">
                 {item.heading}
               </span>
               <span className="shrink-0 p-1 rounded-full text-white/50 group-hover:text-white transition-colors">
                 <ChevronDown
-                  className={`w-4 h-4 transition-transform duration-300 ${isOpen ? 'rotate-180 text-[#FFD700]' : ''}`}
+                  className={`w-4 h-4 transition-transform duration-300 ${isOpen ? 'rotate-180 text-[#D4AF37]' : ''}`}
                 />
               </span>
             </button>
@@ -164,7 +164,7 @@ export default function WhyChooseUsSection({ items, content }: WhyChooseUsSectio
                   className="overflow-hidden"
                 >
                   <div className="pb-4 sm:pb-5 pr-6">
-                    <p className="text-[11px] sm:text-xs text-white/60 leading-relaxed font-light font-sans">
+                    <p className="text-[11px] sm:text-xs text-[#A3A3A3] leading-relaxed font-light font-sans">
                       {item.description}
                     </p>
                   </div>
@@ -178,7 +178,7 @@ export default function WhyChooseUsSection({ items, content }: WhyChooseUsSectio
   )
 
   return (
-    <section className="py-10 lg:pt-20 lg:pb-10 bg-black text-white w-full overflow-hidden" aria-labelledby="why-heading">
+    <section className="py-10 lg:pt-20 lg:pb-10 bg-[#0A0A0A] text-white w-full overflow-hidden" aria-labelledby="why-heading">
       {hasImage ? (
         /* 2-COLUMN LAYOUT: Left Image + Right Accordion (Exact same heights, centered on Y axis) */
         <div className="w-full px-2 sm:px-6 md:px-8 lg:px-10">
@@ -192,7 +192,7 @@ export default function WhyChooseUsSection({ items, content }: WhyChooseUsSectio
               className="w-full flex items-center justify-center my-auto"
             >
               <div
-                className="relative w-full rounded-none overflow-hidden bg-neutral-900 shadow-[0_20px_50px_rgba(0,0,0,0.85)] group transition-[height] duration-300 ease-out"
+                className="relative w-full rounded-none overflow-hidden bg-[#171717] border border-[#2A2A2A] shadow-[0_20px_50px_rgba(0,0,0,0.85)] group transition-[height] duration-300 ease-out"
                 style={{
                   height: accordionHeight ? `${accordionHeight}px` : undefined,
                   minHeight: accordionHeight ? `${accordionHeight}px` : undefined,

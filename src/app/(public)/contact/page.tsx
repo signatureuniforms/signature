@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
+import ContactCardsSection from '@/components/contact/ContactCardsSection'
 import HomeContactSection from '@/components/home/HomeContactSection'
 
 export const metadata: Metadata = {
@@ -31,7 +32,11 @@ export default async function ContactPage() {
   const { contactInfo } = await getContactPageData()
 
   return (
-    <div className="bg-black text-white min-h-screen pt-16 sm:pt-20 lg:pt-24">
+    <div className="bg-[#0A0A0A] text-white min-h-screen">
+      {/* 1. Brand Unit & Contact Cards */}
+      <ContactCardsSection contactInfo={contactInfo} />
+
+      {/* 2. Contact & Enquiry Form */}
       <HomeContactSection contactInfo={contactInfo} />
     </div>
   )

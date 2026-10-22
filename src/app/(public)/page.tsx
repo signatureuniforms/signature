@@ -180,11 +180,13 @@ export default async function HomePage() {
       {/* 4. Trusted by Leading Brands (Directly below Categories) */}
       <TrustedBrandsSection data={brands} />
 
-      {/* 5. Craftsmanship & Trust Section (Directly under Brands) */}
-      {/* <CraftsmanshipSection data={craftsmanship} /> */}
-
-      {/* 6. Video Banner (Directly below Craftsmanship) */}
+         {/* 6. Video Banner (Directly below Craftsmanship) */}
       <VideoBannerSection data={videoBanner} />
+
+      {/* 5. Craftsmanship & Trust Section (Directly under Brands) */}
+      <CraftsmanshipSection data={craftsmanship} />
+
+   
 
       {/* 7. Why Choose Us (Black theme Accordion with left-side image) */}
       <WhyChooseUsSection items={whyItems} content={whyContent} />

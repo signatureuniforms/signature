@@ -304,6 +304,26 @@ export interface FooterFeaturesContent {
   items: FooterFeatureItem[]
 }
 
+// ─── Process / Workflow ───────────────────────────────────────────────────────
+export interface ProcessStep {
+  id: string
+  step_number: number
+  heading: string
+  description: string
+  image_url: string
+  is_published: boolean
+  position: number
+  created_at: string
+  updated_at: string
+}
+
+export interface ProcessSectionContent {
+  subheading?: string
+  heading?: string
+  description?: string
+  is_published?: boolean
+}
+
 
 // ─── Forms ────────────────────────────────────────────────────────────────────
 export interface SchoolBulkEnquiryForm {

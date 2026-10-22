@@ -40,11 +40,16 @@
     --font-heading: 'Regular-Light', serif;
     --font-plein: 'Plein', '_Plein_Variable', 'Plein Variable', system-ui, sans-serif;
 
-    --color-black: #000000;
-    --color-white: #ffffff;
-    --color-gold: #FFD700;
-    --color-gold-dark: #E6C200;
-    --color-gold-light: #FFE44D;
+    --color-black: #0A0A0A;
+    --color-bg-primary: #0A0A0A;
+    --color-bg-card: #171717;
+    --color-white: #FFFFFF;
+    --color-gold: #D4AF37;
+    --color-gold-hover: #E5C158;
+    --color-gold-dark: #B89628;
+    --color-gold-light: #E5C158;
+    --color-text-secondary: #A3A3A3;
+    --color-border: #2A2A2A;
 
     --navbar-height: 88px;
   }
@@ -53,7 +58,7 @@
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
     scrollbar-width: thin;
-    scrollbar-color: #000000 #000000;
+    scrollbar-color: #2A2A2A #0A0A0A;
   }
 
   /* Prevent iOS Safari from auto-zooming when entering/focusing on inputs (Safari auto-zooms if font-size < 16px) */
@@ -76,8 +81,8 @@
 
   body {
     font-family: var(--font-plein);
-    background-color: #ffffff;
-    color: #000000;
+    background-color: #0A0A0A;
+    color: #FFFFFF;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -92,29 +97,25 @@
     font-family: var(--font-plein);
   }
 
-  h1, h2, h3, h4, h5, h6, .font-display, h1 *, h2 * {
-    font-family: 'Regular-Light', serif;
-  }
-
   ::selection {
-    background-color: #FFD700;
-    color: #000000;
+    background-color: #D4AF37;
+    color: #0A0A0A;
   }
 
   ::-webkit-scrollbar {
-    width: 3px;
-    height: 3px;
+    width: 4px;
+    height: 4px;
   }
   ::-webkit-scrollbar-track {
-    background: #000000;
+    background: #0A0A0A;
   }
   ::-webkit-scrollbar-thumb {
-    background: #000000;
+    background: #2A2A2A;
     border-radius: 2px;
-    border: 1px solid #1f1f1f;
+    border: 1px solid #171717;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #111111;
+    background: #D4AF37;
   }
 }
 
@@ -135,7 +136,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background-color: #FFD700;
+  background-color: #D4AF37;
   z-index: -1;
   transform: scaleX(0);
   transform-origin: right;
@@ -149,13 +150,13 @@
 }
 
 .btn-gold-sweep:hover {
-  color: #000000 !important;
-  border-color: #FFD700 !important;
+  color: #0A0A0A !important;
+  border-color: #D4AF37 !important;
 }
 
 .btn-gold-sweep:hover svg {
-  color: #000000 !important;
-  stroke: #000000 !important;
+  color: #0A0A0A !important;
+  stroke: #0A0A0A !important;
 }
 
 .btn-gold-sweep > * {
