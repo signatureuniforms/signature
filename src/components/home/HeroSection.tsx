@@ -54,8 +54,7 @@ export default function HeroSection({ hero }: HeroSectionProps) {
   return (
     <section
       id="hero-section"
-      className="relative w-full overflow-hidden bg-black text-white select-none"
-      style={{ height: '100vh', minHeight: '660px' }}
+      className="relative w-full overflow-hidden bg-black text-white select-none h-[78vh] sm:h-[85vh] lg:h-screen min-h-[520px] sm:min-h-[580px] lg:min-h-[660px]"
       aria-label="Hero Video Showcase"
     >
       {/* ── Full-Screen Video Background ─────────────────────────────────── */}
@@ -145,8 +144,8 @@ export default function HeroSection({ hero }: HeroSectionProps) {
         <MessageCircle size={26} className="fill-[#25D366] text-[#25D366]" />
       </a>
 
-      {/* ── Sticky Right Edge: "Request a call" Tab ─────────────────────── */}
-      <div className="fixed right-0 top-1/2 -translate-y-1/2 z-40">
+      {/* ── Sticky Right Edge: "Request a call" Tab (Hidden on mobile) ──── */}
+      <div className="hidden md:block fixed right-0 top-1/2 -translate-y-1/2 z-40">
         <BulkQuoteButton
           className="btn-gold-sweep flex items-center gap-2 px-2.5 py-4 bg-white text-black rounded-r-sm shadow-2xl transition-all duration-200 cursor-pointer group border border-r-0 border-white/30"
           style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}

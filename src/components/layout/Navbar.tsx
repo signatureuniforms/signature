@@ -254,11 +254,12 @@ export default function Navbar() {
                     <Link
                       href={link.href}
                       onClick={() => setMobileOpen(false)}
-                      className={`inline-block py-2.5 px-6 rounded-2xl text-lg sm:text-xl font-medium tracking-wide transition-all duration-200 cursor-pointer ${
+                      className={`inline-block py-2.5 px-4 text-base sm:text-lg uppercase transition-all duration-200 cursor-pointer ${
                         isActive
-                          ? 'text-[#FFD700] bg-[#FFD700]/10 font-semibold'
-                          : 'text-white/85 hover:text-[#FFD700] hover:bg-white/5'
+                          ? 'text-[#FFD700] font-normal'
+                          : 'text-white/85 hover:text-[#FFD700]'
                       }`}
+                      style={{ fontFamily: "'Regular-Light', serif", letterSpacing: '0.22em' }}
                       aria-current={isActive ? 'page' : undefined}
                     >
                       {link.label}

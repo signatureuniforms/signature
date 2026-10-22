@@ -59,8 +59,31 @@ export default function TrustedBrandsSection({ data }: TrustedBrandsSectionProps
           <div className=" mt-4" />
         </motion.div>
 
-        {/* Brand Logos Row with staggered reveal every time in view */}
-        <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12 md:gap-16 lg:gap-20 py-4 max-w-6xl mx-auto">
+        {/* Mobile View: Infinite Continuous Horizontal Slider in the Same Row */}
+        <div className="md:hidden relative w-full overflow-hidden py-4 -mx-2 sm:-mx-6">
+          {/* Gradient fade edge masks for smooth entrance & exit */}
+          <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-black to-transparent z-10" />
+          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-black to-transparent z-10" />
+
+          <div className="animate-infinite-scroll flex items-center gap-8 sm:gap-10">
+            {[...data.logos, ...data.logos, ...data.logos, ...data.logos].map((brand, idx) => (
+              <div
+                key={`${brand.id || 'logo'}-${idx}`}
+                className="shrink-0 flex items-center justify-center px-2 py-1"
+              >
+                <img
+                  src={brand.image_url}
+                  alt={brand.name || 'Trusted Brand'}
+                  className="h-8 sm:h-9 w-auto max-w-[125px] object-contain opacity-85 filter drop-shadow-[0_2px_8px_rgba(255,255,255,0.05)]"
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop View (md and up): Staggered In-View Row */}
+        <div className="hidden md:flex flex-wrap items-center justify-center gap-10 lg:gap-16 xl:gap-20 py-4 max-w-6xl mx-auto">
           {data.logos.map((brand, idx) => (
             <motion.div
               key={brand.id || idx}
@@ -87,7 +110,7 @@ export default function TrustedBrandsSection({ data }: TrustedBrandsSectionProps
               <img
                 src={brand.image_url}
                 alt={brand.name || 'Trusted Brand'}
-                className="h-9 sm:h-11 md:h-12 lg:h-14 w-auto max-w-[150px] sm:max-w-[180px] object-contain opacity-75 group-hover:opacity-100 transition-all duration-300 filter drop-shadow-[0_2px_10px_rgba(255,255,255,0.05)] group-hover:drop-shadow-[0_4px_16px_rgba(255,215,0,0.15)]"
+                className="h-10 md:h-12 lg:h-14 w-auto max-w-[150px] sm:max-w-[180px] object-contain opacity-75 group-hover:opacity-100 transition-all duration-300 filter drop-shadow-[0_2px_10px_rgba(255,255,255,0.05)] group-hover:drop-shadow-[0_4px_16px_rgba(255,215,0,0.15)]"
                 loading="lazy"
               />
             </motion.div>
