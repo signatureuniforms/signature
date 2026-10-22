@@ -5,30 +5,24 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  LayoutDashboard, Image, Video, Grid3x3, Package, BookImage,
-  MessageSquare, ShoppingBag, Users, Settings, LogOut, ChevronDown,
-  ChevronRight, FileText, Star, Phone, Menu, X, Info, Award, Film,
-  ShieldCheck, Sparkles
+  LayoutDashboard, Video, Grid3x3, Package,
+  MessageSquare, Settings, LogOut, ChevronDown,
+  ChevronRight, FileText, Star, Menu, X, Info, Award, Film,
+  ShieldCheck, Sparkles, Target
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 const NAV_SECTIONS = [
   {
-    label: 'Overview',
+    label: 'Dashboard',
     items: [
       { label: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
     ],
   },
   {
-    label: 'Website Content',
+    label: 'Enquiries',
     items: [
-      { label: 'Hero Videos', href: '/admin/hero', icon: Video },
-      { label: 'Why Choose Us', href: '/admin/why-choose-us', icon: Star },
-      { label: 'About Section', href: '/admin/about', icon: Info },
-      { label: 'Trusted Brands', href: '/admin/brands', icon: Award },
-      { label: 'Craftsmanship', href: '/admin/craftsmanship', icon: Sparkles },
-      { label: 'Video Banner', href: '/admin/video-banner', icon: Film },
-      { label: 'Footer Features', href: '/admin/footer-features', icon: ShieldCheck },
+      { label: 'All Enquiries', href: '/admin/enquiries', icon: MessageSquare },
     ],
   },
   {
@@ -40,23 +34,21 @@ const NAV_SECTIONS = [
     ],
   },
   {
-    label: 'Media',
+    label: 'Website Content',
     items: [
-      { label: 'Gallery', href: '/admin/gallery', icon: BookImage },
-      { label: 'Media Library', href: '/admin/media', icon: Image },
-    ],
-  },
-  {
-    label: 'Enquiries & Orders',
-    items: [
-      { label: 'All Enquiries', href: '/admin/enquiries', icon: MessageSquare },
-      { label: 'Orders', href: '/admin/orders', icon: ShoppingBag },
+      { label: 'Hero Videos', href: '/admin/hero', icon: Video },
+      { label: 'Why Choose Us', href: '/admin/why-choose-us', icon: Star },
+      { label: 'About Section', href: '/admin/about', icon: Info },
+      { label: 'Vision & Mission', href: '/admin/about?tab=vision-mission', icon: Target },
+      { label: 'Trusted Brands', href: '/admin/brands', icon: Award },
+      { label: 'Craftsmanship', href: '/admin/craftsmanship', icon: Sparkles },
+      { label: 'Video Banner', href: '/admin/video-banner', icon: Film },
+      { label: 'Footer Features', href: '/admin/footer-features', icon: ShieldCheck },
     ],
   },
   {
     label: 'Configuration',
     items: [
-      { label: 'Contact Details', href: '/admin/settings/contact', icon: Phone },
       { label: 'Admin Settings', href: '/admin/settings', icon: Settings },
     ],
   },
@@ -85,16 +77,9 @@ export default function AdminSidebar() {
       {/* Logo */}
       <div className="px-6 py-5 border-b border-white/10">
         {!collapsed ? (
-          <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center gap-3">
             <img src="/logo/logo.png" alt="Signature Uniforms" className="h-10 w-auto object-contain" />
-            <div>
-              <span className="block font-bold" style={{ fontFamily: 'Playfair Display, serif', fontSize: '1rem', color: '#FFD700' }}>
-                Signature
-              </span>
-              <span className="block text-white/40 uppercase tracking-widest" style={{ fontSize: '0.5rem', letterSpacing: '0.2em' }}>
-                Admin Panel
-              </span>
-            </div>
+       
           </div>
         ) : (
           <img src="/logo/logo.png" alt="Signature Uniforms" className="h-8 w-auto mx-auto object-contain" />
@@ -118,9 +103,9 @@ export default function AdminSidebar() {
                   <li key={item.href}>
                     <Link
                       href={item.href}
-                      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer ${
+                      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
                         active
-                          ? 'text-[#FFD700] bg-[#FFD700]/10'
+                          ? 'text-white bg-[#C59B27] shadow-md'
                           : 'text-white/70 hover:text-white hover:bg-white/10'
                       }`}
                       aria-current={active ? 'page' : undefined}

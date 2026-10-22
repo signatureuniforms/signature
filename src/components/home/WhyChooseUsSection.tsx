@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence, type Variants } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
 import type { WhyChooseUsItem, WhyChooseUsContent } from '@/types'
@@ -35,6 +35,22 @@ const itemVariants: Variants = {
   },
 }
 
+// Helper to serve Cloudinary images at maximum fidelity, sharp edges and 2x pixel density
+function getHighQualityImageUrl(url?: string | null): string {
+  if (!url || typeof url !== 'string') return ''
+  const trimmed = url.trim()
+  if (!trimmed) return ''
+
+  if (trimmed.includes('res.cloudinary.com') && trimmed.includes('/upload/')) {
+    if (trimmed.includes('/upload/f_auto') || trimmed.includes('/upload/q_')) {
+      return trimmed
+    }
+    return trimmed.replace('/upload/', '/upload/f_auto,q_auto:best,e_sharpen:50,dpr_2.0/')
+  }
+
+  return trimmed
+}
+
 export default function WhyChooseUsSection({ items, content }: WhyChooseUsSectionProps) {
   // Strict rule: No mock data and no fallback data.
   // If no items exist in DB, do not render this section.
@@ -48,6 +64,40 @@ export default function WhyChooseUsSection({ items, content }: WhyChooseUsSectio
   const toggleAccordion = (index: number) => {
     setOpenIndex(prev => (prev === index ? null : index))
   }
+
+  // Ref and state to lock image height 1:1 with accordion column height on desktop
+  const rightColRef = useRef<HTMLDivElement>(null)
+  const [accordionHeight, setAccordionHeight] = useState<number | null>(null)
+
+  useEffect(() => {
+    const el = rightColRef.current
+    if (!el) return
+
+    const measureHeight = () => {
+      if (window.innerWidth >= 1024) {
+        const h = el.offsetHeight
+        if (h > 0) {
+          setAccordionHeight(h)
+        }
+      } else {
+        setAccordionHeight(null)
+      }
+    }
+
+    measureHeight()
+
+    const observer = new ResizeObserver(() => {
+      measureHeight()
+    })
+
+    observer.observe(el)
+    window.addEventListener('resize', measureHeight)
+
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', measureHeight)
+    }
+  }, [])
 
   const hasImage = Boolean(content?.image_url && content.image_url.trim().length > 0)
   const eyebrowText = content?.eyebrow?.trim() || 'Our Strengths'
@@ -130,35 +180,44 @@ export default function WhyChooseUsSection({ items, content }: WhyChooseUsSectio
   return (
     <section className="py-20 lg:pt-20 lg:pb-10 bg-black text-white w-full overflow-hidden" aria-labelledby="why-heading">
       {hasImage ? (
-        /* 2-COLUMN LAYOUT: Left Image + Right Accordion */
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 xl:gap-16 items-center">
-            {/* Left Column: Image (Animated in from left) */}
+        /* 2-COLUMN LAYOUT: Left Image + Right Accordion (Exact same heights, centered on Y axis) */
+        <div className="w-full px-2 sm:px-6 md:px-8 lg:px-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 xl:gap-16 items-center">
+            {/* Left Column: Image (matches accordion height 1:1, centered on Y axis) */}
             <motion.div
               initial={{ opacity: 0, x: -60 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: false, amount: 0.2 }}
               transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-              className="lg:col-span-5 xl:col-span-5 relative w-full rounded-none overflow-hidden bg-neutral-900 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.85)] aspect-[4/5] max-w-lg mx-auto lg:max-w-none group"
+              className="w-full flex items-center justify-center my-auto"
             >
-              <img
-                src={content?.image_url || ''}
-                alt={headingText}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                loading="lazy"
-              />
-              {/* Subtle gold line & dark gradient overlays for luxury aesthetic */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#FFD700]/70 via-[#FFE066]/30 to-transparent pointer-events-none" />
+              <div
+                className="relative w-full rounded-none overflow-hidden bg-neutral-900 shadow-[0_20px_50px_rgba(0,0,0,0.85)] group transition-[height] duration-300 ease-out"
+                style={{
+                  height: accordionHeight ? `${accordionHeight}px` : undefined,
+                  minHeight: accordionHeight ? `${accordionHeight}px` : undefined,
+                  maxHeight: accordionHeight ? `${accordionHeight}px` : undefined,
+                }}
+              >
+                <img
+                  src={getHighQualityImageUrl(content?.image_url)}
+                  alt={headingText}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  loading="eager"
+                  decoding="async"
+                  style={{ imageRendering: '-webkit-optimize-contrast' }}
+                />
+              </div>
             </motion.div>
 
-            {/* Right Column: Header & Accordion List */}
+            {/* Right Column: Header & Accordion List (placed in center on Y axis) */}
             <motion.div
+              ref={rightColRef}
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: false, amount: 0.15 }}
-              className="lg:col-span-7 xl:col-span-7"
+              className="w-full flex flex-col justify-center my-auto"
             >
               {renderHeader()}
               {renderAccordion()}
@@ -172,7 +231,7 @@ export default function WhyChooseUsSection({ items, content }: WhyChooseUsSectio
           initial="hidden"
           whileInView="visible"
           viewport={{ once: false, amount: 0.15 }}
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+          className="w-full px-2 sm:px-6 md:px-8 lg:px-10"
         >
           <div className="max-w-4xl">
             {renderHeader()}

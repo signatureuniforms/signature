@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { ArrowRight, MessageCircle } from 'lucide-react'
 import type { Product } from '@/types'
@@ -14,7 +13,7 @@ export default function FeaturedProductsSection({ products }: { products: Produc
 
   return (
     <section className="py-20 lg:py-28 bg-black w-full" aria-labelledby="products-heading">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-2 sm:px-6 md:px-8 lg:px-10">
         <motion.div
           className="mb-14"
           initial={{ opacity: 0, y: 16 }}
@@ -53,12 +52,12 @@ export default function FeaturedProductsSection({ products }: { products: Produc
                 <Link href={`/products/${product.slug}`} aria-label={product.name}>
                   <div className="relative overflow-hidden bg-zinc-900" style={{ aspectRatio: '3/4' }}>
                     {primaryMedia ? (
-                      <Image
+                      <img
                         src={primaryMedia.secure_url}
                         alt={primaryMedia.alt_text || product.name}
-                        fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />
                     ) : (
                       <div className="absolute inset-0 bg-zinc-900 flex flex-col items-center justify-center p-6 text-center">
@@ -117,7 +116,7 @@ export default function FeaturedProductsSection({ products }: { products: Produc
         {/* View all link */}
         <div className="text-center mt-12">
           <Link
-            href="/products"
+            href="/categories"
             className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full border border-white/20 text-white text-xs font-semibold uppercase tracking-wider hover:bg-white hover:text-black transition-all"
           >
             <span>View Complete Catalogue</span>

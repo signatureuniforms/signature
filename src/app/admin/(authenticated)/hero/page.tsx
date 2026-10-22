@@ -129,7 +129,7 @@ export default function AdminHeroPage() {
   }
 
   return (
-    <div className="max-w-7xl space-y-6">
+    <div className="w-full space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
@@ -192,10 +192,19 @@ export default function AdminHeroPage() {
 
         {/* Video Direct Cloudinary Uploads */}
         <div className="space-y-4 pt-4 border-t border-gray-100">
-          <h2 className="text-base font-bold text-gray-900 border-b border-gray-100 pb-2 flex items-center gap-2">
-            <Video className="w-4 h-4 text-[#FFD700]" />
-            Upload Video (Cloudinary)
-          </h2>
+          <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+            <h2 className="text-base font-bold text-gray-900 flex items-center gap-2">
+              <Video className="w-4 h-4 text-[#FFD700]" />
+              Upload Video (Cloudinary)
+            </h2>
+            <span className="text-[11px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+              Full Quality Stream (Original Bitrate)
+            </span>
+          </div>
+
+          <p className="text-xs text-gray-500">
+            Hero videos are streamed directly in their pristine original quality without lossy re-encoding. For best visual clarity on modern desktop screens, upload a <strong>1920x1080 (1080p Full HD)</strong> MP4 file (16:9 ratio, H.264 codec).
+          </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <CloudinaryUpload

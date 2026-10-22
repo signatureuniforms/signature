@@ -35,7 +35,14 @@ export default function AdminSettingsPage() {
           data.forEach(item => {
             loaded[item.key] = item.value || ''
           })
-          setForm(prev => ({ ...prev, ...loaded }))
+          setForm(prev => ({
+            ...prev,
+            ...loaded,
+            site_name: loaded.site_name || loaded.business_name || prev.site_name,
+            phone_primary: loaded.phone_primary || loaded.phone || prev.phone_primary,
+            email_primary: loaded.email_primary || loaded.email || prev.email_primary,
+            factory_address: loaded.factory_address || loaded.address || prev.factory_address,
+          }))
         }
       } catch (e) {
         console.warn('Settings load warning:', e)
@@ -62,6 +69,15 @@ export default function AdminSettingsPage() {
         updated_at: new Date().toISOString(),
       }))
 
+      // Also keep legacy aliases synchronized so footer and contact sections always receive live values
+      const fullAddress = [form.factory_address, form.city, form.state, form.pincode].filter(Boolean).join(', ')
+      updates.push(
+        { key: 'phone', value: String(form.phone_primary), category: 'general', updated_at: new Date().toISOString() },
+        { key: 'email', value: String(form.email_primary), category: 'general', updated_at: new Date().toISOString() },
+        { key: 'business_name', value: String(form.site_name), category: 'general', updated_at: new Date().toISOString() },
+        { key: 'address', value: String(fullAddress || form.factory_address), category: 'general', updated_at: new Date().toISOString() }
+      )
+
       for (const item of updates) {
         await supabase.from('site_settings').upsert(item, { onConflict: 'key' })
       }
@@ -75,7 +91,7 @@ export default function AdminSettingsPage() {
   }
 
   return (
-    <div className="max-w-7xl space-y-6">
+    <div className="w-full space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Playfair Display, serif' }}>
           General & Contact Settings

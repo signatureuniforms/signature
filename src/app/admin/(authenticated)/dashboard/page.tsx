@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import {
-  MessageSquare, ShoppingBag, Package, BookImage,
+  MessageSquare, Package, Layers,
   ArrowUpRight, Clock, Plus, ExternalLink, RefreshCw, CheckCircle2, AlertCircle
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
@@ -12,13 +12,15 @@ interface DashboardStats {
   totalEnquiries: number
   pendingEnquiries: number
   totalProducts: number
-  totalGallery: number
+  totalCategories: number
 }
 
 interface RecentEnquiry {
   id: string
-  reference_no: string
-  name: string
+  reference?: string | null
+  reference_no?: string | null
+  contact_name?: string | null
+  name?: string | null
   institution_name: string | null
   phone: string
   enquiry_type: string
@@ -31,7 +33,7 @@ export default function AdminDashboardPage() {
     totalEnquiries: 0,
     pendingEnquiries: 0,
     totalProducts: 0,
-    totalGallery: 0,
+    totalCategories: 0,
   })
   const [recentEnquiries, setRecentEnquiries] = useState<RecentEnquiry[]>([])
   const [loading, setLoading] = useState(true)
@@ -46,21 +48,21 @@ export default function AdminDashboardPage() {
         { count: enquiriesCount },
         { count: pendingCount },
         { count: productsCount },
-        { count: galleryCount },
+        { count: categoriesCount },
         { data: enquiriesData }
       ] = await Promise.all([
         supabase.from('enquiries').select('*', { count: 'exact', head: true }),
         supabase.from('enquiries').select('*', { count: 'exact', head: true }).eq('status', 'new'),
         supabase.from('products').select('*', { count: 'exact', head: true }),
-        supabase.from('gallery_items').select('*', { count: 'exact', head: true }),
-        supabase.from('enquiries').select('id, reference_no, name, institution_name, phone, enquiry_type, status, created_at').order('created_at', { ascending: false }).limit(6)
+        supabase.from('categories').select('*', { count: 'exact', head: true }),
+        supabase.from('enquiries').select('*').order('created_at', { ascending: false }).limit(6)
       ])
 
       setStats({
         totalEnquiries: enquiriesCount || 0,
         pendingEnquiries: pendingCount || 0,
         totalProducts: productsCount || 0,
-        totalGallery: galleryCount || 0,
+        totalCategories: categoriesCount || 0,
       })
 
       if (enquiriesData) {
@@ -157,14 +159,14 @@ export default function AdminDashboardPage() {
 
         <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Gallery Assets</span>
+            <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Categories</span>
             <div className="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center text-purple-600">
-              <BookImage className="w-4 h-4" />
+              <Layers className="w-4 h-4" />
             </div>
           </div>
           <div className="mt-4 flex items-baseline justify-between">
-            <span className="text-3xl font-bold text-gray-900">{stats.totalGallery}</span>
-            <Link href="/admin/gallery" className="text-xs text-purple-600 hover:underline flex items-center gap-0.5">
+            <span className="text-3xl font-bold text-gray-900">{stats.totalCategories}</span>
+            <Link href="/admin/categories" className="text-xs text-purple-600 hover:underline flex items-center gap-0.5">
               Manage <ArrowUpRight className="w-3 h-3" />
             </Link>
           </div>
@@ -188,11 +190,11 @@ export default function AdminDashboardPage() {
           <div className="text-[11px] text-gray-500 mt-1">School, College, Corporate, Hospital</div>
         </Link>
         <Link
-          href="/admin/media"
+          href="/admin/why-choose-us"
           className="p-4 bg-white border border-gray-200 rounded-xl hover:border-black transition-all hover:shadow-md group"
         >
-          <div className="text-xs font-semibold text-gray-900 group-hover:text-[#FFD700] transition-colors">Cloudinary Media</div>
-          <div className="text-[11px] text-gray-500 mt-1">Upload & manage media assets</div>
+          <div className="text-xs font-semibold text-gray-900 group-hover:text-[#FFD700] transition-colors">Why Choose Us</div>
+          <div className="text-[11px] text-gray-500 mt-1">Feature reasons and trust items</div>
         </Link>
         <Link
           href="/admin/settings"
@@ -207,7 +209,7 @@ export default function AdminDashboardPage() {
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
         <div className="p-5 border-b border-gray-100 flex items-center justify-between">
           <div>
-            <h2 className="text-base font-bold text-gray-900">Recent Enquiries & Orders</h2>
+            <h2 className="text-base font-bold text-gray-900">Recent Enquiries</h2>
             <p className="text-xs text-gray-500 mt-0.5">Live leads generated from website visitors</p>
           </div>
           <Link
@@ -242,8 +244,8 @@ export default function AdminDashboardPage() {
               <tbody className="divide-y divide-gray-100">
                 {recentEnquiries.map((enq) => (
                   <tr key={enq.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="py-3 px-4 font-mono font-semibold text-gray-900">{enq.reference_no}</td>
-                    <td className="py-3 px-4 font-medium text-gray-900">{enq.name}</td>
+                    <td className="py-3 px-4 font-mono font-semibold text-gray-900">{enq.reference || enq.reference_no || 'REF'}</td>
+                    <td className="py-3 px-4 font-medium text-gray-900">{enq.contact_name || enq.name || 'Anonymous'}</td>
                     <td className="py-3 px-4 text-gray-600">{enq.institution_name || '—'}</td>
                     <td className="py-3 px-4">
                       <span className="capitalize px-2 py-0.5 bg-gray-100 rounded text-gray-700">

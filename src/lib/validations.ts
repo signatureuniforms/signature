@@ -119,17 +119,6 @@ export const productSchema = z.object({
 
 export type ProductInput = z.infer<typeof productSchema>
 
-// ─── Admin: Gallery Item ──────────────────────────────────────────────────────
-export const galleryItemSchema = z.object({
-  caption: z.string().max(300).optional().or(z.literal('')),
-  category: z.string().max(100).default('general'),
-  is_featured: z.boolean().default(false),
-  is_published: z.boolean().default(false),
-  position: z.coerce.number().int().min(0).default(0),
-})
-
-export type GalleryItemInput = z.infer<typeof galleryItemSchema>
-
 // ─── Admin: Site Setting ──────────────────────────────────────────────────────
 export const siteSettingSchema = z.object({
   value: z.string().max(2000).optional().or(z.literal('')),

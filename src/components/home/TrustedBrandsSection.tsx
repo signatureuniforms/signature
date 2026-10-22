@@ -10,7 +10,8 @@ interface TrustedBrandsSectionProps {
 
 export default function TrustedBrandsSection({ data }: TrustedBrandsSectionProps) {
   const sectionRef = useRef<HTMLElement>(null)
-  const isInView = useInView(sectionRef, { once: true, amount: 0.2 })
+  // Trigger animation EVERY TIME user scrolls to this section (once: false)
+  const isInView = useInView(sectionRef, { once: false, amount: 0.15 })
   const shouldReduceMotion = useReducedMotion()
 
   // Strict rule: No mock data and no fallback data.
@@ -25,86 +26,95 @@ export default function TrustedBrandsSection({ data }: TrustedBrandsSectionProps
   return (
     <section
       ref={sectionRef}
-      className="py-5 lg:py-10 bg-black w-full overflow-hidden"
+      className="py-12 sm:py-16 lg:py-20 bg-black w-full overflow-hidden"
       aria-labelledby="trusted-brands-heading"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Hardcoded Heading with loading animation */}
+      <div className="w-full px-2 sm:px-6 md:px-8 lg:px-10">
+        {/* Section Heading with animation that triggers every time */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 28, filter: 'blur(6px)' }}
           animate={
             shouldReduceMotion
-              ? { opacity: 1, y: 0 }
+              ? { opacity: 1, y: 0, filter: 'blur(0px)' }
               : isInView
-              ? { opacity: 1, y: 0 }
-              : { opacity: 0, y: 24 }
+                ? { opacity: 1, y: 0, filter: 'blur(0px)' }
+                : { opacity: 0, y: 28, filter: 'blur(6px)' }
           }
           transition={{
-            duration: shouldReduceMotion ? 0 : 0.7,
+            duration: shouldReduceMotion ? 0 : 0.8,
             ease: editorialEase,
           }}
-          className="text-center mb-10 sm:mb-12"
+          className="text-center mb-10 sm:mb-14"
         >
+          <span className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.3em] text-[#FFD700]/80 block mb-2 font-medium">
+            Partners & Fabric Mills
+          </span>
           <h2
             id="trusted-brands-heading"
-            className="text-lg sm:text-xl md:text-2xl font-serif tracking-[0.25em] text-white uppercase text-center"
+            className="text-lg sm:text-2xl md:text-3xl font-serif tracking-[0.24em] text-white uppercase text-center"
             style={{ fontFamily: "'Regular-Light', serif", letterSpacing: '0.22em' }}
           >
             TRUSTED BY LEADING BRANDS
           </h2>
+          <div className=" mt-4" />
         </motion.div>
 
-        {/* Brand Logos Row with staggered reveal loading animation */}
-        <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12 md:gap-14 lg:gap-16 py-2">
+        {/* Brand Logos Row with staggered reveal every time in view */}
+        <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12 md:gap-16 lg:gap-20 py-4 max-w-6xl mx-auto">
           {data.logos.map((brand, idx) => (
             <motion.div
               key={brand.id || idx}
-              initial={{ opacity: 0, y: 24, scale: 0.92 }}
+              initial={{ opacity: 0, y: 32, scale: 0.88 }}
               animate={
                 shouldReduceMotion
                   ? { opacity: 1, y: 0, scale: 1 }
                   : isInView
-                  ? { opacity: 1, y: 0, scale: 1 }
-                  : { opacity: 0, y: 24, scale: 0.92 }
+                    ? { opacity: 1, y: 0, scale: 1 }
+                    : { opacity: 0, y: 32, scale: 0.88 }
               }
+              whileHover={{
+                scale: 1.1,
+                y: -4,
+                transition: { duration: 0.25, ease: 'easeOut' },
+              }}
               transition={{
-                duration: shouldReduceMotion ? 0 : 0.6,
-                delay: shouldReduceMotion ? 0 : 0.15 + Math.min(idx * 0.08, 0.6),
+                duration: shouldReduceMotion ? 0 : 0.65,
+                delay: shouldReduceMotion ? 0 : 0.1 + idx * 0.08,
                 ease: editorialEase,
               }}
-              className="flex items-center justify-center transition-transform duration-300 hover:scale-105"
+              className="flex items-center justify-center p-3 rounded-none transition-all duration-300 group cursor-default"
             >
               <img
                 src={brand.image_url}
                 alt={brand.name || 'Trusted Brand'}
-                className="h-8 sm:h-10 md:h-12 w-auto max-w-[140px] sm:max-w-[170px] object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
+                className="h-9 sm:h-11 md:h-12 lg:h-14 w-auto max-w-[150px] sm:max-w-[180px] object-contain opacity-75 group-hover:opacity-100 transition-all duration-300 filter drop-shadow-[0_2px_10px_rgba(255,255,255,0.05)] group-hover:drop-shadow-[0_4px_16px_rgba(255,215,0,0.15)]"
                 loading="lazy"
               />
             </motion.div>
           ))}
         </div>
 
-        {/* Dynamic Bottom Content with delayed reveal animation */}
+        {/* Dynamic Bottom Disclaimer with smooth fade-in */}
         {data.bottom_content && data.bottom_content.trim().length > 0 && (
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={
               shouldReduceMotion
                 ? { opacity: 1, y: 0 }
                 : isInView
-                ? { opacity: 1, y: 0 }
-                : { opacity: 0, y: 16 }
+                  ? { opacity: 1, y: 0 }
+                  : { opacity: 0, y: 20 }
             }
             transition={{
-              duration: shouldReduceMotion ? 0 : 0.7,
-              delay: shouldReduceMotion ? 0 : 0.2 + Math.min(data.logos.length * 0.08, 0.6) + 0.1,
+              duration: shouldReduceMotion ? 0 : 0.75,
+              delay: shouldReduceMotion ? 0 : 0.2 + data.logos.length * 0.08,
               ease: editorialEase,
             }}
-            className="mt-10 sm:mt-12 text-center max-w-3xl mx-auto"
+            className="mt-12 sm:mt-16 text-center max-w-3xl mx-auto"
           >
-            {/* <p className="text-[11px] sm:text-xs text-white/50 leading-relaxed font-light">
+            <p className="text-[11px] sm:text-xs text-white/45 leading-relaxed font-light">
               {data.bottom_content}
-            </p> */}
+            </p>
           </motion.div>
         )}
       </div>

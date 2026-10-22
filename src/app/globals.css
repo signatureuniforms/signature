@@ -56,6 +56,24 @@
     scrollbar-color: #000000 #000000;
   }
 
+  /* Prevent iOS Safari from auto-zooming when entering/focusing on inputs (Safari auto-zooms if font-size < 16px) */
+  @media screen and (max-width: 768px) {
+    input,
+    select,
+    textarea {
+      font-size: 16px !important;
+    }
+  }
+
+  /* Prevent double-tap zoom delay and unwanted zoom triggers on interactive elements */
+  input,
+  select,
+  textarea,
+  button,
+  a {
+    touch-action: manipulation;
+  }
+
   body {
     font-family: var(--font-plein);
     background-color: #ffffff;
@@ -98,4 +116,50 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #111111;
   }
+}
+
+/* =========================================================================
+   Luxury Gold Sweep Hover Animation (Excludes WhatsApp Buttons)
+   On hover: Gold sweeps in from LEFT to right, filling the button.
+   On unhover: The original color sweeps in from LEFT to right, restoring it.
+   ========================================================================= */
+.btn-gold-sweep {
+  position: relative !important;
+  overflow: hidden !important;
+  z-index: 1 !important;
+  isolation: isolate !important;
+  transition: color 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.4s ease, box-shadow 0.4s ease !important;
+}
+
+.btn-gold-sweep::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: #FFD700;
+  z-index: -1;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
+}
+
+.btn-gold-sweep:hover::before {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.btn-gold-sweep:hover {
+  color: #000000 !important;
+  border-color: #FFD700 !important;
+}
+
+.btn-gold-sweep:hover svg {
+  color: #000000 !important;
+  stroke: #000000 !important;
+}
+
+.btn-gold-sweep > * {
+  position: relative;
+  z-index: 1;
+  transition: color 0.4s ease, stroke 0.4s ease;
 }

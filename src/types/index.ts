@@ -6,15 +6,6 @@ export type AdminRole = 'admin'
 export type ProductAvailability = 'available' | 'made_to_order' | 'seasonal' | 'discontinued'
 export type EnquiryType = 'contact' | 'school_bulk' | 'whatsapp_product' | 'whatsapp_general' | 'product_quote'
 export type EnquiryStatus = 'new' | 'contacted' | 'quotation_sent' | 'follow_up' | 'converted' | 'closed'
-export type OrderStatus =
-  | 'pending_confirmation'
-  | 'confirmed'
-  | 'in_production'
-  | 'ready_for_dispatch'
-  | 'dispatched'
-  | 'delivered'
-  | 'cancelled'
-export type DeletionQueueStatus = 'pending' | 'processing' | 'completed' | 'failed'
 
 // ─── Media ────────────────────────────────────────────────────────────────────
 export interface MediaAsset {
@@ -151,23 +142,6 @@ export interface ProductMedia {
   asset?: MediaAsset
 }
 
-// ─── Gallery ──────────────────────────────────────────────────────────────────
-export interface GalleryItem {
-  id: string
-  asset_id?: string
-  title?: string
-  caption?: string
-  image_url: string
-  category: string
-  is_featured: boolean
-  is_published: boolean
-  position?: number
-  display_order?: number
-  created_at?: string
-  updated_at?: string
-  // Joined
-  asset?: MediaAsset
-}
 
 // ─── Hero Video ───────────────────────────────────────────────────────────────
 export interface HeroVideo {
@@ -225,19 +199,6 @@ export interface WhyChooseUsItem {
 }
 
 
-// ─── Business Segments ───────────────────────────────────────────────────────
-export interface BusinessSegment {
-  id: string
-  name: string
-  slug: string
-  description: string
-  image_id: string | null
-  position: number
-  is_published: boolean
-  created_at: string
-  updated_at: string
-  image?: MediaAsset | null
-}
 
 // ─── Enquiries ────────────────────────────────────────────────────────────────
 export interface Enquiry {
@@ -269,35 +230,6 @@ export interface Enquiry {
   updated_at: string
 }
 
-// ─── Orders ───────────────────────────────────────────────────────────────────
-export interface Order {
-  id: string
-  reference: string
-  enquiry_id: string | null
-  customer_name: string
-  phone: string
-  email: string | null
-  institution_name: string | null
-  location: string | null
-  products: Array<{
-    product_id?: string
-    name: string
-    quantity: number
-    sizes?: string[]
-    colors?: string[]
-    notes?: string
-  }>
-  total_quantity: number | null
-  special_requirements: string | null
-  requested_delivery_date: string | null
-  confirmed_delivery_date: string | null
-  status: OrderStatus
-  admin_notes: string | null
-  assigned_to: string | null
-  confirmed_at: string | null
-  created_at: string
-  updated_at: string
-}
 
 // ─── Page Content ─────────────────────────────────────────────────────────────
 export interface PageContent {
@@ -315,6 +247,15 @@ export interface AboutSectionContent {
   heading?: string
   description?: string
   image_url?: string
+}
+
+export interface VisionMissionContent {
+  section_subheading?: string
+  section_heading?: string
+  vision_heading?: string
+  vision_description?: string
+  mission_heading?: string
+  mission_description?: string
 }
 
 export interface BrandLogo {
@@ -363,19 +304,6 @@ export interface FooterFeaturesContent {
   items: FooterFeatureItem[]
 }
 
-// ─── Testimonial ──────────────────────────────────────────────────────────────
-export interface Testimonial {
-  id: string
-  author_name: string
-  organization: string | null
-  designation: string | null
-  content: string
-  rating: number | null
-  is_published: boolean
-  position: number
-  created_at: string
-  updated_at: string
-}
 
 // ─── Forms ────────────────────────────────────────────────────────────────────
 export interface SchoolBulkEnquiryForm {
@@ -411,8 +339,6 @@ export interface DashboardStats {
   published_products: number
   total_categories: number
   total_subcategories: number
+  total_enquiries: number
   new_enquiries: number
-  pending_orders: number
-  confirmed_orders: number
-  completed_orders: number
 }

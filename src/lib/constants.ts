@@ -18,8 +18,8 @@ export const COLORS = {
 } as const
 
 // WhatsApp helpers
-export function buildWhatsAppUrl(message: string): string {
-  const number = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '+919287342297'
+export function buildWhatsAppUrl(message: string, customNumber?: string): string {
+  const number = customNumber || process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || BRAND.whatsappNumber || '+919287342297'
   const encoded = encodeURIComponent(message.trim())
   return `https://wa.me/${number.replace(/[^0-9]/g, '')}?text=${encoded}`
 }
@@ -94,16 +94,6 @@ export const ENQUIRY_STATUS_LABELS: Record<string, string> = {
   follow_up: 'Follow-up Required',
   converted: 'Converted',
   closed: 'Closed',
-}
-
-export const ORDER_STATUS_LABELS: Record<string, string> = {
-  pending_confirmation: 'Pending Confirmation',
-  confirmed: 'Confirmed',
-  in_production: 'In Production',
-  ready_for_dispatch: 'Ready for Dispatch',
-  dispatched: 'Dispatched',
-  delivered: 'Delivered',
-  cancelled: 'Cancelled',
 }
 
 export const ENQUIRY_TYPE_LABELS: Record<string, string> = {

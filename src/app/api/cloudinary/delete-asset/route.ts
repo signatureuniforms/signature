@@ -63,22 +63,11 @@ export async function DELETE(request: NextRequest) {
     )
 
     if (!deleteResult.success) {
-      // Queue for retry
-      await serviceClient.from('cloudinary_deletion_queue').insert({
-        cloudinary_public_id: asset.cloudinary_public_id,
-        resource_type: asset.resource_type,
-        status: 'pending',
-        queued_by: profile.id,
-        error_message: deleteResult.error,
-      })
-
-      // Still remove DB record — Cloudinary cleanup will retry
-      await serviceClient.from('media_assets').delete().eq('id', asset_id)
-
+      console.warn('[delete-asset] Cloudinary deletion failed:', deleteResult.error)
       return NextResponse.json({
-        success: true,
-        warning: 'Cloudinary deletion queued for retry. DB record removed.',
-      })
+        success: false,
+        error: deleteResult.error || 'Failed to delete asset from Cloudinary.',
+      }, { status: 502 })
     }
 
     // Delete DB record

@@ -24,15 +24,24 @@ export default function HomeContactSection({ contactInfo }: HomeContactSectionPr
 
   const editorialEase = [0.22, 1, 0.36, 1] as const
 
-  const phone = contactInfo?.phone || BRAND.phone
-  const email = contactInfo?.email || BRAND.email
-  const address =
-    contactInfo?.address ||
-    (contactInfo?.city
-      ? `${contactInfo.address || ''}, ${contactInfo.city}, ${contactInfo.state || ''} ${contactInfo.pincode || ''}`
-      : BRAND.address)
+  const phone = contactInfo?.phone_primary || contactInfo?.phone || BRAND.phone
+  const secondaryPhone = contactInfo?.phone_secondary
+  const email = contactInfo?.email_primary || contactInfo?.email || BRAND.email
+
+  // Seamlessly construct address from factory_address, city, state, pincode
+  const addressParts: string[] = []
+  if (contactInfo?.factory_address) addressParts.push(contactInfo.factory_address)
+  if (contactInfo?.city && (!contactInfo?.factory_address || !contactInfo.factory_address.toLowerCase().includes(contactInfo.city.toLowerCase()))) {
+    addressParts.push(contactInfo.city)
+  }
+  if (contactInfo?.state) addressParts.push(contactInfo.state)
+  if (contactInfo?.pincode) addressParts.push(contactInfo.pincode)
+  const formattedAddress = addressParts.join(', ')
+  const address = formattedAddress || contactInfo?.address || BRAND.address
+
   const web = contactInfo?.website || 'www.signatureuniforms.in'
   const whatsappNumber = contactInfo?.whatsapp_number || BRAND.whatsappNumber
+  const workingHours = contactInfo?.working_hours
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -83,7 +92,7 @@ export default function HomeContactSection({ contactInfo }: HomeContactSectionPr
     <section
       ref={sectionRef}
       id="home-contact-section"
-      className="relative w-full bg-black text-white py-12 lg:py-20 overflow-hidden border-t border-neutral-900"
+      className="relative w-full bg-black text-white py-12 lg:py-20 overflow-hidden"
       aria-labelledby="home-contact-heading"
     >
       {/* Background Subtle Ambient Glow */}
@@ -92,7 +101,7 @@ export default function HomeContactSection({ contactInfo }: HomeContactSectionPr
         <div className="absolute bottom-1/4 -right-40 w-80 h-80 bg-[#FFD700]/5 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 max-w-6xl mx-auto px-2 sm:px-6 lg:px-8">
         {/* Section Header: Styled identically to About Section */}
         <div className="mb-10 lg:mb-14">
           <motion.span
@@ -203,7 +212,7 @@ export default function HomeContactSection({ contactInfo }: HomeContactSectionPr
                   value={form.name}
                   onChange={(e) => setForm(prev => ({ ...prev, name: e.target.value }))}
                   required
-                  className="w-full px-4 py-3 sm:py-3.5 bg-neutral-900/60 hover:bg-neutral-900 focus:bg-neutral-900 border border-neutral-700/80 focus:border-[#FFD700] focus:ring-1 focus:ring-[#FFD700] rounded text-white placeholder:text-neutral-500 text-xs sm:text-sm font-sans transition-all duration-200 outline-none"
+                  className="w-full px-4 py-3.5 sm:py-4 bg-[#18181c] hover:bg-[#1e1e23] focus:bg-[#222228] border-0 rounded text-white placeholder:text-neutral-400 text-base sm:text-sm font-sans transition-all duration-200 outline-none focus:outline-none"
                 />
               </div>
 
@@ -216,7 +225,7 @@ export default function HomeContactSection({ contactInfo }: HomeContactSectionPr
                   placeholder="your e-mail"
                   value={form.email}
                   onChange={(e) => setForm(prev => ({ ...prev, email: e.target.value }))}
-                  className="w-full px-4 py-3 sm:py-3.5 bg-neutral-900/60 hover:bg-neutral-900 focus:bg-neutral-900 border border-neutral-700/80 focus:border-[#FFD700] focus:ring-1 focus:ring-[#FFD700] rounded text-white placeholder:text-neutral-500 text-xs sm:text-sm font-sans transition-all duration-200 outline-none"
+                  className="w-full px-4 py-3.5 sm:py-4 bg-[#18181c] hover:bg-[#1e1e23] focus:bg-[#222228] border-0 rounded text-white placeholder:text-neutral-400 text-base sm:text-sm font-sans transition-all duration-200 outline-none focus:outline-none"
                 />
               </div>
 
@@ -230,7 +239,7 @@ export default function HomeContactSection({ contactInfo }: HomeContactSectionPr
                   value={form.enquiry}
                   onChange={(e) => setForm(prev => ({ ...prev, enquiry: e.target.value }))}
                   required
-                  className="w-full px-4 py-3 sm:py-3.5 bg-neutral-900/60 hover:bg-neutral-900 focus:bg-neutral-900 border border-neutral-700/80 focus:border-[#FFD700] focus:ring-1 focus:ring-[#FFD700] rounded text-white placeholder:text-neutral-500 text-xs sm:text-sm font-sans transition-all duration-200 outline-none resize-y"
+                  className="w-full px-4 py-3.5 sm:py-4 bg-[#18181c] hover:bg-[#1e1e23] focus:bg-[#222228] border-0 rounded text-white placeholder:text-neutral-400 text-base sm:text-sm font-sans transition-all duration-200 outline-none focus:outline-none resize-y"
                 />
               </div>
 
@@ -240,7 +249,7 @@ export default function HomeContactSection({ contactInfo }: HomeContactSectionPr
                   type="submit"
                   disabled={submitting}
                   id="contact-form-submit"
-                  className="inline-flex items-center justify-center gap-2 px-7 py-3 bg-[#131b26] hover:bg-[#1f2b3c] active:scale-[0.99] border border-neutral-700/90 hover:border-[#FFD700]/70 text-white hover:text-[#FFD700] font-semibold text-xs uppercase tracking-widest rounded transition-all duration-200 cursor-pointer disabled:opacity-50 shadow-md"
+                  className="btn-gold-sweep inline-flex items-center justify-center gap-2 px-7 py-3 bg-[#131b26] active:scale-[0.99] text-white font-semibold text-xs uppercase tracking-widest rounded-none transition-all duration-200 cursor-pointer disabled:opacity-50 shadow-md"
                 >
                   {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin text-[#FFD700]" />}
                   <span>{submitting ? 'Sending...' : 'Sent Now'}</span>
@@ -292,6 +301,17 @@ export default function HomeContactSection({ contactInfo }: HomeContactSectionPr
                   >
                     {phone.startsWith('+') ? phone : `(+91) ${phone}`}
                   </a>
+                  {secondaryPhone && secondaryPhone !== phone && (
+                    <>
+                      <span className="text-neutral-500">/</span>
+                      <a
+                        href={`tel:${secondaryPhone}`}
+                        className="text-neutral-300 hover:text-[#FFD700] transition-colors"
+                      >
+                        {secondaryPhone.startsWith('+') ? secondaryPhone : `(+91) ${secondaryPhone}`}
+                      </a>
+                    </>
+                  )}
                 </div>
               )}
 
@@ -299,7 +319,7 @@ export default function HomeContactSection({ contactInfo }: HomeContactSectionPr
                 <div className="flex items-baseline gap-2">
                   <span className="text-white font-normal">WhatsApp :</span>
                   <a
-                    href={buildWhatsAppUrl('Hello Signature Uniforms, I would like to make an enquiry.')}
+                    href={buildWhatsAppUrl('Hello Signature Uniforms, I would like to make an enquiry.', whatsappNumber)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-neutral-300 hover:text-[#FFD700] transition-colors"
@@ -318,6 +338,13 @@ export default function HomeContactSection({ contactInfo }: HomeContactSectionPr
                   >
                     {email}
                   </a>
+                </div>
+              )}
+
+              {workingHours && (
+                <div className="flex items-baseline gap-2">
+                  <span className="text-white font-normal">Hours :</span>
+                  <span className="text-neutral-300">{workingHours}</span>
                 </div>
               )}
 

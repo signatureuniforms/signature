@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, MessageCircle, ShieldCheck, Factory, Truck, Check, Package, Sparkles } from 'lucide-react'
+import { MessageCircle, ShieldCheck, Factory, Truck, Package } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
-import { buildProductWhatsAppMessage, buildWhatsAppUrl, BRAND } from '@/lib/constants'
+import { buildProductWhatsAppMessage, buildWhatsAppUrl } from '@/lib/constants'
+import { BulkQuoteButton } from '@/components/common/BulkQuotationDrawer'
 import type { Product } from '@/types'
 
 interface Props {
@@ -15,16 +16,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const supabase = await createClient()
   const { data: product } = await supabase
     .from('products')
-    .select('name, short_description, primary_image_url')
+    .select('name, short_description, specifications')
     .eq('slug', slug)
     .maybeSingle()
 
   if (!product) return { title: 'Product Not Found' }
 
+  const ogImage = (product as any).specifications?.primary_image_url
+
   return {
     title: `${product.name} | Signature Uniforms by Hari`,
     description: product.short_description || `Manufacture and wholesale supply of ${product.name} by Signature Uniforms.`,
-    openGraph: product.primary_image_url ? { images: [product.primary_image_url] } : undefined,
+    openGraph: ogImage ? { images: [ogImage] } : undefined,
   }
 }
 
@@ -35,58 +38,51 @@ export default async function ProductDetailPage({ params }: Props) {
   const supabase = await createClient()
 
   // Fetch product
-  const { data: product } = await supabase
+  const { data: rawProduct } = await supabase
     .from('products')
-    .select('*, category:categories(name, slug)')
+    .select('*, category:categories(name, slug), subcategory:subcategories(name, slug), product_media(*, asset:media_assets(*))')
     .eq('slug', slug)
     .maybeSingle()
 
-  if (!product) {
+  if (!rawProduct) {
     notFound()
   }
 
-  // Fetch related products in same category
-  const { data: related } = await supabase
-    .from('products')
-    .select('*')
-    .eq('category_id', product.category_id)
-    .neq('id', product.id)
-    .eq('is_published', true)
-    .limit(4)
+  const primaryImg =
+    (rawProduct as any).primary_image_url ||
+    (rawProduct as any).specifications?.primary_image_url ||
+    (rawProduct as any).product_media?.find((m: any) => m.is_primary)?.asset?.secure_url ||
+    (rawProduct as any).product_media?.[0]?.asset?.secure_url ||
+    null
 
-  const waUrl = buildWhatsAppUrl(buildProductWhatsAppMessage(product.name, product.min_order_quantity))
+  const product = {
+    ...rawProduct,
+    primary_image_url: primaryImg,
+    description: (rawProduct as any).full_description || (rawProduct as any).description || '',
+    fabric_composition: (rawProduct as any).specifications?.fabric_composition || (rawProduct as any).fabric_composition || '',
+    care_instructions: (rawProduct as any).specifications?.care_instructions || (rawProduct as any).care_instructions || '',
+  }
+
+  const moq =
+    (product as any).minimum_order_quantity ??
+    (product as any).min_order_quantity ??
+    null
+
+  const waUrl = buildWhatsAppUrl(buildProductWhatsAppMessage(product.name, moq))
+
   const galleryImages: string[] = [
     product.primary_image_url,
     ...(Array.isArray(product.gallery_image_urls) ? product.gallery_image_urls : [])
   ].filter(Boolean) as string[]
 
   return (
-    <div className="bg-white min-h-screen">
-      {/* Breadcrumbs */}
-      <div className="border-b border-gray-100 bg-zinc-50 py-3.5 px-4 sm:px-6 md:px-8 lg:px-10 w-full">
-        <div className="w-full flex items-center gap-2 text-xs text-gray-500">
-          <Link href="/" className="hover:text-black">Home</Link>
-          <span>/</span>
-          <Link href="/products" className="hover:text-black">Products</Link>
-          {product.category && (
-            <>
-              <span>/</span>
-              <Link href={`/categories/${product.category.slug}`} className="hover:text-black">
-                {product.category.name}
-              </Link>
-            </>
-          )}
-          <span>/</span>
-          <span className="text-gray-900 font-semibold truncate">{product.name}</span>
-        </div>
-      </div>
-
+    <div className="bg-black text-white min-h-screen pt-[var(--navbar-height)]">
       {/* Main Content */}
-      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-10 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+      <section className="w-full px-2 sm:px-6 md:px-8 lg:px-10 py-12 sm:py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           {/* Images Left */}
           <div className="lg:col-span-6 space-y-4">
-            <div className="aspect-[4/3] bg-gray-100 rounded-2xl overflow-hidden border border-gray-200 relative">
+            <div className="aspect-[4/3] bg-neutral-900 rounded-none overflow-hidden relative shadow-2xl">
               {product.primary_image_url ? (
                 <img
                   src={product.primary_image_url}
@@ -94,15 +90,11 @@ export default async function ProductDetailPage({ params }: Props) {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-gray-300">
+                <div className="w-full h-full flex items-center justify-center text-neutral-600">
                   <Package className="w-16 h-16" />
                 </div>
               )}
-              {product.min_order_quantity && (
-                <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-black text-[#FFD700] shadow">
-                  MOQ: {product.min_order_quantity} Units
-                </span>
-              )}
+
             </div>
 
             {/* Thumbnail Row */}
@@ -111,7 +103,7 @@ export default async function ProductDetailPage({ params }: Props) {
                 {galleryImages.map((img, idx) => (
                   <div
                     key={idx}
-                    className="aspect-square bg-gray-100 rounded-xl overflow-hidden border border-gray-200 cursor-pointer hover:border-black transition-colors"
+                    className="aspect-square bg-neutral-900 rounded-none overflow-hidden cursor-pointer hover:opacity-80 transition-opacity"
                   >
                     <img src={img} alt={`Gallery ${idx + 1}`} className="w-full h-full object-cover" />
                   </div>
@@ -120,21 +112,21 @@ export default async function ProductDetailPage({ params }: Props) {
             )}
 
             {/* Manufacturer Trust Badges */}
-            <div className="grid grid-cols-3 gap-4 pt-6 border-t border-gray-100 text-center">
-              <div className="p-3 bg-zinc-50 rounded-xl">
+            <div className="grid grid-cols-3 gap-3 sm:gap-4 pt-6 text-center">
+              <div className="p-3.5 bg-neutral-900/60 rounded-none">
                 <ShieldCheck className="w-5 h-5 mx-auto text-[#FFD700] mb-1.5" />
-                <span className="text-[11px] font-semibold text-gray-900 block">Double Reinforced</span>
-                <span className="text-[10px] text-gray-500">Twin-needle seams</span>
+                <span className="text-[11px] font-semibold text-white block">Double Reinforced</span>
+                <span className="text-[10px] text-neutral-400">Twin-needle seams</span>
               </div>
-              <div className="p-3 bg-zinc-50 rounded-xl">
+              <div className="p-3.5 bg-neutral-900/60 rounded-none">
                 <Factory className="w-5 h-5 mx-auto text-[#FFD700] mb-1.5" />
-                <span className="text-[11px] font-semibold text-gray-900 block">Tirupur Mill Sourced</span>
-                <span className="text-[10px] text-gray-500">Colorfast & pre-shrunk</span>
+                <span className="text-[11px] font-semibold text-white block">Tirupur Mill Sourced</span>
+                <span className="text-[10px] text-neutral-400">Colorfast & pre-shrunk</span>
               </div>
-              <div className="p-3 bg-zinc-50 rounded-xl">
+              <div className="p-3.5 bg-neutral-900/60 rounded-none">
                 <Truck className="w-5 h-5 mx-auto text-[#FFD700] mb-1.5" />
-                <span className="text-[11px] font-semibold text-gray-900 block">Pan-India Dispatch</span>
-                <span className="text-[10px] text-gray-500">Doorstep delivery</span>
+                <span className="text-[11px] font-semibold text-white block">Pan-India Dispatch</span>
+                <span className="text-[10px] text-neutral-400">Doorstep delivery</span>
               </div>
             </div>
           </div>
@@ -147,50 +139,53 @@ export default async function ProductDetailPage({ params }: Props) {
                   {product.category.name}
                 </span>
               )}
-              <h1 className="text-2xl sm:text-4xl font-normal text-gray-900" style={{ fontFamily: "'Regular-Light', serif", fontWeight: 400 }}>
+              <h1
+                className="text-2xl sm:text-4xl font-normal text-white leading-tight"
+                style={{ fontFamily: "'Regular-Light', serif", fontWeight: 400 }}
+              >
                 {product.name}
               </h1>
-              <p className="text-xs font-mono text-gray-400 mt-1">Ref: {product.slug}</p>
+              <p className="text-xs font-mono text-neutral-500 mt-1">Ref: {product.slug}</p>
             </div>
 
-            {/* Price / Quote Status */}
-            <div className="p-4 bg-zinc-50 rounded-xl border border-gray-200 flex items-center justify-between">
+            {/* Wholesale Procurement Status */}
+            <div className="p-4 bg-neutral-900/80 rounded-none flex items-center justify-between">
               <div>
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-500 block">
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-400 block">
                   Wholesale Procurement
                 </span>
-                <div className="text-xl font-bold text-gray-900 mt-0.5">
+                <div className="text-xl font-bold text-white mt-0.5">
                   {product.show_price && product.base_price ? (
-                    <span>₹{product.base_price} <span className="text-xs font-normal text-gray-500">/ piece</span></span>
+                    <span>₹{product.base_price} <span className="text-xs font-normal text-neutral-400">/ piece</span></span>
                   ) : (
-                    <span className="text-base text-gray-900">Custom Institutional Quotation</span>
+                    <span className="text-base text-white font-medium">Custom Institutional Quotation</span>
                   )}
                 </div>
               </div>
-              <span className="px-3 py-1 bg-amber-100 text-amber-900 rounded-lg text-xs font-semibold">
+              <span className="px-3 py-1 bg-[#FFD700]/15 text-[#FFD700] rounded-none text-xs font-semibold">
                 Batch Manufacturing
               </span>
             </div>
 
             {/* Description */}
-            <div className="space-y-3 text-sm text-gray-600 leading-relaxed">
-              <p>{product.short_description}</p>
+            <div className="space-y-3 text-sm text-neutral-300 leading-relaxed font-light">
+              {product.short_description && <p>{product.short_description}</p>}
               {product.description && (
-                <div className="whitespace-pre-wrap">{product.description}</div>
+                <div className="whitespace-pre-wrap text-neutral-400 text-xs sm:text-sm">{product.description}</div>
               )}
             </div>
 
             {/* Available Sizes */}
             {product.available_sizes && product.available_sizes.length > 0 && (
               <div>
-                <span className="text-xs font-bold text-gray-900 uppercase tracking-wider block mb-2">
+                <span className="text-xs font-semibold text-white uppercase tracking-wider block mb-2">
                   Available Sizing Spectrum
                 </span>
                 <div className="flex flex-wrap gap-2">
                   {product.available_sizes.map((sz: string) => (
                     <span
                       key={sz}
-                      className="px-3 py-1 bg-white border border-gray-300 rounded-md text-xs font-mono font-semibold text-gray-800"
+                      className="px-3 py-1 bg-neutral-900 rounded-none text-xs font-mono font-semibold text-white"
                     >
                       {sz}
                     </span>
@@ -202,14 +197,14 @@ export default async function ProductDetailPage({ params }: Props) {
             {/* Available Colors */}
             {product.available_colors && product.available_colors.length > 0 && (
               <div>
-                <span className="text-xs font-bold text-gray-900 uppercase tracking-wider block mb-2">
+                <span className="text-xs font-semibold text-white uppercase tracking-wider block mb-2">
                   Standard School & Corporate Colorways
                 </span>
                 <div className="flex flex-wrap gap-2">
                   {product.available_colors.map((color: string) => (
                     <span
                       key={color}
-                      className="px-3 py-1 bg-zinc-100 rounded-full text-xs font-medium text-gray-800 border border-gray-200"
+                      className="px-3 py-1 bg-neutral-900 rounded-none text-xs font-medium text-neutral-300"
                     >
                       {color}
                     </span>
@@ -219,50 +214,57 @@ export default async function ProductDetailPage({ params }: Props) {
             )}
 
             {/* Technical Specs Table */}
-            <div className="border border-gray-200 rounded-xl overflow-hidden text-xs">
-              <div className="bg-gray-50 p-3 font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200">
+            <div className="bg-neutral-950 rounded-none overflow-hidden text-xs">
+              <div className="bg-neutral-900 p-3 font-bold text-white uppercase tracking-wider">
                 Technical Specifications
               </div>
-              <div className="divide-y divide-gray-100">
-                <div className="p-3 grid grid-cols-3">
-                  <span className="text-gray-500 font-medium">Fabric Composition</span>
-                  <span className="col-span-2 text-gray-900 font-semibold">{product.fabric_composition || '65/35 Polycotton Blend'}</span>
-                </div>
-                <div className="p-3 grid grid-cols-3">
-                  <span className="text-gray-500 font-medium">Min Order Quantity</span>
-                  <span className="col-span-2 text-gray-900 font-semibold">{product.min_order_quantity || 50} pieces</span>
-                </div>
+              <div className="divide-y divide-white/5">
+                {product.fabric_composition && (
+                  <div className="p-3 grid grid-cols-3">
+                    <span className="text-neutral-400 font-medium">Fabric Composition</span>
+                    <span className="col-span-2 text-white font-semibold">{product.fabric_composition}</span>
+                  </div>
+                )}
+                {moq ? (
+                  <div className="p-3 grid grid-cols-3">
+                    <span className="text-neutral-400 font-medium">Min Order Quantity</span>
+                    <span className="col-span-2 text-white font-semibold">{moq} pieces</span>
+                  </div>
+                ) : null}
                 {product.care_instructions && (
                   <div className="p-3 grid grid-cols-3">
-                    <span className="text-gray-500 font-medium">Care Standard</span>
-                    <span className="col-span-2 text-gray-900">{product.care_instructions}</span>
+                    <span className="text-neutral-400 font-medium">Care Standard</span>
+                    <span className="col-span-2 text-neutral-300">{product.care_instructions}</span>
                   </div>
                 )}
                 <div className="p-3 grid grid-cols-3">
-                  <span className="text-gray-500 font-medium">Customization</span>
-                  <span className="col-span-2 text-gray-900">Computerized crest embroidery, screen printing, custom woven labels</span>
+                  <span className="text-neutral-400 font-medium">Customization</span>
+                  <span className="col-span-2 text-neutral-300">
+                    Computerized crest embroidery, screen printing, custom woven labels
+                  </span>
                 </div>
               </div>
             </div>
 
-            {/* Conversion CTAs */}
+            {/* Conversion CTAs: WhatsApp + Request a Bulk Quotation (drawer trigger) */}
             <div className="space-y-3 pt-4">
               <a
                 href={waUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-center gap-2.5 py-4 bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold text-sm tracking-wide rounded-xl transition-all shadow-md hover:shadow-lg"
+                className="w-full inline-flex items-center justify-center gap-2.5 py-4 bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold text-sm tracking-wide rounded-md transition-all shadow-md hover:shadow-lg cursor-pointer"
               >
-                <MessageCircle className="w-5 h-5" />
-                <span>Enquire via WhatsApp for {product.name}</span>
+                <MessageCircle className="w-5 h-5 fill-white text-white" />
+                <span>Enquire via WhatsApp for</span>
               </a>
 
-              <Link
-                href={`/contact?product=${encodeURIComponent(product.name)}`}
-                className="w-full inline-flex items-center justify-center gap-2 py-3.5 bg-black hover:bg-zinc-800 text-[#FFD700] font-semibold text-xs tracking-wider uppercase rounded-xl transition-all"
+              <BulkQuoteButton
+                productName={product.name}
+                category={product.category?.name || 'Uniform Manufacturing'}
+                className="btn-gold-sweep w-full inline-flex items-center justify-center gap-2 py-4 bg-neutral-900 text-[#FFD700] font-bold text-xs sm:text-sm tracking-widest uppercase rounded-md shadow-lg cursor-pointer"
               >
-                <span>Request Institutional Quote & Fabric Swatches</span>
-              </Link>
+                <span>Request a Bulk Quotation</span>
+              </BulkQuoteButton>
             </div>
           </div>
         </div>

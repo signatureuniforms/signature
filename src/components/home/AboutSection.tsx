@@ -3,19 +3,24 @@
 import { useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 import type { AboutSectionContent } from '@/types'
 
 interface AboutSectionProps {
   data: AboutSectionContent | null
+  showCta?: boolean
 }
 
-export default function AboutSection({ data }: AboutSectionProps) {
+export default function AboutSection({ data, showCta = true }: AboutSectionProps) {
+  const pathname = usePathname()
   const sectionRef = useRef<HTMLElement>(null)
   // once: false allows the animation to trigger every time the section/page comes into view
   const isInView = useInView(sectionRef, { once: false, amount: 0.15 })
   const shouldReduceMotion = useReducedMotion()
+
+  const shouldShowCta = showCta && pathname !== '/about'
 
   // Only render if data exists and has content (NO mock or fallback data)
   if (!data || (!data.heading && !data.description && !data.image_url)) {
@@ -33,7 +38,7 @@ export default function AboutSection({ data }: AboutSectionProps) {
       className="w-full bg-black text-white py-10 lg:py-20 overflow-hidden"
       aria-labelledby="about-section-heading"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-2 sm:px-6 md:px-8 lg:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Left Side: Content Reveal */}
           <div
@@ -47,8 +52,8 @@ export default function AboutSection({ data }: AboutSectionProps) {
                   shouldReduceMotion
                     ? { opacity: 1, y: 0 }
                     : isInView
-                    ? { opacity: 1, y: 0 }
-                    : { opacity: 0, y: 24 }
+                      ? { opacity: 1, y: 0 }
+                      : { opacity: 0, y: 24 }
                 }
                 transition={{
                   duration: shouldReduceMotion ? 0 : isInView ? 0.7 : 0,
@@ -70,8 +75,8 @@ export default function AboutSection({ data }: AboutSectionProps) {
                   shouldReduceMotion
                     ? { opacity: 1, y: 0 }
                     : isInView
-                    ? { opacity: 1, y: 0 }
-                    : { opacity: 0, y: 32 }
+                      ? { opacity: 1, y: 0 }
+                      : { opacity: 0, y: 32 }
                 }
                 transition={{
                   duration: shouldReduceMotion ? 0 : isInView ? 0.75 : 0,
@@ -92,8 +97,8 @@ export default function AboutSection({ data }: AboutSectionProps) {
                 shouldReduceMotion
                   ? { opacity: 1, scaleX: 1 }
                   : isInView
-                  ? { opacity: 1, scaleX: 1 }
-                  : { opacity: 0, scaleX: 0 }
+                    ? { opacity: 1, scaleX: 1 }
+                    : { opacity: 0, scaleX: 0 }
               }
               transition={{
                 duration: shouldReduceMotion ? 0 : isInView ? 0.6 : 0,
@@ -113,8 +118,8 @@ export default function AboutSection({ data }: AboutSectionProps) {
                   shouldReduceMotion
                     ? { opacity: 1, y: 0 }
                     : isInView
-                    ? { opacity: 1, y: 0 }
-                    : { opacity: 0, y: 24 }
+                      ? { opacity: 1, y: 0 }
+                      : { opacity: 0, y: 24 }
                 }
                 transition={{
                   duration: shouldReduceMotion ? 0 : isInView ? 0.75 : 0,
@@ -128,32 +133,34 @@ export default function AboutSection({ data }: AboutSectionProps) {
             )}
 
             {/* CTA Button */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={
-                shouldReduceMotion
-                  ? { opacity: 1, y: 0 }
-                  : isInView
-                  ? { opacity: 1, y: 0 }
-                  : { opacity: 0, y: 20 }
-              }
-              transition={{
-                duration: shouldReduceMotion ? 0 : isInView ? 0.7 : 0,
-                delay: shouldReduceMotion ? 0 : isInView ? 0.45 : 0,
-                ease: editorialEase,
-              }}
-              className={data.image_url ? '' : 'flex justify-center'}
-            >
-              <Link
-                href="/about"
-                id="about-view-more-cta"
-                className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-white hover:bg-[#FFD700] text-black font-semibold text-sm rounded-2xl tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 hover:shadow-[0_4px_20px_rgba(255,215,0,0.3)] cursor-pointer group"
-                aria-label="View more about Signature Uniforms"
+            {shouldShowCta && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={
+                  shouldReduceMotion
+                    ? { opacity: 1, y: 0 }
+                    : isInView
+                      ? { opacity: 1, y: 0 }
+                      : { opacity: 0, y: 20 }
+                }
+                transition={{
+                  duration: shouldReduceMotion ? 0 : isInView ? 0.7 : 0,
+                  delay: shouldReduceMotion ? 0 : isInView ? 0.45 : 0,
+                  ease: editorialEase,
+                }}
+                className={data.image_url ? '' : 'flex justify-center'}
               >
-                <span>View More</span>
-                <ArrowRight size={17} className="transition-transform duration-200 group-hover:translate-x-1" />
-              </Link>
-            </motion.div>
+                <Link
+                  href="/about"
+                  id="about-view-more-cta"
+                  className="btn-gold-sweep inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-white text-black font-semibold text-sm rounded-none tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 hover:shadow-[0_4px_20px_rgba(255,215,0,0.3)] cursor-pointer group"
+                  aria-label="View more about Signature Uniforms"
+                >
+                  <span>View More</span>
+                  <ArrowRight size={17} className="transition-transform duration-200 group-hover:translate-x-1" />
+                </Link>
+              </motion.div>
+            )}
           </div>
 
           {/* Right Side: Image with Slower Top-to-Bottom Curtain Reveal */}
@@ -171,8 +178,8 @@ export default function AboutSection({ data }: AboutSectionProps) {
                     shouldReduceMotion
                       ? { scale: 1 }
                       : isInView
-                      ? { scale: [1, 1.05, 1] }
-                      : { scale: 1 }
+                        ? { scale: [1, 1.05, 1] }
+                        : { scale: 1 }
                   }
                   transition={{
                     duration: shouldReduceMotion ? 0 : isInView ? 1.8 : 0,
@@ -185,7 +192,7 @@ export default function AboutSection({ data }: AboutSectionProps) {
                     src={data.image_url}
                     alt={data.heading || 'About Signature Uniforms'}
                     fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="object-contain transition-transform duration-700"
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     priority={false}
                   />
@@ -203,8 +210,8 @@ export default function AboutSection({ data }: AboutSectionProps) {
                     shouldReduceMotion
                       ? { y: '100%', opacity: 0 }
                       : isInView
-                      ? { y: '100%' }
-                      : { y: '0%' }
+                        ? { y: '100%' }
+                        : { y: '0%' }
                   }
                   transition={{
                     duration: shouldReduceMotion ? 0 : isInView ? 1.7 : 0,

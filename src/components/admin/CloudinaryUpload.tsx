@@ -203,7 +203,9 @@ export default function CloudinaryUpload({
               <p className="text-xs font-semibold text-gray-900">
                 Click to upload {isVideo ? 'video' : 'photo'} to Cloudinary
               </p>
-              <p className="text-[10px] text-gray-400 mt-0.5">PNG, JPG, WebP, SVG supported</p>
+              <p className="text-[10px] text-gray-400 mt-0.5">
+                {isVideo ? 'MP4, WebM, MOV (Full HD 1080p recommended)' : 'PNG, JPG, WebP, SVG supported'}
+              </p>
             </>
           )}
         </div>

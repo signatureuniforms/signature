@@ -1,128 +1,122 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
-import Image from 'next/image'
-import { ArrowRight, MessageCircle } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
-import { buildWhatsAppUrl } from '@/lib/constants'
-import type { AboutSectionContent } from '@/types'
+import AboutSection from '@/components/home/AboutSection'
+import VisionMissionSection from '@/components/about/VisionMissionSection'
+import TrustedBrandsSection from '@/components/home/TrustedBrandsSection'
+import WhyChooseUsSection from '@/components/home/WhyChooseUsSection'
+import HomeContactSection from '@/components/home/HomeContactSection'
+import type { AboutSectionContent, VisionMissionContent, TrustedBrandsContent, WhyChooseUsContent } from '@/types'
 
 export const metadata: Metadata = {
   title: 'About Us | Signature Uniforms by Hari',
-  description: 'Learn about Signature Uniforms by Hari — premier uniform manufacturer and wholesale supplier.',
+  description:
+    'Learn about Signature Uniforms by Hari — premier uniform manufacturer and wholesale supplier for schools, colleges, corporate offices, and healthcare in Kerala.',
 }
 
 export const revalidate = 60
 
-export default async function AboutPage() {
+async function getAboutPageData() {
   const supabase = await createClient()
 
-  const { data } = await supabase
-    .from('page_content')
-    .select('*')
-    .eq('page_key', 'home')
-    .eq('section_key', 'about')
-    .eq('is_published', true)
-    .maybeSingle()
+  const [aboutRes, vmRes, brandsRes, whyContentRes, whyRes, settingsRes] = await Promise.allSettled([
+    // 1. About section content
+    supabase
+      .from('page_content')
+      .select('*')
+      .eq('page_key', 'home')
+      .eq('section_key', 'about')
+      .eq('is_published', true)
+      .maybeSingle(),
 
-  const about: AboutSectionContent | null = data?.content
-    ? (data.content as AboutSectionContent)
-    : null
+    // 2. Vision & Mission section content (About page only)
+    supabase
+      .from('page_content')
+      .select('*')
+      .eq('page_key', 'about')
+      .eq('section_key', 'vision_mission')
+      .eq('is_published', true)
+      .maybeSingle(),
 
-  const whatsappUrl = buildWhatsAppUrl('Hello, I would like to enquire about your uniform manufacturing services.')
+    // 3. Trusted Brands
+    supabase
+      .from('page_content')
+      .select('*')
+      .eq('page_key', 'home')
+      .eq('section_key', 'trusted_brands')
+      .eq('is_published', true)
+      .maybeSingle(),
+
+    // 4. Why choose us section content & left-side image
+    supabase
+      .from('page_content')
+      .select('*')
+      .eq('page_key', 'home')
+      .eq('section_key', 'why_choose_us')
+      .eq('is_published', true)
+      .maybeSingle(),
+
+    // 5. Why choose us items
+    supabase
+      .from('why_choose_us_items')
+      .select('*, image:media_assets(*)')
+      .eq('is_published', true)
+      .order('position', { ascending: true }),
+
+    // 6. Site settings for contact info
+    supabase
+      .from('site_settings')
+      .select('key, value')
+      .in('key', ['phone', 'email', 'address', 'whatsapp_number', 'city', 'state', 'pincode', 'website']),
+  ])
+
+  const contactInfo: Record<string, string> = {}
+  if (settingsRes.status === 'fulfilled' && settingsRes.value.data) {
+    settingsRes.value.data.forEach((s: { key: string; value: string | null }) => {
+      if (s.value) contactInfo[s.key] = s.value
+    })
+  }
+
+  return {
+    about:
+      aboutRes.status === 'fulfilled' && aboutRes.value.data
+        ? (aboutRes.value.data.content as AboutSectionContent)
+        : null,
+    visionMission:
+      vmRes.status === 'fulfilled' && vmRes.value.data
+        ? (vmRes.value.data.content as VisionMissionContent)
+        : null,
+    brands:
+      brandsRes.status === 'fulfilled' && brandsRes.value.data
+        ? (brandsRes.value.data.content as TrustedBrandsContent)
+        : null,
+    whyContent:
+      whyContentRes.status === 'fulfilled' && whyContentRes.value.data
+        ? (whyContentRes.value.data.content as WhyChooseUsContent)
+        : null,
+    whyItems: whyRes.status === 'fulfilled' ? (whyRes.value.data ?? []) : [],
+    contactInfo,
+  }
+}
+
+export default async function AboutPage() {
+  const { about, visionMission, brands, whyContent, whyItems, contactInfo } = await getAboutPageData()
 
   return (
-    <div className="bg-black text-white min-h-screen">
-      {/* Hero Header */}
-      <section className="pt-32 pb-16 px-4 sm:px-6 md:px-8 lg:px-10 text-center border-b border-white/10">
-        <div className="max-w-4xl mx-auto space-y-4">
-          {about?.subheading && (
-            <span className="text-xs font-semibold tracking-[0.2em] uppercase text-[#FFD700] block">
-              {about.subheading}
-            </span>
-          )}
-          <h1
-            className="text-3xl sm:text-5xl font-normal tracking-tight font-display text-white"
-            style={{ fontFamily: "'Regular-Light', serif", fontWeight: 400 }}
-          >
-            {about?.heading || 'About Us'}
-          </h1>
-          <div className="w-12 h-[2px] bg-[#FFD700] mx-auto mt-4" />
-        </div>
-      </section>
+    <div className="bg-black text-white min-h-screen pt-14 sm:pt-16 lg:pt-20">
+      {/* 1. About Section (Reused from Home page) */}
+      <AboutSection data={about} showCta={false} />
 
-      {/* Main Content */}
-      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-10 py-16 lg:py-24">
-        {about && (about.description || about.image_url) ? (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-            {/* Left Content */}
-            <div className={about.image_url ? 'lg:col-span-6 space-y-6' : 'lg:col-span-8 lg:col-start-3 text-center space-y-6'}>
-              {about.description && (
-                <p className="text-white/80 text-base sm:text-lg leading-relaxed whitespace-pre-line">
-                  {about.description}
-                </p>
-              )}
+      {/* 2. Vision & Mission Section (Directly at About section bottom, About page only) */}
+      <VisionMissionSection data={visionMission} />
 
-              <div className={`pt-4 flex flex-wrap items-center gap-4 ${about.image_url ? '' : 'justify-center'}`}>
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-[#FFD700] hover:bg-[#E6C200] text-black font-semibold text-sm rounded-2xl tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 hover:shadow-[0_4px_16px_rgba(255,215,0,0.3)] cursor-pointer"
-                >
-                  <span>Request Quotation</span>
-                  <ArrowRight size={16} />
-                </Link>
+      {/* 3. Trusted Brands Section (Reused) */}
+      <TrustedBrandsSection data={brands} />
 
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-transparent hover:bg-white/10 text-white font-semibold text-sm rounded-2xl border border-white/60 hover:border-white tracking-wide transition-all duration-200 cursor-pointer"
-                >
-                  <MessageCircle size={16} />
-                  <span>WhatsApp Enquiry</span>
-                </a>
-              </div>
-            </div>
+      {/* 4. Why Choose Us Section (Reused) */}
+      <WhyChooseUsSection items={whyItems} content={whyContent} />
 
-            {/* Right Image */}
-            {about.image_url && (
-              <div className="lg:col-span-6">
-                <div
-                  className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-zinc-950"
-                  style={{ aspectRatio: '4/3' }}
-                >
-                  <Image
-                    src={about.image_url}
-                    alt={about.heading || 'About Signature Uniforms'}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    priority
-                  />
-                  <div
-                    className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"
-                    aria-hidden="true"
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className="max-w-xl mx-auto text-center py-12 space-y-6">
-            <p className="text-white/60 text-base">
-              Details will be updated shortly by the administrator.
-            </p>
-            <div className="flex justify-center gap-4">
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-[#FFD700] text-black font-semibold text-sm rounded-xl hover:bg-[#E6C200] transition-colors"
-              >
-                <span>Contact Us</span>
-                <ArrowRight size={15} />
-              </Link>
-            </div>
-          </div>
-        )}
-      </section>
+      {/* 5. Contact Section (Reused from Home page) */}
+      <HomeContactSection contactInfo={contactInfo} />
     </div>
   )
 }

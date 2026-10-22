@@ -4,12 +4,13 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Plus, Package, Edit, Trash2, Search, Filter, RefreshCw, Eye, EyeOff, X, Save, AlertTriangle, CheckCircle2, AlertCircle } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
-import type { Product, Category } from '@/types'
+import type { Product, Category, Subcategory } from '@/types'
 import CloudinaryUpload from '@/components/admin/CloudinaryUpload'
 
 export default function AdminProductsPage() {
   const [products, setProducts] = useState<Product[]>([])
   const [categories, setCategories] = useState<Category[]>([])
+  const [subcategories, setSubcategories] = useState<Subcategory[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
@@ -22,37 +23,51 @@ export default function AdminProductsPage() {
   const [deleting, setDeleting] = useState(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
-  // Product Form (NO mock fallback data)
+  // Product Form (all mock/default values removed)
   const [form, setForm] = useState({
     name: '',
     slug: '',
     category_id: '',
+    subcategory_id: '',
     short_description: '',
     description: '',
     fabric_composition: '',
     care_instructions: '',
     available_sizes: '',
     available_colors: '',
-    min_order_quantity: 50,
-    show_price: false,
-    base_price: '',
+    min_order_quantity: '50',
     primary_image_url: '',
-    gallery_image_urls: '',
-    is_featured: false,
-    is_published: true,
   })
 
   const loadData = async () => {
     setLoading(true)
     try {
       const supabase = createClient()
-      const [{ data: prodData }, { data: catData }] = await Promise.all([
-        supabase.from('products').select('*, category:categories(name, slug)').order('created_at', { ascending: false }),
-        supabase.from('categories').select('*').order('position', { ascending: true })
+      const [{ data: prodData }, { data: catData }, { data: subcatData }] = await Promise.all([
+        supabase
+          .from('products')
+          .select('*, category:categories(name, slug), subcategory:subcategories(name, slug), product_media(*, asset:media_assets(*))')
+          .order('created_at', { ascending: false }),
+        supabase.from('categories').select('*').order('position', { ascending: true }),
+        supabase.from('subcategories').select('*').order('position', { ascending: true })
       ])
 
-      if (prodData) setProducts(prodData)
+      if (prodData) {
+        setProducts(prodData.map((p: any) => ({
+          ...p,
+          primary_image_url:
+            p.primary_image_url ||
+            p.specifications?.primary_image_url ||
+            p.product_media?.find((m: any) => m.is_primary)?.asset?.secure_url ||
+            p.product_media?.[0]?.asset?.secure_url ||
+            '',
+          fabric_composition: p.fabric_composition || p.specifications?.fabric_composition || '',
+          care_instructions: p.care_instructions || p.specifications?.care_instructions || '',
+          description: p.description || p.full_description || '',
+        })))
+      }
       if (catData) setCategories(catData)
+      if (subcatData) setSubcategories(subcatData)
     } catch (e) {
       console.warn('Error loading products:', e)
     } finally {
@@ -70,42 +85,35 @@ export default function AdminProductsPage() {
       name: '',
       slug: '',
       category_id: categories[0]?.id || '',
+      subcategory_id: '',
       short_description: '',
       description: '',
       fabric_composition: '',
       care_instructions: '',
       available_sizes: '',
       available_colors: '',
-      min_order_quantity: 50,
-      show_price: false,
-      base_price: '',
+      min_order_quantity: '50',
       primary_image_url: '',
-      gallery_image_urls: '',
-      is_featured: false,
-      is_published: true,
     })
     setShowProductModal(true)
   }
 
   const openEditModal = (p: Product) => {
     setEditingProduct(p)
+    const moqVal = (p as any).minimum_order_quantity ?? (p as any).min_order_quantity
     setForm({
       name: p.name || '',
       slug: p.slug || '',
       category_id: p.category_id || (categories[0]?.id || ''),
+      subcategory_id: p.subcategory_id || '',
       short_description: p.short_description || '',
       description: p.description || p.full_description || '',
-      fabric_composition: p.fabric_composition || '',
-      care_instructions: p.care_instructions || '',
+      fabric_composition: (p as any).fabric_composition || (p as any).specifications?.fabric_composition || '',
+      care_instructions: (p as any).care_instructions || (p as any).specifications?.care_instructions || '',
       available_sizes: Array.isArray(p.available_sizes) ? p.available_sizes.join(', ') : '',
       available_colors: Array.isArray(p.available_colors) ? p.available_colors.join(', ') : '',
-      min_order_quantity: p.min_order_quantity ?? p.minimum_order_quantity ?? 50,
-      show_price: Boolean(p.show_price),
-      base_price: p.base_price !== null && p.base_price !== undefined ? String(p.base_price) : '',
-      primary_image_url: p.primary_image_url || '',
-      gallery_image_urls: Array.isArray(p.gallery_image_urls) ? p.gallery_image_urls.join('\n') : '',
-      is_featured: Boolean(p.is_featured),
-      is_published: p.is_published !== undefined ? Boolean(p.is_published) : true,
+      min_order_quantity: moqVal !== null && moqVal !== undefined ? String(moqVal) : '50',
+      primary_image_url: (p as any).primary_image_url || (p as any).specifications?.primary_image_url || '',
     })
     setShowProductModal(true)
   }
@@ -129,39 +137,73 @@ export default function AdminProductsPage() {
       const supabase = createClient()
       const sizesArray = form.available_sizes.split(',').map(s => s.trim()).filter(Boolean)
       const colorsArray = form.available_colors.split(',').map(c => c.trim()).filter(Boolean)
-      const galleryArray = form.gallery_image_urls.split('\n').map(url => url.trim()).filter(Boolean)
+
+      const specifications: Record<string, any> = {
+        ...(editingProduct?.specifications || {}),
+        primary_image_url: form.primary_image_url.trim() || null,
+        fabric_composition: form.fabric_composition.trim() || null,
+        care_instructions: form.care_instructions.trim() || null,
+      }
 
       const payload = {
         name: form.name.trim(),
         slug: form.slug.trim(),
         category_id: form.category_id || null,
+        subcategory_id: form.subcategory_id || null,
         short_description: form.short_description.trim(),
-        description: form.description.trim(),
-        fabric_composition: form.fabric_composition.trim(),
-        care_instructions: form.care_instructions.trim(),
+        full_description: form.description.trim(),
+        specifications,
         available_sizes: sizesArray,
         available_colors: colorsArray,
-        min_order_quantity: Number(form.min_order_quantity) || 50,
-        show_price: form.show_price,
-        base_price: form.base_price ? Number(form.base_price) : null,
-        primary_image_url: form.primary_image_url.trim() || null,
-        gallery_image_urls: galleryArray,
-        is_featured: form.is_featured,
-        is_published: form.is_published,
+        minimum_order_quantity: form.min_order_quantity ? Number(form.min_order_quantity) : 50,
+        show_price: false,
+        price_from: null,
+        is_featured: editingProduct ? Boolean(editingProduct.is_featured) : false,
+        is_published: true,
         updated_at: new Date().toISOString(),
       }
+
+      let savedProductId = editingProduct?.id
 
       if (editingProduct) {
         const { error } = await supabase.from('products').update(payload).eq('id', editingProduct.id)
         if (error) throw error
         setMessage({ type: 'success', text: 'Product updated successfully!' })
       } else {
-        const { error } = await supabase.from('products').insert({
+        const { data: newProd, error } = await supabase.from('products').insert({
           ...payload,
           created_at: new Date().toISOString(),
-        })
+        }).select('id').single()
         if (error) throw error
+        savedProductId = newProd?.id
         setMessage({ type: 'success', text: 'Product created successfully!' })
+      }
+
+      // Also register in media_assets & product_media if primary_image_url is present
+      if (form.primary_image_url && savedProductId) {
+        try {
+          const cleanUrl = form.primary_image_url.trim()
+          const publicId = cleanUrl.split('/').slice(-2).join('/').replace(/\.[^/.]+$/, '')
+          const { data: asset } = await supabase.from('media_assets').insert({
+            cloudinary_public_id: publicId,
+            secure_url: cleanUrl,
+            resource_type: 'image',
+            format: cleanUrl.split('.').pop() || 'jpg',
+            alt_text: form.name,
+            folder: 'products',
+            usage_count: 1
+          }).select().single()
+
+          if (asset?.id) {
+            await supabase.from('product_media').insert({
+              product_id: savedProductId,
+              asset_id: asset.id,
+              is_primary: true
+            })
+          }
+        } catch (mediaErr) {
+          console.warn('Could not register media asset:', mediaErr)
+        }
       }
 
       setShowProductModal(false)
@@ -308,9 +350,8 @@ export default function AdminProductsPage() {
               <thead className="bg-gray-50/75 border-b border-gray-200 text-xs font-semibold text-gray-700 uppercase tracking-wider">
                 <tr>
                   <th className="py-3 px-4">Item</th>
-                  <th className="py-3 px-4">Category</th>
-                  <th className="py-3 px-4 text-center">MOQ</th>
-                  <th className="py-3 px-4">Price</th>
+                  <th className="py-3 px-4">Category / Subcategory</th>
+                  <th className="py-3 px-4">Min Order Qty</th>
                   <th className="py-3 px-4">Featured</th>
                   <th className="py-3 px-4">Status</th>
                   <th className="py-3 px-4 text-right">Actions</th>
@@ -337,17 +378,15 @@ export default function AdminProductsPage() {
                       </div>
                     </td>
                     <td className="py-3 px-4 text-xs font-medium text-gray-700">
-                      {p.category?.name || 'Unassigned'}
-                    </td>
-                    <td className="py-3 px-4 text-center font-mono text-xs">
-                      {p.min_order_quantity ? `${p.min_order_quantity} pcs` : '50 pcs'}
-                    </td>
-                    <td className="py-3 px-4 text-xs">
-                      {p.show_price && p.base_price ? (
-                        <span className="font-semibold text-gray-900">₹{p.base_price}</span>
-                      ) : (
-                        <span className="text-gray-400 text-xs">Quote Only</span>
+                      <div>{p.category?.name || 'Unassigned'}</div>
+                      {(p as any).subcategory?.name && (
+                        <div className="text-[11px] text-gray-400 font-normal mt-0.5">
+                          ↳ {(p as any).subcategory.name}
+                        </div>
                       )}
+                    </td>
+                    <td className="py-3 px-4 text-xs font-mono text-gray-700">
+                      {p.minimum_order_quantity ? `${p.minimum_order_quantity} pcs` : (p.min_order_quantity ? `${p.min_order_quantity} pcs` : '50 pcs')}
                     </td>
                     <td className="py-3 px-4">
                       {p.is_featured ? (
@@ -408,7 +447,7 @@ export default function AdminProductsPage() {
       {/* POPUP MODAL: Add / Edit Product */}
       {showProductModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-2xl w-full p-6 sm:p-7 shadow-2xl border border-gray-100 max-h-[92vh] overflow-y-auto">
+          <div className="bg-white rounded-2xl max-w-2xl w-full p-6 sm:p-7 shadow-2xl border border-gray-100 max-h-[92vh] overflow-y-auto scrollbar-none [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             <div className="flex items-center justify-between pb-3 mb-5 border-b border-gray-100">
               <h3 className="text-lg font-bold text-gray-900">
                 {editingProduct ? 'Edit Product' : 'Add New Product'}
@@ -435,7 +474,7 @@ export default function AdminProductsPage() {
                     required
                     value={form.name}
                     onChange={e => handleNameChange(e.target.value)}
-                    placeholder="e.g. Premium School Blazer"
+                    placeholder="Enter product name"
                     className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
                   />
                 </div>
@@ -447,27 +486,51 @@ export default function AdminProductsPage() {
                     required
                     value={form.slug}
                     onChange={e => setForm(p => ({ ...p, slug: e.target.value }))}
-                    placeholder="e.g. premium-school-blazer"
+                    placeholder="Enter product slug"
                     className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-xs font-mono focus:border-black outline-none bg-gray-50"
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">Category *</label>
-                <select
-                  value={form.category_id}
-                  onChange={e => setForm(p => ({ ...p, category_id: e.target.value }))}
-                  required
-                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none bg-white"
-                >
-                  <option value="" disabled>Select Category</option>
-                  {categories.map(c => (
-                    <option key={c.id} value={c.id}>
-                      {c.name}
-                    </option>
-                  ))}
-                </select>
+              {/* Category & Subcategory */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">Category *</label>
+                  <select
+                    value={form.category_id}
+                    onChange={e => {
+                      const newCatId = e.target.value
+                      setForm(p => ({ ...p, category_id: newCatId, subcategory_id: '' }))
+                    }}
+                    required
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none bg-white"
+                  >
+                    <option value="" disabled>Select Category</option>
+                    {categories.map(c => (
+                      <option key={c.id} value={c.id}>
+                        {c.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">Subcategory (Optional)</label>
+                  <select
+                    value={form.subcategory_id}
+                    onChange={e => setForm(p => ({ ...p, subcategory_id: e.target.value }))}
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none bg-white"
+                  >
+                    <option value="">None / Select Subcategory</option>
+                    {subcategories
+                      .filter(s => !form.category_id || s.category_id === form.category_id)
+                      .map(s => (
+                        <option key={s.id} value={s.id}>
+                          {s.name}
+                        </option>
+                      ))}
+                  </select>
+                </div>
               </div>
 
               <div>
@@ -476,7 +539,7 @@ export default function AdminProductsPage() {
                   type="text"
                   value={form.short_description}
                   onChange={e => setForm(p => ({ ...p, short_description: e.target.value }))}
-                  placeholder="One line summary for catalog grid..."
+                  placeholder="Enter short description"
                   className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
                 />
               </div>
@@ -487,7 +550,7 @@ export default function AdminProductsPage() {
                   rows={3}
                   value={form.description}
                   onChange={e => setForm(p => ({ ...p, description: e.target.value }))}
-                  placeholder="Fabric details, stitching specifications, customization options..."
+                  placeholder="Enter full description"
                   className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
                 />
               </div>
@@ -499,7 +562,7 @@ export default function AdminProductsPage() {
                     type="text"
                     value={form.fabric_composition}
                     onChange={e => setForm(p => ({ ...p, fabric_composition: e.target.value }))}
-                    placeholder="e.g. Polyester Viscose Blend"
+                    placeholder="Enter fabric composition"
                     className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
                   />
                 </div>
@@ -510,7 +573,7 @@ export default function AdminProductsPage() {
                     type="text"
                     value={form.care_instructions}
                     onChange={e => setForm(p => ({ ...p, care_instructions: e.target.value }))}
-                    placeholder="e.g. Machine wash cold, gentle iron"
+                    placeholder="Enter care instructions"
                     className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
                   />
                 </div>
@@ -523,7 +586,7 @@ export default function AdminProductsPage() {
                     type="text"
                     value={form.available_sizes}
                     onChange={e => setForm(p => ({ ...p, available_sizes: e.target.value }))}
-                    placeholder="e.g. S, M, L, XL, XXL"
+                    placeholder="Enter available sizes (e.g. S, M, L, XL)"
                     className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
                   />
                 </div>
@@ -534,67 +597,24 @@ export default function AdminProductsPage() {
                     type="text"
                     value={form.available_colors}
                     onChange={e => setForm(p => ({ ...p, available_colors: e.target.value }))}
-                    placeholder="e.g. Navy Blue, White, Black"
+                    placeholder="Enter available colors (e.g. Navy Blue, White)"
                     className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-3">
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">MOQ (Pieces)</label>
-                  <input
-                    type="number"
-                    value={form.min_order_quantity}
-                    onChange={e => setForm(p => ({ ...p, min_order_quantity: Number(e.target.value) }))}
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">Base Price (₹)</label>
-                  <input
-                    type="number"
-                    value={form.base_price}
-                    onChange={e => setForm(p => ({ ...p, base_price: e.target.value }))}
-                    placeholder="Optional"
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
-                  />
-                </div>
-
-                <div className="flex items-center pt-5">
-                  <label className="inline-flex items-center gap-1.5 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={form.show_price}
-                      onChange={e => setForm(p => ({ ...p, show_price: e.target.checked }))}
-                      className="w-4 h-4 text-black rounded border-gray-300"
-                    />
-                    <span className="text-xs font-medium text-gray-700">Display price</span>
-                  </label>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-6 pt-2">
-                <label className="inline-flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={form.is_published}
-                    onChange={e => setForm(p => ({ ...p, is_published: e.target.checked }))}
-                    className="w-4 h-4 text-black rounded border-gray-300"
-                  />
-                  <span className="text-xs font-medium text-gray-700">Published in Catalog</span>
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  Min Order Quantity (Pieces)
                 </label>
-
-                <label className="inline-flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={form.is_featured}
-                    onChange={e => setForm(p => ({ ...p, is_featured: e.target.checked }))}
-                    className="w-4 h-4 text-black rounded border-gray-300"
-                  />
-                  <span className="text-xs font-medium text-gray-700">Featured on Homepage</span>
-                </label>
+                <input
+                  type="number"
+                  min="1"
+                  value={form.min_order_quantity}
+                  onChange={e => setForm(p => ({ ...p, min_order_quantity: e.target.value }))}
+                  placeholder="Enter min order quantity (e.g. 50)"
+                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
+                />
               </div>
 
               <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">

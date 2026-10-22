@@ -475,17 +475,6 @@ export default function AdminWhyChooseUsPage() {
                     <span className="text-xs font-mono text-gray-400 bg-gray-100 px-2 py-0.5 rounded">
                       Pos: {item.position}
                     </span>
-                    <button
-                      onClick={() => togglePublished(item)}
-                      className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium cursor-pointer transition-colors ${
-                        item.is_published
-                          ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
-                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                      }`}
-                    >
-                      {item.is_published ? <Check className="w-3 h-3" /> : <X className="w-3 h-3" />}
-                      <span>{item.is_published ? 'Visible' : 'Hidden'}</span>
-                    </button>
                   </div>
                 </div>
 
@@ -586,18 +575,6 @@ export default function AdminWhyChooseUsPage() {
                     onChange={e => setForm(prev => ({ ...prev, position: Number(e.target.value) }))}
                     className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
                   />
-                </div>
-
-                <div className="flex items-center pt-5">
-                  <label className="inline-flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={form.is_published}
-                      onChange={e => setForm(prev => ({ ...prev, is_published: e.target.checked }))}
-                      className="w-4 h-4 text-black rounded border-gray-300 focus:ring-black"
-                    />
-                    <span className="text-xs font-medium text-gray-700">Published on site</span>
-                  </label>
                 </div>
               </div>
 

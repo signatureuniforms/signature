@@ -169,7 +169,7 @@ export default function AdminCraftsmanshipPage() {
   }
 
   return (
-    <div className="max-w-5xl space-y-8">
+    <div className="w-full space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -442,29 +442,6 @@ export default function AdminCraftsmanshipPage() {
                 ))}
               </div>
             )}
-          </div>
-
-          {/* Publishing Option */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="text-sm font-semibold text-gray-900 block">
-                  Publish on Homepage
-                </span>
-                <span className="text-xs text-gray-500">
-                  When enabled, this section will be rendered under the Trusted Brands section on the homepage.
-                </span>
-              </div>
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={form.is_published}
-                  onChange={(e) => setForm({ ...form, is_published: e.target.checked })}
-                  className="sr-only peer"
-                />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black"></div>
-              </label>
-            </div>
           </div>
 
           {/* Save Button */}

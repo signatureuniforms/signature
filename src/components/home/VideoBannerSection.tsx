@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import Link from 'next/link'
 import { motion, type Variants } from 'framer-motion'
 import type { VideoBannerContent } from '@/types'
+import { useBulkQuote } from '@/components/common/BulkQuotationDrawer'
 
 interface VideoBannerSectionProps {
   data: VideoBannerContent | null
@@ -39,11 +40,23 @@ const slideInLeftVariants: Variants = {
 
 export default function VideoBannerSection({ data }: VideoBannerSectionProps) {
   const sectionRef = useRef<HTMLElement>(null)
+  const { openDrawer } = useBulkQuote()
 
   // Strict rule: No mock data and no fallback data.
   // If no content or video exists in DB, do not render this section.
   if (!data || !data.video_url || data.video_url.trim().length === 0) {
     return null
+  }
+
+  // Strip aggressive lossy compression parameters (f_auto, q_auto)
+  // so the video is delivered in 100% full original quality and bitrate
+  let videoSrc = data.video_url
+    .replace(/\/video\/upload\/[^/]*q_auto[^/]*\//, '/video/upload/')
+    .replace(/\/video\/upload\/f_auto,q_auto\//, '/video/upload/')
+    .replace(/\/video\/upload\/f_auto\//, '/video/upload/')
+
+  if (videoSrc.includes('cloudinary.com') && videoSrc.endsWith('.mov')) {
+    videoSrc = videoSrc.replace(/\.mov$/i, '.mp4')
   }
 
   return (
@@ -52,30 +65,23 @@ export default function VideoBannerSection({ data }: VideoBannerSectionProps) {
       className="relative w-full overflow-hidden bg-black text-white py-5 lg:py-10 h-[60vh] sm:h-[70vh] min-h-[480px] max-h-[750px]"
       aria-label={data.heading || 'Video Showcase'}
     >
-      {/* Background Video (Only fetched from DB once on server, no mock/fallback) */}
+      {/* Background Video (Buffered once and looped from browser cache) */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <video
-          src={data.video_url}
+          key={videoSrc}
+          src={videoSrc}
           autoPlay
           loop
           muted
           playsInline
+          preload="auto"
           className="w-full h-full object-cover"
-        />
-        {/* Dual gradients for contrast on bottom left */}
-        <div
-          className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none"
-          aria-hidden="true"
-        />
-        <div
-          className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-transparent pointer-events-none"
-          aria-hidden="true"
         />
       </div>
 
       {/* Foreground Content - Placed on Left Side Bottom */}
-      <div className="absolute inset-0 z-10 flex flex-col justify-end pb-8 sm:pb-12 md:pb-16 px-4 sm:px-6 lg:px-8 pointer-events-none">
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="absolute inset-0 z-10 flex flex-col justify-end pb-8 sm:pb-12 md:pb-16 px-4 sm:px-6 md:px-8 lg:px-10 pointer-events-none">
+        <div className="w-full">
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -109,16 +115,17 @@ export default function VideoBannerSection({ data }: VideoBannerSectionProps) {
               variants={slideInLeftVariants}
               className="pt-2"
             >
-              <Link
-                href="/contact"
-                className="group relative inline-flex flex-col items-start text-xs tracking-[0.25em] text-white uppercase transition-colors"
+              <button
+                type="button"
+                onClick={() => openDrawer({ category: data.heading || 'Custom Uniform Embroidery' })}
+                className="group relative inline-flex flex-col items-start text-xs tracking-[0.25em] text-white uppercase transition-colors cursor-pointer"
                 id="video-banner-contact-cta"
               >
                 <span className="pb-1 transition-opacity group-hover:opacity-85 font-medium">
                   CONTACT NOW
                 </span>
                 <span className="w-full h-[1.5px] bg-white transition-all duration-300 group-hover:scale-x-110 group-hover:bg-[#FFD700]" />
-              </Link>
+              </button>
             </motion.div>
           </motion.div>
         </div>

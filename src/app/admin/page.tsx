@@ -86,34 +86,9 @@ function LoginForm() {
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-10 w-full max-w-md"
       >
-        {/* Brand Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-b from-[#1c1c20] to-[#0c0c0e] border border-[#FFD700]/30 shadow-[0_0_35px_rgba(255,215,0,0.15)] mb-4 ring-1 ring-white/10 group">
-            <span
-              className="text-2xl font-bold tracking-tight text-[#FFD700]"
-              style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
-            >
-              SU
-            </span>
-          </div>
-
-          <h1
-            className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-1.5"
-            style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
-          >
-            Signature <span className="text-[#FFD700]">Uniforms</span>
-          </h1>
-
-          <div className="flex items-center justify-center gap-2">
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold tracking-wider uppercase bg-[#FFD700]/10 text-[#FFD700] border border-[#FFD700]/20">
-              <ShieldCheck className="w-3 h-3 text-[#FFD700]" />
-              Executive Admin Portal
-            </span>
-          </div>
-        </div>
 
         {/* Card */}
-        <div className="relative rounded-3xl bg-[#111114]/80 backdrop-blur-2xl border border-white/[0.08] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),0_0_40px_rgba(255,215,0,0.05)] p-7 sm:p-9 ring-1 ring-white/[0.05]">
+        <div className="relative rounded-none bg-[#111114]/80 backdrop-blur-2xl border border-white/[0.08] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),0_0_40px_rgba(255,215,0,0.05)] p-7 sm:p-9 ring-1 ring-white/[0.05]">
           {/* Subtle gold line accent at top */}
           <div className="absolute top-0 inset-x-8 h-px bg-gradient-to-r from-transparent via-[#FFD700]/60 to-transparent" />
 
@@ -149,7 +124,7 @@ function LoginForm() {
                   type="text"
                   autoComplete="username"
                   className="w-full bg-white/[0.03] border border-white/10 focus:border-[#FFD700] rounded-xl px-4 py-3 text-sm text-white placeholder-white/25 outline-none transition-all duration-200 focus:ring-2 focus:ring-[#FFD700]/20"
-                  placeholder="admin or Admin@gmail.com"
+                  placeholder="Enter user name"
                   {...register('identifier')}
                 />
               </div>
@@ -187,28 +162,7 @@ function LoginForm() {
               )}
             </div>
 
-            {/* Quick Demo Fill Helper */}
-            <div className="pt-1">
-              <button
-                type="button"
-                onClick={fillDemoCredentials}
-                className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-white/[0.02] hover:bg-white/[0.06] border border-dashed border-white/15 text-[11px] text-white/60 hover:text-white transition-all cursor-pointer group"
-              >
-                <span className="flex items-center gap-1.5">
-                  <KeyRound className="w-3.5 h-3.5 text-[#FFD700]" />
-                  <span>Fill default credentials (<strong className="text-white/80 font-mono">admin</strong>)</span>
-                </span>
-                {filledDemo ? (
-                  <span className="text-emerald-400 flex items-center gap-1 font-medium text-[10px]">
-                    <Check className="w-3 h-3" /> Filled
-                  </span>
-                ) : (
-                  <span className="text-[#FFD700] text-[10px] group-hover:translate-x-0.5 transition-transform flex items-center gap-0.5">
-                    Click to fill <ArrowRight className="w-2.5 h-2.5" />
-                  </span>
-                )}
-              </button>
-            </div>
+
 
             <button
               type="submit"
@@ -230,14 +184,7 @@ function LoginForm() {
             </button>
           </form>
 
-          {/* Footer inside card */}
-          <div className="mt-6 pt-5 border-t border-white/[0.06] flex items-center justify-between text-[11px] text-white/40">
-            <span className="flex items-center gap-1">
-              <Sparkles className="w-3 h-3 text-[#FFD700]/70" />
-              Signature Uniforms by Hari
-            </span>
-            <span className="font-mono text-[10px] text-white/30">v1.0 • Thrissur, Kerala</span>
-          </div>
+
         </div>
 
         {/* Outer bottom trust badge */}

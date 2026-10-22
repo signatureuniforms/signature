@@ -9,7 +9,6 @@ import CraftsmanshipSection from '@/components/home/CraftsmanshipSection'
 import WhyChooseUsSection from '@/components/home/WhyChooseUsSection'
 import HomeContactSection from '@/components/home/HomeContactSection'
 import FeaturedProductsSection from '@/components/home/FeaturedProductsSection'
-import GalleryPreviewSection from '@/components/home/GalleryPreviewSection'
 import type { AboutSectionContent, TrustedBrandsContent, VideoBannerContent, CraftsmanshipContent, WhyChooseUsContent } from '@/types'
 
 export const revalidate = 60 // ISR: revalidate every 60 seconds
@@ -33,7 +32,6 @@ async function getHomePageData() {
     productsRes,
     whyContentRes,
     whyRes,
-    galleryRes,
     settingsRes,
   ] = await Promise.allSettled([
     // Hero video
@@ -123,20 +121,10 @@ async function getHomePageData() {
       .eq('is_published', true)
       .order('position', { ascending: true }),
 
-    // Gallery preview
-    supabase
-      .from('gallery_items')
-      .select('*, asset:media_assets(*)')
-      .eq('is_published', true)
-      .eq('is_featured', true)
-      .order('position', { ascending: true })
-      .limit(8),
-
     // Site settings for contact info
     supabase
       .from('site_settings')
-      .select('key, value')
-      .in('key', ['phone', 'email', 'address', 'whatsapp_number', 'city', 'state', 'pincode', 'website']),
+      .select('key, value'),
   ])
 
   const contactInfo: Record<string, string> = {}
@@ -171,13 +159,12 @@ async function getHomePageData() {
         ? (whyContentRes.value.data.content as WhyChooseUsContent)
         : null,
     whyItems: whyRes.status === 'fulfilled' ? (whyRes.value.data ?? []) : [],
-    gallery: galleryRes.status === 'fulfilled' ? (galleryRes.value.data ?? []) : [],
     contactInfo,
   }
 }
 
 export default async function HomePage() {
-  const { hero, about, categories, brands, craftsmanship, videoBanner, products, whyContent, whyItems, gallery, contactInfo } = await getHomePageData()
+  const { hero, about, categories, brands, craftsmanship, videoBanner, products, whyContent, whyItems, contactInfo } = await getHomePageData()
 
   return (
     <>
@@ -194,7 +181,7 @@ export default async function HomePage() {
       <TrustedBrandsSection data={brands} />
 
       {/* 5. Craftsmanship & Trust Section (Directly under Brands) */}
-      <CraftsmanshipSection data={craftsmanship} />
+      {/* <CraftsmanshipSection data={craftsmanship} /> */}
 
       {/* 6. Video Banner (Directly below Craftsmanship) */}
       <VideoBannerSection data={videoBanner} />
@@ -207,9 +194,6 @@ export default async function HomePage() {
 
       {/* 9. Featured Products */}
       <FeaturedProductsSection products={products} />
-
-      {/* 10. Gallery Preview */}
-      <GalleryPreviewSection items={gallery} />
     </>
   )
 }

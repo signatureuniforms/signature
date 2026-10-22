@@ -100,7 +100,7 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
         </svg>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 w-full px-2 sm:px-6 md:px-8 lg:px-10">
         {/* Section Header: Heading comes down from top into place */}
         <motion.div
           initial={{ opacity: 0, y: -45 }}
@@ -108,8 +108,8 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
             shouldReduceMotion
               ? { opacity: 1, y: 0 }
               : isInView
-              ? { opacity: 1, y: 0 }
-              : { opacity: 0, y: -45 }
+                ? { opacity: 1, y: 0 }
+                : { opacity: 0, y: -45 }
           }
           transition={{ duration: shouldReduceMotion ? 0 : 1.2, ease: editorialEase }}
           className="text-center max-w-4xl mx-auto mb-14 lg:mb-10"
@@ -150,8 +150,8 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
                   shouldReduceMotion
                     ? { opacity: 1, x: 0 }
                     : isInView
-                    ? { opacity: 1, x: 0 }
-                    : { opacity: 0, x: -80 }
+                      ? { opacity: 1, x: 0 }
+                      : { opacity: 0, x: -80 }
                 }
                 transition={{
                   duration: shouldReduceMotion ? 0 : 1.15,
@@ -188,8 +188,8 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
                   shouldReduceMotion
                     ? { opacity: 1, scale: 1 }
                     : isInView
-                    ? { opacity: 1, scale: 1 }
-                    : { opacity: 0, scale: 0.7 }
+                      ? { opacity: 1, scale: 1 }
+                      : { opacity: 0, scale: 0.7 }
                 }
                 transition={{
                   duration: shouldReduceMotion ? 0 : 1.2,
@@ -222,8 +222,8 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
                     shouldReduceMotion
                       ? { opacity: 1, scale: 1 }
                       : isInView
-                      ? { opacity: 1, scale: 1 }
-                      : { opacity: 0, scale: 0.35 }
+                        ? { opacity: 1, scale: 1 }
+                        : { opacity: 0, scale: 0.35 }
                   }
                   transition={{
                     duration: shouldReduceMotion ? 0 : 1.05,
@@ -250,8 +250,8 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
                     shouldReduceMotion
                       ? { opacity: 1, scale: 1 }
                       : isInView
-                      ? { opacity: 1, scale: 1 }
-                      : { opacity: 0, scale: 0.35 }
+                        ? { opacity: 1, scale: 1 }
+                        : { opacity: 0, scale: 0.35 }
                   }
                   transition={{
                     duration: shouldReduceMotion ? 0 : 1.05,
@@ -282,8 +282,8 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
                   shouldReduceMotion
                     ? { opacity: 1, x: 0 }
                     : isInView
-                    ? { opacity: 1, x: 0 }
-                    : { opacity: 0, x: 80 }
+                      ? { opacity: 1, x: 0 }
+                      : { opacity: 0, x: 80 }
                 }
                 transition={{
                   duration: shouldReduceMotion ? 0 : 1.15,

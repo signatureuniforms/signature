@@ -58,7 +58,7 @@ export default function FooterFeaturesBar({ items }: FooterFeaturesBarProps) {
       className="w-full bg-[#EBEBEB] text-black border-t border-neutral-300 py-6 sm:py-8 overflow-hidden"
       aria-label="Features and Benefits"
     >
-      <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 max-w-7xl mx-auto">
+      <div className="w-full px-2 sm:px-6 md:px-8 lg:px-10">
         <motion.div
           variants={containerVariants}
           initial="hidden"

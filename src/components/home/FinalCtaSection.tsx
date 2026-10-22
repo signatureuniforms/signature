@@ -10,7 +10,7 @@ export default function FinalCtaSection() {
 
   return (
     <section className="py-24 lg:py-32 bg-black w-full" aria-labelledby="final-cta-heading">
-      <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10 text-center">
+      <div className="w-full px-2 sm:px-6 md:px-8 lg:px-10 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -31,7 +31,7 @@ export default function FinalCtaSection() {
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/enquiry/school-bulk"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#FFD700] hover:bg-[#E6C200] text-black font-semibold text-sm rounded-2xl tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 hover:shadow-[0_4px_16px_rgba(255,215,0,0.3)] cursor-pointer"
+              className="btn-gold-sweep inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-black font-semibold text-sm rounded-none tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 hover:shadow-[0_4px_16px_rgba(255,215,0,0.3)] cursor-pointer"
               id="final-cta-primary"
             >
               Request Bulk Pricing

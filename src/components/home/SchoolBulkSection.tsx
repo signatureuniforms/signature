@@ -69,7 +69,7 @@ export default function SchoolBulkSection() {
 
   return (
     <section className="py-20 lg:py-28 bg-black w-full" aria-labelledby="school-bulk-heading">
-      <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10">
+      <div className="w-full px-2 sm:px-6 md:px-8 lg:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-start">
           {/* Left — info */}
           <div>
@@ -190,9 +190,8 @@ export default function SchoolBulkSection() {
                         <input
                           {...register('institution_name')}
                           id="institution_name"
-                          className={`w-full px-4 py-3 bg-white text-black border rounded-xl text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-1 transition-all ${
-                            errors.institution_name ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-neutral-200 focus:border-[#FFD700] focus:ring-[#FFD700]'
-                          }`}
+                          className={`w-full px-4 py-3 bg-white text-black border rounded-xl text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-1 transition-all ${errors.institution_name ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-neutral-200 focus:border-[#FFD700] focus:ring-[#FFD700]'
+                            }`}
                           placeholder="School name"
                           autoComplete="organization"
                         />
@@ -207,9 +206,8 @@ export default function SchoolBulkSection() {
                         <input
                           {...register('contact_name')}
                           id="bulk_contact_name"
-                          className={`w-full px-4 py-3 bg-white text-black border rounded-xl text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-1 transition-all ${
-                            errors.contact_name ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-neutral-200 focus:border-[#FFD700] focus:ring-[#FFD700]'
-                          }`}
+                          className={`w-full px-4 py-3 bg-white text-black border rounded-xl text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-1 transition-all ${errors.contact_name ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-neutral-200 focus:border-[#FFD700] focus:ring-[#FFD700]'
+                            }`}
                           placeholder="Your name"
                           autoComplete="name"
                         />
@@ -228,9 +226,8 @@ export default function SchoolBulkSection() {
                           {...register('phone')}
                           id="bulk_phone"
                           type="tel"
-                          className={`w-full px-4 py-3 bg-white text-black border rounded-xl text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-1 transition-all ${
-                            errors.phone ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-neutral-200 focus:border-[#FFD700] focus:ring-[#FFD700]'
-                          }`}
+                          className={`w-full px-4 py-3 bg-white text-black border rounded-xl text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-1 transition-all ${errors.phone ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-neutral-200 focus:border-[#FFD700] focus:ring-[#FFD700]'
+                            }`}
                           placeholder="Your phone"
                           autoComplete="tel"
                         />
@@ -246,9 +243,8 @@ export default function SchoolBulkSection() {
                           {...register('email')}
                           id="bulk_email"
                           type="email"
-                          className={`w-full px-4 py-3 bg-white text-black border rounded-xl text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-1 transition-all ${
-                            errors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-neutral-200 focus:border-[#FFD700] focus:ring-[#FFD700]'
-                          }`}
+                          className={`w-full px-4 py-3 bg-white text-black border rounded-xl text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-1 transition-all ${errors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-neutral-200 focus:border-[#FFD700] focus:ring-[#FFD700]'
+                            }`}
                           placeholder="Optional"
                           autoComplete="email"
                         />
@@ -263,9 +259,8 @@ export default function SchoolBulkSection() {
                         <input
                           {...register('location')}
                           id="bulk_location"
-                          className={`w-full px-4 py-3 bg-white text-black border rounded-xl text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-1 transition-all ${
-                            errors.location ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-neutral-200 focus:border-[#FFD700] focus:ring-[#FFD700]'
-                          }`}
+                          className={`w-full px-4 py-3 bg-white text-black border rounded-xl text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-1 transition-all ${errors.location ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-neutral-200 focus:border-[#FFD700] focus:ring-[#FFD700]'
+                            }`}
                           placeholder="City / District"
                         />
                         {errors.location && (

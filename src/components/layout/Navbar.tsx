@@ -11,9 +11,8 @@ import { buildWhatsAppUrl } from '@/lib/constants'
 const NAV_LINKS = [
   { label: 'Home', href: '/' },
   { label: 'About Us', href: '/about' },
-  { label: 'Uniform Categories', href: '/categories' },
-  { label: 'Products', href: '/products' },
-  { label: 'Gallery', href: '/gallery' },
+  { label: 'Our Collections', href: '/categories' },
+  { label: 'Our Process', href: '/process' },
   { label: 'Contact', href: '/contact' },
 ]
 
@@ -51,7 +50,20 @@ export default function Navbar() {
   }, [pathname])
 
   const waUrl = buildWhatsAppUrl('Hello, I would like to enquire about your uniforms.')
-  const isSolid = scrolled || mobileOpen
+  const isHome = pathname === '/'
+  const isSolid = scrolled || mobileOpen || !isHome
+
+  // Lock body scroll when full-screen mobile menu is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [mobileOpen])
 
   return (
     <>
@@ -83,7 +95,7 @@ export default function Navbar() {
           />
         </div>
 
-        <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10 h-full flex items-center justify-between gap-8">
+        <div className="relative z-10 w-full px-2 sm:px-6 md:px-8 lg:px-10 h-full flex items-center justify-between gap-8">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 flex items-center gap-3" aria-label="Signature Uniforms Home">
             <motion.div
@@ -125,62 +137,128 @@ export default function Navbar() {
 
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-3">
-            <a
-              href={waUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              id="navbar-whatsapp-cta"
-              className="inline-flex items-center justify-center gap-2 py-2.5 px-6 bg-white hover:bg-[#FFD700] text-black font-semibold text-[15px] rounded-2xl tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 hover:shadow-[0_4px_16px_rgba(255,215,0,0.3)] cursor-pointer"
-              aria-label="WhatsApp Enquiry"
+            <Link
+              href="/contact"
+              id="navbar-enquiry-now-cta"
+              className="btn-gold-sweep inline-flex items-center justify-center gap-2 py-2.5 px-6 bg-white text-black font-semibold text-[15px] rounded-none tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 hover:shadow-[0_4px_16px_rgba(255,215,0,0.3)] cursor-pointer"
             >
               Enquiry Now
-            </a>
+            </Link>
           </div>
 
           {/* Mobile hamburger */}
           <button
-            className="lg:hidden p-2 rounded-xl transition-colors text-white"
+            className="lg:hidden p-2 rounded-xl transition-colors text-white cursor-pointer"
             style={{
               backgroundColor: mobileOpen ? 'rgba(255,255,255,0.1)' : 'transparent',
             }}
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+            onClick={() => setMobileOpen(true)}
+            aria-label="Open navigation menu"
             aria-expanded={mobileOpen}
           >
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            <Menu size={24} />
           </button>
         </div>
       </motion.header>
 
-      {/* Mobile menu */}
+      {/* Full-Screen Mobile Menu with Bottom-to-Top Reveal & Staggered Centered Items */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            key="mobile-menu"
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="fixed inset-x-0 z-40 bg-black/95 border-b border-zinc-800 backdrop-blur-md"
-            style={{ top: 'var(--navbar-height)' }}
+            key="fullscreen-mobile-menu"
+            initial={{ y: '100%' }}
+            animate={{ y: '0%' }}
+            exit={{ y: '100%' }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-0 z-[100] bg-black text-white flex flex-col justify-between h-[100dvh] w-full overflow-hidden p-6 sm:p-8 lg:hidden select-none"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobile Navigation Menu"
           >
-            <nav className="w-full px-4 sm:px-6 md:px-8 py-6 flex flex-col gap-1" aria-label="Mobile navigation">
-              {NAV_LINKS.map((link, i) => {
+            {/* Top Bar with Brand Logo & Circular Close Button */}
+            <div className="w-full flex items-center justify-between shrink-0 z-10">
+              <Link
+                href="/"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-2"
+                aria-label="Signature Uniforms Home"
+              >
+                <Image
+                  src="/logo/logo.png"
+                  alt="Signature Uniforms by Hari"
+                  width={180}
+                  height={60}
+                  className="h-12 sm:h-14 w-auto object-contain"
+                  priority
+                />
+              </Link>
+
+              <button
+                type="button"
+                onClick={() => setMobileOpen(false)}
+                className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 flex items-center justify-center text-white transition-all cursor-pointer border border-white/10"
+                aria-label="Close menu"
+              >
+                <X size={22} />
+              </button>
+            </div>
+
+            {/* Vertically and Horizontally Centered Content (Staggered Animation One by One) */}
+            <motion.nav
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.08,
+                    delayChildren: 0.22,
+                  },
+                },
+                exit: {
+                  opacity: 0,
+                  transition: {
+                    staggerChildren: 0.04,
+                    staggerDirection: -1,
+                  },
+                },
+              }}
+              className="flex-1 flex flex-col items-center justify-center text-center my-auto w-full max-w-sm mx-auto space-y-4"
+              aria-label="Mobile Navigation Links"
+            >
+              {NAV_LINKS.map((link) => {
                 const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))
                 return (
                   <motion.div
                     key={link.href}
-                    initial={{ opacity: 0, x: -12 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.04 }}
+                    variants={{
+                      hidden: { opacity: 0, y: 26 },
+                      visible: {
+                        opacity: 1,
+                        y: 0,
+                        transition: {
+                          duration: 0.45,
+                          ease: [0.22, 1, 0.36, 1],
+                        },
+                      },
+                      exit: {
+                        opacity: 0,
+                        y: 12,
+                        transition: { duration: 0.2 },
+                      },
+                    }}
+                    className="w-full flex justify-center"
                   >
                     <Link
                       href={link.href}
-                      className="flex items-center px-4 py-3 rounded-xl text-base font-medium transition-colors"
-                      style={{
-                        color: isActive ? '#FFD700' : '#ffffff',
-                        backgroundColor: isActive ? 'rgba(255,215,0,0.1)' : 'transparent',
-                      }}
+                      onClick={() => setMobileOpen(false)}
+                      className={`inline-block py-2.5 px-6 rounded-2xl text-lg sm:text-xl font-medium tracking-wide transition-all duration-200 cursor-pointer ${
+                        isActive
+                          ? 'text-[#FFD700] bg-[#FFD700]/10 font-semibold'
+                          : 'text-white/85 hover:text-[#FFD700] hover:bg-white/5'
+                      }`}
                       aria-current={isActive ? 'page' : undefined}
                     >
                       {link.label}
@@ -188,41 +266,45 @@ export default function Navbar() {
                   </motion.div>
                 )
               })}
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: NAV_LINKS.length * 0.04 + 0.05 }}
-                className="pt-4 pb-2"
-              >
-                <a
-                  href={waUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 w-full py-3 bg-white hover:bg-[#FFD700] text-black font-semibold text-sm rounded-2xl tracking-wide transition-all duration-200 active:translate-y-0 cursor-pointer"
-                  id="mobile-whatsapp-cta"
-                >
-                  <MessageCircle size={18} />
-                  WhatsApp Enquiry
-                </a>
-              </motion.div>
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
-      {/* Backdrop for mobile */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            key="backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-30 bg-black/40 lg:hidden"
-            style={{ top: 'var(--navbar-height)' }}
-            onClick={() => setMobileOpen(false)}
-            aria-hidden="true"
-          />
+              {/* Enquiry Now Button (Redirects to /contact, border-radius: none) */}
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, y: 26 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: {
+                      duration: 0.45,
+                      ease: [0.22, 1, 0.36, 1],
+                    },
+                  },
+                  exit: {
+                    opacity: 0,
+                    y: 12,
+                    transition: { duration: 0.2 },
+                  },
+                }}
+                className="w-full max-w-xs pt-4"
+              >
+                <Link
+                  href="/contact"
+                  onClick={() => setMobileOpen(false)}
+                  className="btn-gold-sweep flex items-center justify-center w-full py-3.5 px-6 bg-white text-black font-semibold text-sm rounded-none tracking-widest uppercase transition-all duration-300 shadow-xl active:scale-98 cursor-pointer"
+                  id="mobile-enquiry-now-cta"
+                >
+                  <span>Enquiry Now</span>
+                </Link>
+              </motion.div>
+            </motion.nav>
+
+            {/* Bottom Subtle Brand Mark */}
+            <div className="shrink-0 text-center pb-2 pointer-events-none">
+              <p className="text-[11px] text-white/35 tracking-widest uppercase font-light">
+                Signature Uniforms by Hari
+              </p>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </>

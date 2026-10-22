@@ -8,21 +8,41 @@ import {
 } from 'lucide-react'
 import type { HeroVideo } from '@/types'
 import { buildWhatsAppUrl } from '@/lib/constants'
+import { BulkQuoteButton } from '@/components/common/BulkQuotationDrawer'
 
 interface HeroSectionProps {
   hero: HeroVideo | null
 }
 
 export default function HeroSection({ hero }: HeroSectionProps) {
-  const desktopVideoUrl =
+  const rawDesktop =
     hero?.desktop_asset?.secure_url ||
     hero?.desktop_video_url ||
     ''
 
-  const mobileVideoUrl =
+  const rawMobile =
     hero?.mobile_asset?.secure_url ||
     hero?.mobile_video_url ||
     ''
+
+  const cleanVideoUrl = (url: string) => {
+    if (!url) return ''
+    // Strip aggressive Cloudinary lossy compression parameters (f_auto, q_auto)
+    // so the video is delivered in 100% full original quality and bitrate
+    let cleaned = url
+      .replace(/\/video\/upload\/[^/]*q_auto[^/]*\//, '/video/upload/')
+      .replace(/\/video\/upload\/f_auto,q_auto\//, '/video/upload/')
+      .replace(/\/video\/upload\/f_auto\//, '/video/upload/')
+
+    // Ensure universal cross-browser playback if uploaded as .mov
+    if (cleaned.includes('cloudinary.com') && cleaned.endsWith('.mov')) {
+      cleaned = cleaned.replace(/\.mov$/i, '.mp4')
+    }
+    return cleaned
+  }
+
+  const desktopVideoUrl = cleanVideoUrl(rawDesktop)
+  const mobileVideoUrl = cleanVideoUrl(rawMobile)
 
   const title = hero?.heading || hero?.title || ''
   const subtitle = hero?.subheading || hero?.subtitle || ''
@@ -42,6 +62,7 @@ export default function HeroSection({ hero }: HeroSectionProps) {
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         {desktopVideoUrl ? (
           <video
+            key={desktopVideoUrl}
             className="absolute inset-0 w-full h-full object-cover"
             autoPlay
             loop
@@ -63,14 +84,14 @@ export default function HeroSection({ hero }: HeroSectionProps) {
 
         {/* Dark shade overlay across entire video */}
         <div
-          className="absolute inset-0 bg-black/40 pointer-events-none"
+          className="absolute inset-0 bg-black/10 pointer-events-none"
           aria-hidden="true"
         />
       </div>
 
       {/* ── Hero Content (Bottom Center) ─────────────────────────────────── */}
       {(title || subtitle || (ctaText && ctaLink)) && (
-        <div className="relative z-20 w-full h-full flex flex-col items-center justify-end pb-12 sm:pb-16 md:pb-20 text-center px-6 sm:px-12 pointer-events-none">
+        <div className="relative z-20 w-full h-full flex flex-col items-center justify-end p-2 sm:px-12 sm:pb-16 md:pb-20 sm:pt-0 text-center pointer-events-none">
           <motion.div
             id="hero-content-block"
             initial={{ opacity: 0, y: 24 }}
@@ -126,9 +147,8 @@ export default function HeroSection({ hero }: HeroSectionProps) {
 
       {/* ── Sticky Right Edge: "Request a call" Tab ─────────────────────── */}
       <div className="fixed right-0 top-1/2 -translate-y-1/2 z-40">
-        <Link
-          href="/contact"
-          className="flex items-center gap-2 px-2.5 py-4 bg-white text-black rounded-r-sm shadow-2xl hover:bg-[#FFD700] transition-all duration-200 cursor-pointer group border border-r-0 border-white/30"
+        <BulkQuoteButton
+          className="btn-gold-sweep flex items-center gap-2 px-2.5 py-4 bg-white text-black rounded-r-sm shadow-2xl transition-all duration-200 cursor-pointer group border border-r-0 border-white/30"
           style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
           aria-label="Request a Call"
           id="hero-sticky-request-call"
@@ -137,7 +157,7 @@ export default function HeroSection({ hero }: HeroSectionProps) {
           <span className="text-[12px] font-medium tracking-wide text-black whitespace-nowrap">
             Request a call
           </span>
-        </Link>
+        </BulkQuoteButton>
       </div>
     </section>
   )

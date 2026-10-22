@@ -2,7 +2,6 @@
 
 import { useRef, useEffect, useState, useCallback, useMemo } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import type { Category } from '@/types'
@@ -148,19 +147,35 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
     }
   }, [])
 
+  const isPausedRef = useRef(false)
+
+  // Pause sliding immediately on hover and halt any ongoing scroll animation
+  const handlePause = useCallback(() => {
+    isPausedRef.current = true
+    setIsPaused(true)
+    if (animFrameRef.current !== null) {
+      cancelAnimationFrame(animFrameRef.current)
+      animFrameRef.current = null
+    }
+    isAnimatingRef.current = false
+  }, [])
+
+  const handleResume = useCallback(() => {
+    isPausedRef.current = false
+    setIsPaused(false)
+  }, [])
+
   // Continuous auto-slide forward 1 card at a time (paused on user hover/interaction)
   useEffect(() => {
     if (isPaused || !isInView || categories.length <= 1) return
 
-    const startTimer = setTimeout(() => {
-      const interval = setInterval(() => {
+    const interval = setInterval(() => {
+      if (!isPausedRef.current) {
         handleNext()
-      }, 4000)
+      }
+    }, 3800)
 
-      return () => clearInterval(interval)
-    }, 1200)
-
-    return () => clearTimeout(startTimer)
+    return () => clearInterval(interval)
   }, [isPaused, isInView, categories.length, handleNext])
 
   return (
@@ -169,7 +184,7 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
       className="py-12 sm:py-5 lg:py-10 bg-black w-full overflow-hidden"
       aria-labelledby="shop-categories-heading"
     >
-      <div className="w-full max-w-7xl mx-auto">
+      <div className="w-full mx-auto">
         {/* Header: Title text-start on mobile, centered on desktop */}
         <div className="w-full px-4 sm:px-6 lg:px-8 flex items-center justify-between mb-6 sm:mb-12 gap-4">
           {/* Spacer to keep heading perfectly centered on desktop */}
@@ -194,8 +209,8 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
             <button
               type="button"
               onClick={handlePrev}
-              onMouseEnter={() => setIsPaused(true)}
-              onMouseLeave={() => setIsPaused(false)}
+              onMouseEnter={handlePause}
+              onMouseLeave={handleResume}
               aria-label="Previous category"
               className="p-1.5 sm:p-2 text-white hover:text-[#FFD700] transition-colors cursor-pointer select-none"
             >
@@ -204,8 +219,8 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
             <button
               type="button"
               onClick={handleNext}
-              onMouseEnter={() => setIsPaused(true)}
-              onMouseLeave={() => setIsPaused(false)}
+              onMouseEnter={handlePause}
+              onMouseLeave={handleResume}
               aria-label="Next category"
               className="p-1.5 sm:p-2 text-white hover:text-[#FFD700] transition-colors cursor-pointer select-none"
             >
@@ -218,10 +233,10 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
             Controlled step-by-step smooth scrolling with 1 card per click and custom glide easing */}
         <div
           ref={scrollRef}
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-          onTouchStart={() => setIsPaused(true)}
-          onTouchEnd={() => setIsPaused(false)}
+          onMouseEnter={handlePause}
+          onMouseLeave={handleResume}
+          onTouchStart={handlePause}
+          onTouchEnd={handleResume}
           className="w-full flex gap-3 overflow-x-auto scrollbar-none px-4 sm:px-6 lg:px-8"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
@@ -233,7 +248,7 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
             return (
               <motion.div
                 key={`${cat.id}-${cat._copy}-${index}`}
-                className="w-[85%] sm:w-[calc((100%-12px)/2)] lg:w-[calc((100%-36px)/4)] shrink-0"
+                className="w-[85%] sm:w-[calc((100%-12px)/2)] lg:w-[calc((100%-24px)/3)] shrink-0"
                 initial={isInitialBatch ? { opacity: 0, x: 80 } : { opacity: 1, x: 0 }}
                 animate={
                   shouldReduceMotion || !isInitialBatch
@@ -250,17 +265,19 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
               >
                 <Link
                   href={`/categories/${cat.slug}`}
+                  onMouseEnter={handlePause}
+                  onMouseLeave={handleResume}
                   className="group relative block w-full h-[460px] sm:h-[500px] lg:h-[540px] overflow-hidden bg-neutral-900 cursor-pointer"
                   aria-label={cat.name}
                 >
-                  {/* Background Image */}
+                  {/* Background Image - Served in pristine full-resolution directly from Cloudinary CDN */}
                   {imageUrl ? (
-                    <Image
+                    <img
                       src={imageUrl}
                       alt={cat.image?.alt_text || cat.name}
-                      fill
-                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                      sizes="(max-width: 640px) 85vw, (max-width: 1024px) 50vw, 25vw"
+                      loading="lazy"
+                      decoding="async"
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                     />
                   ) : (
                     <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 via-neutral-950 to-black flex items-center justify-center">
@@ -273,22 +290,22 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
                     </div>
                   )}
 
-                  {/* Dark Vignette Gradient Overlay at Bottom */}
+                  {/* Black gradient only in content place */}
                   <div
-                    className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 via-45% to-transparent pointer-events-none transition-opacity duration-300 group-hover:from-black/95"
+                    className="absolute inset-x-0 bottom-0 h-36 sm:h-44 bg-gradient-to-t from-black/90 via-black/45 to-transparent pointer-events-none"
                     aria-hidden="true"
                   />
 
                   {/* Bottom Text Content (Title & Subtitle centered) */}
                   <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 flex flex-col items-center justify-end text-center z-10 pointer-events-none">
                     <h3
-                      className="text-2xl sm:text-3xl text-white font-normal font-display tracking-wide mb-1.5 transition-colors group-hover:text-[#FFD700]"
+                      className="text-2xl sm:text-2xl text-white font-normal font-display tracking-wide mb-1.5 transition-colors group-hover:text-[#FFD700]"
                       style={{ fontFamily: "'Regular-Light', serif", fontWeight: 400 }}
                     >
                       {cat.name}
                     </h3>
                     {cat.description && (
-                      <p className="text-white/80 text-xs sm:text-sm font-normal leading-relaxed line-clamp-2 max-w-sm mx-auto">
+                      <p className="text-white/85 text-xs sm:text-sm font-normal leading-relaxed line-clamp-2 max-w-sm mx-auto">
                         {cat.description}
                       </p>
                     )}
