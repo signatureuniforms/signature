@@ -135,27 +135,24 @@ export default function AdminProductsPage() {
 
     try {
       const supabase = createClient()
-      const sizesArray = form.available_sizes.split(',').map(s => s.trim()).filter(Boolean)
-      const colorsArray = form.available_colors.split(',').map(c => c.trim()).filter(Boolean)
 
       const specifications: Record<string, any> = {
         ...(editingProduct?.specifications || {}),
         primary_image_url: form.primary_image_url.trim() || null,
-        fabric_composition: form.fabric_composition.trim() || null,
-        care_instructions: form.care_instructions.trim() || null,
       }
 
       const payload = {
         name: form.name.trim(),
-        slug: form.slug.trim(),
+        slug: form.slug.trim() || form.name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
         category_id: form.category_id || null,
         subcategory_id: form.subcategory_id || null,
-        short_description: form.short_description.trim(),
+        short_description: form.description.trim(),
         full_description: form.description.trim(),
+        description: form.description.trim(),
         specifications,
-        available_sizes: sizesArray,
-        available_colors: colorsArray,
-        minimum_order_quantity: form.min_order_quantity ? Number(form.min_order_quantity) : 50,
+        available_sizes: [],
+        available_colors: [],
+        minimum_order_quantity: 50,
         show_price: false,
         price_from: null,
         is_featured: editingProduct ? Boolean(editingProduct.is_featured) : false,
@@ -349,10 +346,10 @@ export default function AdminProductsPage() {
             <table className="w-full text-left text-sm text-gray-600">
               <thead className="bg-gray-50/75 border-b border-gray-200 text-xs font-semibold text-gray-700 uppercase tracking-wider">
                 <tr>
-                  <th className="py-3 px-4">Item</th>
-                  <th className="py-3 px-4">Category / Subcategory</th>
-                  <th className="py-3 px-4">Min Order Qty</th>
-                  <th className="py-3 px-4">Featured</th>
+                  <th className="py-3 px-4">Product</th>
+                  <th className="py-3 px-4">Category</th>
+                  <th className="py-3 px-4">Subcategory</th>
+                  <th className="py-3 px-4">Description</th>
                   <th className="py-3 px-4">Status</th>
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
@@ -362,12 +359,12 @@ export default function AdminProductsPage() {
                   <tr key={p.id} className="hover:bg-gray-50/60 transition-colors">
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0 border border-gray-200">
+                        <div className="w-12 h-12 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0 border border-gray-200">
                           {p.primary_image_url ? (
                             <img src={p.primary_image_url} alt={p.name} className="w-full h-full object-cover" />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-gray-400">
-                              <Package className="w-4 h-4" />
+                              <Package className="w-5 h-5" />
                             </div>
                           )}
                         </div>
@@ -378,24 +375,15 @@ export default function AdminProductsPage() {
                       </div>
                     </td>
                     <td className="py-3 px-4 text-xs font-medium text-gray-700">
-                      <div>{p.category?.name || 'Unassigned'}</div>
-                      {(p as any).subcategory?.name && (
-                        <div className="text-[11px] text-gray-400 font-normal mt-0.5">
-                          ↳ {(p as any).subcategory.name}
-                        </div>
-                      )}
+                      {p.category?.name || 'Unassigned'}
                     </td>
-                    <td className="py-3 px-4 text-xs font-mono text-gray-700">
-                      {p.minimum_order_quantity ? `${p.minimum_order_quantity} pcs` : (p.min_order_quantity ? `${p.min_order_quantity} pcs` : '50 pcs')}
+                    <td className="py-3 px-4 text-xs text-gray-500">
+                      {(p as any).subcategory?.name || '—'}
                     </td>
-                    <td className="py-3 px-4">
-                      {p.is_featured ? (
-                        <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-100 text-amber-800">
-                          Featured
-                        </span>
-                      ) : (
-                        <span className="text-gray-400 text-xs">—</span>
-                      )}
+                    <td className="py-3 px-4 text-xs text-gray-500 max-w-xs">
+                      <p className="line-clamp-2 leading-relaxed">
+                        {p.short_description || p.description || (p as any).full_description || '—'}
+                      </p>
                     </td>
                     <td className="py-3 px-4">
                       <button
@@ -475,7 +463,7 @@ export default function AdminProductsPage() {
                     value={form.name}
                     onChange={e => handleNameChange(e.target.value)}
                     placeholder="Enter product name"
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm text-gray-900 bg-white placeholder:text-gray-400 focus:border-black outline-none"
                   />
                 </div>
 
@@ -487,7 +475,7 @@ export default function AdminProductsPage() {
                     value={form.slug}
                     onChange={e => setForm(p => ({ ...p, slug: e.target.value }))}
                     placeholder="Enter product slug"
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-xs font-mono focus:border-black outline-none bg-gray-50"
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-xs font-mono text-gray-900 bg-gray-50 placeholder:text-gray-400 focus:border-black outline-none"
                   />
                 </div>
               </div>
@@ -503,7 +491,7 @@ export default function AdminProductsPage() {
                       setForm(p => ({ ...p, category_id: newCatId, subcategory_id: '' }))
                     }}
                     required
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none bg-white"
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm text-gray-900 focus:border-black outline-none bg-white"
                   >
                     <option value="" disabled>Select Category</option>
                     {categories.map(c => (
@@ -519,7 +507,7 @@ export default function AdminProductsPage() {
                   <select
                     value={form.subcategory_id}
                     onChange={e => setForm(p => ({ ...p, subcategory_id: e.target.value }))}
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none bg-white"
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm text-gray-900 focus:border-black outline-none bg-white"
                   >
                     <option value="">None / Select Subcategory</option>
                     {subcategories
@@ -534,86 +522,13 @@ export default function AdminProductsPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">Short Description</label>
-                <input
-                  type="text"
-                  value={form.short_description}
-                  onChange={e => setForm(p => ({ ...p, short_description: e.target.value }))}
-                  placeholder="Enter short description"
-                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">Full Description</label>
+                <label className="block text-xs font-semibold text-gray-700 mb-1">Description</label>
                 <textarea
-                  rows={3}
+                  rows={4}
                   value={form.description}
-                  onChange={e => setForm(p => ({ ...p, description: e.target.value }))}
-                  placeholder="Enter full description"
-                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">Fabric Composition</label>
-                  <input
-                    type="text"
-                    value={form.fabric_composition}
-                    onChange={e => setForm(p => ({ ...p, fabric_composition: e.target.value }))}
-                    placeholder="Enter fabric composition"
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">Care Instructions</label>
-                  <input
-                    type="text"
-                    value={form.care_instructions}
-                    onChange={e => setForm(p => ({ ...p, care_instructions: e.target.value }))}
-                    placeholder="Enter care instructions"
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">Available Sizes (Comma-separated)</label>
-                  <input
-                    type="text"
-                    value={form.available_sizes}
-                    onChange={e => setForm(p => ({ ...p, available_sizes: e.target.value }))}
-                    placeholder="Enter available sizes (e.g. S, M, L, XL)"
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">Available Colors (Comma-separated)</label>
-                  <input
-                    type="text"
-                    value={form.available_colors}
-                    onChange={e => setForm(p => ({ ...p, available_colors: e.target.value }))}
-                    placeholder="Enter available colors (e.g. Navy Blue, White)"
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">
-                  Min Order Quantity (Pieces)
-                </label>
-                <input
-                  type="number"
-                  min="1"
-                  value={form.min_order_quantity}
-                  onChange={e => setForm(p => ({ ...p, min_order_quantity: e.target.value }))}
-                  placeholder="Enter min order quantity (e.g. 50)"
-                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
+                  onChange={e => setForm(p => ({ ...p, description: e.target.value, short_description: e.target.value }))}
+                  placeholder="Enter product description"
+                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm text-gray-900 bg-white placeholder:text-gray-400 focus:border-black outline-none"
                 />
               </div>
 

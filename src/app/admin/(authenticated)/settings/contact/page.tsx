@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Phone, Mail, MapPin, MessageCircle, Clock, Globe, Save, CheckCircle2, AlertCircle, ArrowLeft, ExternalLink } from 'lucide-react'
+import { Phone, Mail, MapPin, MessageCircle, Clock, Globe, Save, CheckCircle2, AlertCircle, ArrowLeft, ExternalLink, Share2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { BRAND } from '@/lib/constants'
 
@@ -22,6 +22,10 @@ export default function AdminContactSettingsPage() {
     pincode: '',
     google_maps_url: '',
     working_hours: '',
+    instagram_url: '',
+    facebook_url: '',
+    linkedin_url: '',
+    whatsapp_url: '',
   })
 
   useEffect(() => {
@@ -47,6 +51,10 @@ export default function AdminContactSettingsPage() {
             pincode: loaded.pincode || prev.pincode,
             google_maps_url: loaded.google_maps_url || prev.google_maps_url,
             working_hours: loaded.working_hours || prev.working_hours,
+            instagram_url: loaded.instagram_url || '',
+            facebook_url: loaded.facebook_url || '',
+            linkedin_url: loaded.linkedin_url || '',
+            whatsapp_url: loaded.whatsapp_url || '',
           }))
         }
       } catch (e: any) {
@@ -78,6 +86,10 @@ export default function AdminContactSettingsPage() {
         { key: 'pincode', value: form.pincode, label: 'Pincode', category: 'contact' },
         { key: 'google_maps_url', value: form.google_maps_url, label: 'Google Maps URL', category: 'contact' },
         { key: 'working_hours', value: form.working_hours, label: 'Working Hours', category: 'contact' },
+        { key: 'instagram_url', value: form.instagram_url, label: 'Instagram URL', category: 'social' },
+        { key: 'facebook_url', value: form.facebook_url, label: 'Facebook URL', category: 'social' },
+        { key: 'linkedin_url', value: form.linkedin_url, label: 'LinkedIn URL', category: 'social' },
+        { key: 'whatsapp_url', value: form.whatsapp_url, label: 'WhatsApp URL', category: 'social' },
       ]
 
       for (const item of entries) {
@@ -288,6 +300,61 @@ export default function AdminContactSettingsPage() {
               placeholder="Monday – Saturday: 9:00 AM – 7:30 PM"
               className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
             />
+          </div>
+        </div>
+
+        {/* Social Media & WhatsApp Links Card */}
+        <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-4">
+          <div className="flex items-center gap-2.5 pb-3 border-b border-gray-100">
+            <Share2 className="w-5 h-5 text-gray-700" />
+            <h2 className="font-bold text-gray-900 text-base">Social Media & Public Links</h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 mb-1">Instagram Profile URL</label>
+              <input
+                type="url"
+                value={form.instagram_url}
+                onChange={e => setForm(p => ({ ...p, instagram_url: e.target.value }))}
+                placeholder="https://instagram.com/your_handle"
+                className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 mb-1">Facebook Page URL</label>
+              <input
+                type="url"
+                value={form.facebook_url}
+                onChange={e => setForm(p => ({ ...p, facebook_url: e.target.value }))}
+                placeholder="https://facebook.com/your_page"
+                className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 mb-1">LinkedIn Company URL</label>
+              <input
+                type="url"
+                value={form.linkedin_url}
+                onChange={e => setForm(p => ({ ...p, linkedin_url: e.target.value }))}
+                placeholder="https://linkedin.com/company/your_company"
+                className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 mb-1">WhatsApp Direct Link (Optional)</label>
+              <input
+                type="url"
+                value={form.whatsapp_url}
+                onChange={e => setForm(p => ({ ...p, whatsapp_url: e.target.value }))}
+                placeholder="https://wa.me/919287342297"
+                className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
+              />
+              <p className="text-[11px] text-gray-400 mt-1">Leave blank to use WhatsApp Number automatically</p>
+            </div>
           </div>
         </div>
 

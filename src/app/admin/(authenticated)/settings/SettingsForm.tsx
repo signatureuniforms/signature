@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Save, CheckCircle2, AlertCircle, Phone, Globe, MapPin, Loader2 } from 'lucide-react'
+import { Save, CheckCircle2, AlertCircle, Phone, Globe, MapPin, Loader2, Share2 } from 'lucide-react'
 
 interface SettingsFormProps {
   initialSettings: Record<string, string>
@@ -27,6 +27,10 @@ export default function SettingsForm({ initialSettings }: SettingsFormProps) {
       initialSettings.google_maps_url ||
       'https://maps.google.com/?q=SKM+Road+Kodakara+Thrissur+Kerala',
     map_embed_url: initialSettings.map_embed_url || initialSettings.google_maps_embed || '',
+    instagram_url: initialSettings.instagram_url || '',
+    facebook_url: initialSettings.facebook_url || '',
+    linkedin_url: initialSettings.linkedin_url || '',
+    whatsapp_url: initialSettings.whatsapp_url || '',
   })
 
   const handleSave = async (e: React.FormEvent) => {
@@ -272,6 +276,71 @@ export default function SettingsForm({ initialSettings }: SettingsFormProps) {
             <p className="text-[11px] text-gray-500 mt-1">
               This map will display in full width at the bottom of the contact location section. You can paste a Google Maps embed URL, standard share link, or iframe code.
             </p>
+          </div>
+        </div>
+
+        {/* Social Media Links */}
+        <div className="space-y-4 pt-4 border-t border-gray-100">
+          <h2 className="text-sm font-bold text-gray-900 border-b border-gray-100 pb-2 uppercase tracking-wider flex items-center gap-2">
+            <Share2 className="w-4 h-4 text-[#FFD700]" />
+            Social Media & WhatsApp Links
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">
+                Instagram Profile URL
+              </label>
+              <input
+                type="url"
+                value={form.instagram_url}
+                onChange={(e) => setForm({ ...form, instagram_url: e.target.value })}
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-black"
+                placeholder="https://instagram.com/your_handle"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">
+                Facebook Page URL
+              </label>
+              <input
+                type="url"
+                value={form.facebook_url}
+                onChange={(e) => setForm({ ...form, facebook_url: e.target.value })}
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-black"
+                placeholder="https://facebook.com/your_page"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">
+                LinkedIn Profile / Company URL
+              </label>
+              <input
+                type="url"
+                value={form.linkedin_url}
+                onChange={(e) => setForm({ ...form, linkedin_url: e.target.value })}
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-black"
+                placeholder="https://linkedin.com/company/your_company"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">
+                WhatsApp Direct Link (Optional)
+              </label>
+              <input
+                type="url"
+                value={form.whatsapp_url}
+                onChange={(e) => setForm({ ...form, whatsapp_url: e.target.value })}
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-black"
+                placeholder="https://wa.me/919287342297"
+              />
+              <p className="text-[11px] text-gray-400 mt-1">
+                Leave empty to automatically generate from the WhatsApp Dispatch Number above
+              </p>
+            </div>
           </div>
         </div>
 

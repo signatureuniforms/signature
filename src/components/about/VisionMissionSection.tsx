@@ -68,7 +68,7 @@ export default function VisionMissionSection({ data }: VisionMissionSectionProps
               initial={{ opacity: 0, y: 30 }}
               animate={shouldReduceMotion ? { opacity: 1, y: 0 } : isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 0.7, delay: 0.15, ease: editorialEase }}
-              className="group relative rounded-none p-8 sm:p-10 bg-[#171717] border border-[#2A2A2A] hover:border-[#D4AF37]/40 transition-all duration-300 shadow-xl hover:shadow-[0_8px_32px_rgba(212,175,55,0.08)] flex flex-col justify-between"
+              className="group relative rounded-none p-8 sm:p-10 bg-[#171717]  transition-all duration-300 shadow-xl hover:shadow-[0_8px_32px_rgba(212,175,55,0.08)] flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center gap-3 mb-6">
@@ -101,7 +101,7 @@ export default function VisionMissionSection({ data }: VisionMissionSectionProps
               initial={{ opacity: 0, y: 30 }}
               animate={shouldReduceMotion ? { opacity: 1, y: 0 } : isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 0.7, delay: 0.25, ease: editorialEase }}
-              className="group relative rounded-none p-8 sm:p-10 bg-[#171717] border border-[#2A2A2A] hover:border-[#D4AF37]/40 transition-all duration-300 shadow-xl hover:shadow-[0_8px_32px_rgba(212,175,55,0.08)] flex flex-col justify-between"
+              className="group relative rounded-none p-8 sm:p-10 bg-[#171717] transition-all duration-300 shadow-xl hover:shadow-[0_8px_32px_rgba(212,175,55,0.08)] flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center gap-3 mb-6">

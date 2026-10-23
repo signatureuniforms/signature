@@ -23,6 +23,13 @@ export default function TrustedBrandsSection({ data }: TrustedBrandsSectionProps
   // Smooth editorial easing curve
   const editorialEase = [0.22, 1, 0.36, 1] as const
 
+  // Ensure enough logos in each track half so it comfortably overflows any mobile screen width
+  const baseLogos = data.logos
+  const repeatedLogos = [...baseLogos]
+  while (repeatedLogos.length < 6) {
+    repeatedLogos.push(...baseLogos)
+  }
+
   return (
     <section
       ref={sectionRef}
@@ -60,25 +67,43 @@ export default function TrustedBrandsSection({ data }: TrustedBrandsSectionProps
         </motion.div>
 
         {/* Mobile View: Infinite Continuous Horizontal Slider in the Same Row */}
-        <div className="md:hidden relative w-full overflow-hidden py-4 -mx-2 sm:-mx-6">
-          {/* Gradient fade edge masks for smooth entrance & exit */}
-          <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-[#0A0A0A] to-transparent z-10" />
-          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-[#0A0A0A] to-transparent z-10" />
+        <div className="md:hidden relative w-full overflow-hidden py-4">
+          <div className="animate-infinite-scroll flex items-center">
+            {/* Track 1 */}
+            <div className="flex shrink-0 items-center gap-8 sm:gap-10 pr-8 sm:pr-10">
+              {repeatedLogos.map((brand, idx) => (
+                <div
+                  key={`track1-${brand.id || 'logo'}-${idx}`}
+                  className="shrink-0 flex items-center justify-center px-2 py-1 h-10"
+                >
+                  <img
+                    src={brand.image_url}
+                    alt={brand.name || 'Trusted Brand'}
+                    className="h-8 sm:h-9 w-auto max-w-[125px] object-contain opacity-85 filter drop-shadow-[0_2px_8px_rgba(255,255,255,0.05)]"
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
+              ))}
+            </div>
 
-          <div className="animate-infinite-scroll flex items-center gap-8 sm:gap-10">
-            {[...data.logos, ...data.logos, ...data.logos, ...data.logos].map((brand, idx) => (
-              <div
-                key={`${brand.id || 'logo'}-${idx}`}
-                className="shrink-0 flex items-center justify-center px-2 py-1"
-              >
-                <img
-                  src={brand.image_url}
-                  alt={brand.name || 'Trusted Brand'}
-                  className="h-8 sm:h-9 w-auto max-w-[125px] object-contain opacity-85 filter drop-shadow-[0_2px_8px_rgba(255,255,255,0.05)]"
-                  loading="lazy"
-                />
-              </div>
-            ))}
+            {/* Track 2 (Identical duplicate for seamless 100% smooth loop) */}
+            <div className="flex shrink-0 items-center gap-8 sm:gap-10 pr-8 sm:pr-10" aria-hidden="true">
+              {repeatedLogos.map((brand, idx) => (
+                <div
+                  key={`track2-${brand.id || 'logo'}-${idx}`}
+                  className="shrink-0 flex items-center justify-center px-2 py-1 h-10"
+                >
+                  <img
+                    src={brand.image_url}
+                    alt={brand.name || 'Trusted Brand'}
+                    className="h-8 sm:h-9 w-auto max-w-[125px] object-contain opacity-85 filter drop-shadow-[0_2px_8px_rgba(255,255,255,0.05)]"
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 

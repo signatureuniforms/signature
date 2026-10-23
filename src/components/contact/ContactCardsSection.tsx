@@ -75,121 +75,145 @@ export default function ContactCardsSection({ contactInfo = {} }: ContactCardsSe
           </h1>
         </motion.div>
 
-        {/* 3 Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6">
-          {/* Card 1: Office */}
+        {/* 2-Column Editorial Contact & Address Section (Centered, No Boxes) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 lg:gap-16 pt-4 pb-8 sm:pb-12 max-w-4xl mx-auto">
+          {/* LEFT SIDE: Contact Details ("WANT TO TALK?" & "SOCIAL MEDIA") */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.05 }}
-            className="bg-[#171717] rounded-none p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 shadow-xl group min-h-[220px]"
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="flex flex-col items-center text-center space-y-10"
           >
-            <div>
-              <div className="flex items-center gap-2.5 text-white font-medium text-base mb-3.5">
-                <div className="w-8 h-8 rounded-full bg-[#0A0A0A] flex items-center justify-center text-[#D4AF37] shrink-0 transition-colors">
-                  <Building2 className="w-4 h-4" />
-                </div>
-                <span className="tracking-wide">Office</span>
+            {/* WANT TO TALK? */}
+            <div className="flex flex-col items-start text-center w-full">
+              <h2
+                className="text-base sm:text-lg md:text-xl font-serif tracking-[0.2em] text-white uppercase font-bold mb-4 text-center"
+                style={{ fontFamily: "'Regular-Light', serif", letterSpacing: '0.2em' }}
+              >
+                Want to Talk?
+              </h2>
+
+              <div className="space-y-2.5 flex flex-col items-center">
+                <a
+                  href={`tel:${salesPhone.replace(/\s+/g, '')}`}
+                  className="text-2xl sm:text-3xl md:text-4xl font-serif text-white hover:text-[#D4AF37] transition-colors block font-normal tracking-wide leading-tight text-center"
+                  style={{ fontFamily: "'Regular-Light', serif" }}
+                >
+                  {salesPhone.startsWith('+') ? salesPhone : `+91 ${salesPhone}`}
+                </a>
+
+                {supportPhone && supportPhone !== salesPhone && (
+                  <a
+                    href={`tel:${supportPhone.replace(/\s+/g, '')}`}
+                    className="text-2xl sm:text-3xl md:text-4xl font-serif text-white hover:text-[#D4AF37] transition-colors block font-normal tracking-wide leading-tight text-center"
+                    style={{ fontFamily: "'Regular-Light', serif" }}
+                  >
+                    {supportPhone.startsWith('+') ? supportPhone : `+91 ${supportPhone}`}
+                  </a>
+                )}
               </div>
-              <p className="text-xs sm:text-sm text-[#A3A3A3] leading-relaxed">
+
+              {/* Email & WhatsApp Link */}
+              <div className="mt-5 flex flex-wrap items-center justify-center gap-3.5 text-xs sm:text-sm text-[#A3A3A3]">
+                <a
+                  href={`mailto:${salesEmail}`}
+                  className="hover:text-[#D4AF37] transition-colors underline-offset-4 hover:underline"
+                >
+                  {salesEmail}
+                </a>
+                <span className="text-[#333]">•</span>
+                <a
+                  href={waUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-[#25D366] hover:text-[#32E675] font-medium transition-colors"
+                >
+                  <MessageCircle className="w-4 h-4 fill-[#25D366]" />
+                  <span>WhatsApp Us</span>
+                </a>
+              </div>
+            </div>
+
+            {/* SOCIAL MEDIA */}
+            <div className="flex flex-col items-start text-center w-full pt-1">
+              <h2
+                className="text-base sm:text-lg md:text-xl font-serif tracking-[0.2em] text-white uppercase font-bold mb-4 text-center"
+                style={{ fontFamily: "'Regular-Light', serif", letterSpacing: '0.2em' }}
+              >
+                Social Media
+              </h2>
+
+              <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-5 text-sm text-[#A3A3A3]">
+                <a
+                  href={contactInfo.instagram_url || 'https://instagram.com'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#D4AF37] transition-colors uppercase tracking-wider text-xs font-medium"
+                >
+                  Instagram
+                </a>
+                <span className="text-[#333]">/</span>
+                <a
+                  href={contactInfo.facebook_url || 'https://facebook.com'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#D4AF37] transition-colors uppercase tracking-wider text-xs font-medium"
+                >
+                  Facebook
+                </a>
+                <span className="text-[#333]">/</span>
+                <a
+                  href={contactInfo.linkedin_url || 'https://linkedin.com'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#D4AF37] transition-colors uppercase tracking-wider text-xs font-medium"
+                >
+                  LinkedIn
+                </a>
+                <span className="text-[#333]">/</span>
+                <a
+                  href={contactInfo.whatsapp_url || waUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#25D366] transition-colors uppercase tracking-wider text-xs font-medium"
+                >
+                  WhatsApp
+                </a>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* RIGHT SIDE: Address */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="flex flex-col items-center text-center space-y-6"
+          >
+            <div className="flex flex-col items-start text-center w-full">
+              <h2
+                className="text-base sm:text-lg md:text-xl font-serif tracking-[0.2em] text-white uppercase font-bold mb-4 text-center"
+                style={{ fontFamily: "'Regular-Light', serif", letterSpacing: '0.2em' }}
+              >
+                Address
+              </h2>
+
+              <p className="text-base sm:text-lg md:text-xl text-neutral-300 font-light leading-relaxed whitespace-pre-line max-w-sm text-center">
                 {corporateAddress}
               </p>
             </div>
 
-            <div className="pt-6 mt-auto">
-              <a
-                href={mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-white hover:text-[#D4AF37] transition-colors cursor-pointer group/link"
-              >
-                <span>Get Directions</span>
-                <ArrowUpRight className="w-4 h-4 text-[#D4AF37] group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
-              </a>
-            </div>
-          </motion.div>
 
-          {/* Card 2: Contact Sales */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="bg-[#171717] rounded-none p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 shadow-xl group min-h-[220px]"
-          >
-            <div>
-              <div className="flex items-center gap-2.5 text-white font-medium text-base mb-3.5">
-                <div className="w-8 h-8 rounded-full bg-[#0A0A0A] flex items-center justify-center text-[#D4AF37] shrink-0 transition-colors">
-                  <PhoneCall className="w-4 h-4" />
-                </div>
-                <span className="tracking-wide">Contact Sales</span>
+            {/* {contactInfo.working_hours && (
+              <div className="pt-4 flex flex-col items-start text-start w-full max-w-xs">
+                <span className="text-xs uppercase tracking-wider text-[#737373] block mb-1">
+                  Working Hours
+                </span>
+                <p className="text-sm text-neutral-400 font-light text-start">
+                  {contactInfo.working_hours}
+                </p>
               </div>
-
-              <a
-                href={`tel:${salesPhone.replace(/\s+/g, '')}`}
-                className="text-xs sm:text-sm text-white hover:text-[#D4AF37] transition-colors block mb-3 font-mono font-medium"
-              >
-                {salesPhone.startsWith('+') ? salesPhone : `+91 ${salesPhone}`}
-              </a>
-
-              {/* Dedicated WhatsApp Pill Button (border-radius: none) */}
-              <a
-                href={waUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-[#0A0A0A] hover:bg-[#25D366] text-[#A3A3A3] hover:text-white rounded-none text-xs font-semibold transition-all mb-3 group/wa shadow-inner cursor-pointer"
-              >
-                <MessageCircle className="w-4 h-4 text-[#25D366] group-hover/wa:text-white transition-colors" />
-                <span>WhatsApp</span>
-              </a>
-            </div>
-
-            <div className="pt-2 mt-auto">
-              <a
-                href={`mailto:${salesEmail}`}
-                className="text-xs text-[#A3A3A3] hover:text-[#D4AF37] transition-colors block truncate"
-                title={salesEmail}
-              >
-                {salesEmail}
-              </a>
-            </div>
-          </motion.div>
-
-          {/* Card 3: Contact Support */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="bg-[#171717] rounded-none p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 shadow-xl group min-h-[220px]"
-          >
-            <div>
-              <div className="flex items-center gap-2.5 text-white font-medium text-base mb-3.5">
-                <div className="w-8 h-8 rounded-full bg-[#0A0A0A] flex items-center justify-center text-[#D4AF37] shrink-0 transition-colors">
-                  <Headphones className="w-4 h-4" />
-                </div>
-                <span className="tracking-wide">Contact Support</span>
-              </div>
-
-              <a
-                href={`tel:${supportPhone.replace(/\s+/g, '')}`}
-                className="text-xs sm:text-sm text-white hover:text-[#D4AF37] transition-colors block mb-3 font-mono font-medium"
-              >
-                {supportPhone.startsWith('+') ? supportPhone : `+91 ${supportPhone}`}
-              </a>
-
-              <a
-                href={`mailto:${supportEmail}`}
-                className="text-xs text-[#A3A3A3] hover:text-[#D4AF37] transition-colors block break-all mb-2"
-                title={supportEmail}
-              >
-                {supportEmail}
-              </a>
-            </div>
-
-            <div className="pt-2 mt-auto">
-              <span className="text-[11px] text-[#A3A3A3]/60 block">
-                {contactInfo.working_hours || 'Mon - Sat: 9:00 AM - 7:00 PM'}
-              </span>
-            </div>
+            )} */}
           </motion.div>
         </div>
       </div>

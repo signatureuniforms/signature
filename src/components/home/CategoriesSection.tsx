@@ -267,7 +267,7 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
                   href={`/categories/${cat.slug}`}
                   onMouseEnter={handlePause}
                   onMouseLeave={handleResume}
-                  className="group relative block w-full h-[460px] sm:h-[500px] lg:h-[540px] rounded-xl overflow-hidden bg-[#171717] border border-[#2A2A2A] hover:border-[#D4AF37]/50 transition-all cursor-pointer"
+                  className="group relative block w-full h-[460px] sm:h-[500px] lg:h-[540px] rounded-xl overflow-hidden bg-[#171717]  hover:border-[#D4AF37]/50 transition-all cursor-pointer"
                   aria-label={cat.name}
                 >
                   {/* Background Image - Served in pristine full-resolution directly from Cloudinary CDN */}

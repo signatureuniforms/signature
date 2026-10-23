@@ -72,21 +72,25 @@ export default function AdminCategoriesPage() {
   const openEditModal = (cat: Category) => {
     setEditingCategory(cat)
     setForm({
-      name: cat.name,
-      slug: cat.slug,
+      name: cat.name || '',
+      slug: cat.slug || '',
       description: cat.description || '',
       image_url: cat.image?.secure_url || cat.image_url || '',
       image_id: cat.image_id || null,
       position: cat.position ?? cat.display_order ?? 0,
-      is_enabled: cat.is_enabled,
-      is_featured: cat.is_featured,
+      is_enabled: cat.is_enabled ?? true,
+      is_featured: cat.is_featured ?? false,
     })
     setShowModal(true)
   }
 
   const handleNameChange = (name: string) => {
-    const slug = name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
-    setForm(prev => ({ ...prev, name, slug }))
+    if (!editingCategory) {
+      const slug = name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+      setForm(prev => ({ ...prev, name, slug }))
+    } else {
+      setForm(prev => ({ ...prev, name }))
+    }
   }
 
   const handleSave = async (e: React.FormEvent) => {
@@ -384,7 +388,7 @@ export default function AdminCategoriesPage() {
                   value={form.name}
                   onChange={(e) => handleNameChange(e.target.value)}
                   placeholder="e.g. Hotel Uniform"
-                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
+                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm text-gray-900 bg-white placeholder:text-gray-400 focus:border-black outline-none"
                 />
               </div>
 
@@ -398,7 +402,7 @@ export default function AdminCategoriesPage() {
                   value={form.slug}
                   onChange={(e) => setForm({ ...form, slug: e.target.value })}
                   placeholder="e.g. hotel-uniform"
-                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-xs font-mono focus:border-black outline-none bg-gray-50"
+                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-xs font-mono text-gray-900 bg-gray-50 placeholder:text-gray-400 focus:border-black outline-none"
                 />
               </div>
 
@@ -411,7 +415,7 @@ export default function AdminCategoriesPage() {
                   value={form.description}
                   onChange={(e) => setForm({ ...form, description: e.target.value })}
                   placeholder="Wholesale Hotel Uniform Manufacturer & Supplier"
-                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
+                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm text-gray-900 bg-white placeholder:text-gray-400 focus:border-black outline-none"
                 />
               </div>
 
@@ -424,7 +428,7 @@ export default function AdminCategoriesPage() {
                     type="number"
                     value={form.position}
                     onChange={(e) => setForm({ ...form, position: Number(e.target.value) })}
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm text-gray-900 bg-white placeholder:text-gray-400 focus:border-black outline-none"
                   />
                 </div>
                 <div className="flex flex-col justify-end space-y-2 pt-2">

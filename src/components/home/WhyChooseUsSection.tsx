@@ -192,7 +192,7 @@ export default function WhyChooseUsSection({ items, content }: WhyChooseUsSectio
               className="w-full flex items-center justify-center my-auto"
             >
               <div
-                className="relative w-full rounded-none overflow-hidden bg-[#171717] border border-[#2A2A2A] shadow-[0_20px_50px_rgba(0,0,0,0.85)] group transition-[height] duration-300 ease-out"
+                className="relative w-full rounded-none overflow-hidden bg-[#171717] rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.85)] group transition-[height] duration-300 ease-out"
                 style={{
                   height: accordionHeight ? `${accordionHeight}px` : undefined,
                   minHeight: accordionHeight ? `${accordionHeight}px` : undefined,
@@ -202,7 +202,7 @@ export default function WhyChooseUsSection({ items, content }: WhyChooseUsSectio
                 <img
                   src={getHighQualityImageUrl(content?.image_url)}
                   alt={headingText}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 rounded-xl"
                   loading="eager"
                   decoding="async"
                   style={{ imageRendering: '-webkit-optimize-contrast' }}

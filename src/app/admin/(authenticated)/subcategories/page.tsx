@@ -365,7 +365,7 @@ export default function AdminSubcategoriesPage() {
                   value={form.category_id}
                   onChange={e => setForm(prev => ({ ...prev, category_id: e.target.value }))}
                   required
-                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none bg-white"
+                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm text-gray-900 focus:border-black outline-none bg-white"
                 >
                   <option value="" disabled>Select parent category</option>
                   {categories.map(c => (
@@ -384,7 +384,7 @@ export default function AdminSubcategoriesPage() {
                   value={form.name}
                   onChange={e => handleNameChange(e.target.value)}
                   placeholder="e.g. Primary School Blazers"
-                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
+                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm text-gray-900 bg-white placeholder:text-gray-400 focus:border-black outline-none"
                 />
               </div>
 
@@ -396,7 +396,7 @@ export default function AdminSubcategoriesPage() {
                   value={form.slug}
                   onChange={e => setForm(prev => ({ ...prev, slug: e.target.value }))}
                   placeholder="e.g. primary-school-blazers"
-                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm font-mono text-xs focus:border-black outline-none bg-gray-50"
+                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm font-mono text-xs text-gray-900 focus:border-black outline-none bg-gray-50 placeholder:text-gray-400"
                 />
               </div>
 
@@ -407,7 +407,7 @@ export default function AdminSubcategoriesPage() {
                   value={form.description}
                   onChange={e => setForm(prev => ({ ...prev, description: e.target.value }))}
                   placeholder="Short description for this subcategory..."
-                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
+                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm text-gray-900 bg-white placeholder:text-gray-400 focus:border-black outline-none"
                 />
               </div>
 
@@ -418,7 +418,7 @@ export default function AdminSubcategoriesPage() {
                     type="number"
                     value={form.position}
                     onChange={e => setForm(prev => ({ ...prev, position: Number(e.target.value) }))}
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:border-black outline-none"
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm text-gray-900 bg-white placeholder:text-gray-400 focus:border-black outline-none"
                   />
                 </div>
 

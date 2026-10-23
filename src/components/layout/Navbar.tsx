@@ -140,7 +140,7 @@ export default function Navbar() {
             <Link
               href="/contact"
               id="navbar-enquiry-now-cta"
-              className="btn-gold-sweep inline-flex items-center justify-center gap-2 py-2.5 px-6 bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0A0A] font-semibold text-[15px] rounded-none tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 hover:shadow-[0_4px_16px_rgba(212,175,55,0.3)] cursor-pointer"
+              className="btn-gold-sweep inline-flex items-center justify-center gap-2 py-2.5 px-6 bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0A0A]  text-[15px] rounded-md tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 hover:shadow-[0_4px_16px_rgba(212,175,55,0.3)] cursor-pointer"
             >
               Enquiry Now
             </Link>

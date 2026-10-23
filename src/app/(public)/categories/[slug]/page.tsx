@@ -118,7 +118,7 @@ export default async function CategoryDetailPage({ params }: Props) {
           <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 shrink-0">
             <BulkQuoteButton
               category={category.name}
-              className="btn-gold-sweep inline-flex items-center justify-center gap-2 px-6 py-3 rounded-none bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0A0A] font-semibold text-xs sm:text-sm tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 shadow-md hover:shadow-[0_4px_16px_rgba(212,175,55,0.3)] whitespace-nowrap cursor-pointer"
+              className="btn-gold-sweep inline-flex items-center justify-center gap-2 px-6 py-3 rounded-md bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0A0A] font-semibold text-xs sm:text-sm tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 shadow-md hover:shadow-[0_4px_16px_rgba(212,175,55,0.3)] whitespace-nowrap cursor-pointer"
             >
               Request a Bulk Quotation
             </BulkQuoteButton>
@@ -126,7 +126,7 @@ export default async function CategoryDetailPage({ params }: Props) {
               href={categoryWhatsAppUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-none bg-[#25D366] hover:bg-[#20ba59] text-white font-semibold text-xs sm:text-sm tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 shadow-md hover:shadow-[0_4px_16px_rgba(37,211,102,0.3)] whitespace-nowrap cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-md bg-[#25D366] hover:bg-[#20ba59] text-white font-semibold text-xs sm:text-sm tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 shadow-md hover:shadow-[0_4px_16px_rgba(37,211,102,0.3)] whitespace-nowrap cursor-pointer"
             >
               <MessageCircle className="w-4 h-4 fill-white" />
               <span>WhatsApp Us</span>
@@ -166,7 +166,7 @@ export default async function CategoryDetailPage({ params }: Props) {
               return (
                 <div
                   key={product.id}
-                  className="group bg-[#171717] border border-[#2A2A2A] hover:border-[#D4AF37]/50 transition-all duration-300 rounded-none flex flex-col justify-between overflow-hidden shadow-lg hover:shadow-[0_8px_30px_rgba(212,175,55,0.15)]"
+                  className="group bg-[#171717] rounded-xl transition-all duration-300 rounded-none flex flex-col justify-between overflow-hidden shadow-lg hover:shadow-[0_8px_30px_rgba(212,175,55,0.15)]"
                 >
                   <div className="block">
                     <div className="aspect-[4/3] bg-neutral-900 relative overflow-hidden rounded-none">
@@ -200,7 +200,7 @@ export default async function CategoryDetailPage({ params }: Props) {
                       <BulkQuoteButton
                         category={category.name}
                         productName={product.name}
-                        className="btn-gold-sweep inline-flex items-center justify-center gap-1.5 py-2.5 px-3 bg-[#0A0A0A] hover:bg-[#D4AF37] text-white hover:text-[#0A0A0A] font-semibold text-xs tracking-wide transition-all duration-200 rounded-none text-center cursor-pointer whitespace-nowrap shadow-sm border border-[#2A2A2A]"
+                        className="btn-gold-sweep inline-flex items-center justify-center gap-1.5 py-2.5 px-3 bg-[#0A0A0A] hover:bg-[#D4AF37] text-white hover:text-[#0A0A0A] font-semibold text-xs tracking-wide transition-all duration-200 rounded-md text-center cursor-pointer whitespace-nowrap shadow-sm border border-[#2A2A2A]"
                       >
                         <span>Request a Quotation</span>
                       </BulkQuoteButton>

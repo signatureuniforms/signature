@@ -258,104 +258,13 @@ export default function NewProductPage() {
 
           <div>
             <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">
-              Short Description / Highlight
-            </label>
-            <input
-              type="text"
-              value={form.short_description}
-              onChange={(e) => setForm({ ...form, short_description: e.target.value })}
-              placeholder="Enter short description"
-              className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-black"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">
-              Full Product Specifications & Description
+              Description
             </label>
             <textarea
               rows={4}
               value={form.description}
-              onChange={(e) => setForm({ ...form, description: e.target.value })}
-              placeholder="Enter full description"
-              className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-black"
-            />
-          </div>
-        </div>
-
-        {/* Specifications */}
-        <div className="space-y-4 pt-4 border-t border-gray-100">
-          <h2 className="text-sm font-bold text-gray-900 border-b border-gray-100 pb-2 uppercase tracking-wider">
-            Technical & Fabric Specifications
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">
-                Fabric Composition
-              </label>
-              <input
-                type="text"
-                value={form.fabric_composition}
-                onChange={(e) => setForm({ ...form, fabric_composition: e.target.value })}
-                placeholder="Enter fabric composition"
-                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-black"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">
-                Care Instructions
-              </label>
-              <input
-                type="text"
-                value={form.care_instructions}
-                onChange={(e) => setForm({ ...form, care_instructions: e.target.value })}
-                placeholder="Enter care instructions"
-                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-black"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">
-                Available Sizes (comma separated)
-              </label>
-              <input
-                type="text"
-                value={form.available_sizes}
-                onChange={(e) => setForm({ ...form, available_sizes: e.target.value })}
-                placeholder="Enter available sizes (e.g. S, M, L, XL)"
-                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-black"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">
-                Available Colors (comma separated)
-              </label>
-              <input
-                type="text"
-                value={form.available_colors}
-                onChange={(e) => setForm({ ...form, available_colors: e.target.value })}
-                placeholder="Enter available colors (e.g. Navy Blue, White)"
-                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-black"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Min Order Quantity */}
-        <div className="space-y-4 pt-4 border-t border-gray-100">
-          <div>
-            <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">
-              Min Order Quantity (Pieces)
-            </label>
-            <input
-              type="number"
-              min="1"
-              value={form.min_order_quantity}
-              onChange={(e) => setForm({ ...form, min_order_quantity: e.target.value })}
-              placeholder="Enter min order quantity (e.g. 50)"
+              onChange={(e) => setForm({ ...form, description: e.target.value, short_description: e.target.value })}
+              placeholder="Enter product description"
               className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-black"
             />
           </div>

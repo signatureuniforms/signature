@@ -11,7 +11,7 @@ export default function AuthenticatedAdminLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen bg-[#F9FAFB] flex">
+    <div className="min-h-screen bg-[#F9FAFB] text-gray-900 flex">
       {/* Sidebar */}
       <AdminSidebar />
 

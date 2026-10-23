@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 import ProcessSection from '@/components/process/ProcessSection'
+import ProcessGetInTouchSection from '@/components/process/ProcessGetInTouchSection'
 import type { ProcessSectionContent, ProcessStep } from '@/types'
 
 export const metadata: Metadata = {
@@ -14,7 +15,7 @@ export const revalidate = 60
 async function getProcessPageData() {
   const supabase = await createClient()
 
-  const [headerRes, stepsRes] = await Promise.allSettled([
+  const [headerRes, stepsRes, settingsRes] = await Promise.allSettled([
     supabase
       .from('page_content')
       .select('*')
@@ -28,7 +29,18 @@ async function getProcessPageData() {
       .select('*')
       .eq('is_published', true)
       .order('position', { ascending: true }),
+
+    supabase
+      .from('site_settings')
+      .select('key, value'),
   ])
+
+  const contactInfo: Record<string, string> = {}
+  if (settingsRes.status === 'fulfilled' && settingsRes.value.data) {
+    settingsRes.value.data.forEach((s: { key: string; value: string | null }) => {
+      if (s.value) contactInfo[s.key] = s.value
+    })
+  }
 
   return {
     header:
@@ -39,15 +51,17 @@ async function getProcessPageData() {
       stepsRes.status === 'fulfilled' && stepsRes.value.data
         ? (stepsRes.value.data as ProcessStep[])
         : [],
+    contactInfo,
   }
 }
 
 export default async function ProcessPage() {
-  const { header, steps } = await getProcessPageData()
+  const { header, steps, contactInfo } = await getProcessPageData()
 
   return (
-    <div className="bg-[#0A0A0A] text-white min-h-screen pt-14 sm:pt-16 lg:pt-20 pb-16 sm:pb-24">
+    <div className="bg-[#0A0A0A] text-white min-h-screen pt-14 sm:pt-16 lg:pt-20">
       <ProcessSection header={header} steps={steps} />
+      <ProcessGetInTouchSection contactInfo={contactInfo} />
     </div>
   )
 }

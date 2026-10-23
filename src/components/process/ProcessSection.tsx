@@ -152,7 +152,7 @@ export default function ProcessSection({ header, steps }: ProcessSectionProps) {
                   {idx > 0 && (
                     <div className="hidden lg:block absolute left-1/2 -translate-x-1/2 -top-2 h-4 w-px bg-[#D4AF37]/30" />
                   )}
-                  <div className="bg-[#171717] rounded-2xl border border-[#2A2A2A] overflow-hidden hover:border-[#D4AF37]/40 transition-colors duration-500 shadow-xl">
+                  <div className="bg-[#171717] rounded-2xl overflow-hidden  transition-colors duration-500 shadow-xl">
                     <StepCard step={step} index={idx} />
                   </div>
                 </div>
