@@ -6,6 +6,12 @@ import { headers } from 'next/headers'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
+
+    // Anti-bot honeypot check
+    if (body.company_website_hp || body.hp_field) {
+      return NextResponse.json({ error: 'Invalid submission' }, { status: 400 })
+    }
+
     const parsed = schoolBulkEnquirySchema.safeParse(body)
 
     if (!parsed.success) {

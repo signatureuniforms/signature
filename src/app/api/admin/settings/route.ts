@@ -1,17 +1,41 @@
 import { NextResponse } from 'next/server'
-import { createClient as createServerClient } from '@/lib/supabase/server'
-import { createClient as createSupabaseAdmin } from '@supabase/supabase-js'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+
+async function verifyAdminAuth() {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    return { error: 'Unauthorized', status: 401 }
+  }
+
+  const serviceClient = createServiceClient()
+  const { data: profile } = await serviceClient
+    .from('admin_profiles')
+    .select('id, is_active')
+    .eq('user_id', user.id)
+    .eq('is_active', true)
+    .single()
+
+  if (!profile) {
+    return { error: 'Forbidden: Admin access required', status: 403 }
+  }
+
+  return { user, serviceClient }
+}
 
 export async function GET() {
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-    const supabase = serviceRoleKey
-      ? createSupabaseAdmin(supabaseUrl, serviceRoleKey)
-      : await createServerClient()
+    const auth = await verifyAdminAuth()
+    if ('error' in auth) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status })
+    }
 
-    const { data, error } = await supabase.from('site_settings').select('*')
+    const { serviceClient } = auth
+    const { data, error } = await serviceClient.from('site_settings').select('*')
     if (error) throw error
 
     const settings: Record<string, string> = {}
@@ -30,6 +54,11 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
+    const auth = await verifyAdminAuth()
+    if ('error' in auth) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status })
+    }
+
     const body = await req.json()
     const { form } = body
 
@@ -37,12 +66,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Invalid form data' }, { status: 400 })
     }
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-    const supabase = serviceRoleKey
-      ? createSupabaseAdmin(supabaseUrl, serviceRoleKey)
-      : await createServerClient()
-
+    const { serviceClient } = auth
     const now = new Date().toISOString()
     const updates: Array<{ key: string; value: string; category: string; updated_at: string }> = []
 
@@ -71,7 +95,7 @@ export async function POST(req: Request) {
     }
 
     for (const item of updates) {
-      const { error } = await supabase.from('site_settings').upsert(item, { onConflict: 'key' })
+      const { error } = await serviceClient.from('site_settings').upsert(item, { onConflict: 'key' })
       if (error) {
         console.error('Error saving setting:', item.key, error)
         throw new Error(`Failed to save ${item.key}: ${error.message}`)

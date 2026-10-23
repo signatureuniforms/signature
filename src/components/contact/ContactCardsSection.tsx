@@ -71,7 +71,7 @@ export default function ContactCardsSection({ contactInfo = {} }: ContactCardsSe
 
           {/* Unit / Company Heading */}
           <h1
-            className="text-center font-serif text-sm sm:text-base md:text-lg tracking-[0.24em] text-white uppercase font-normal max-w-xl leading-relaxed"
+            className="text-center font-serif text-md md:text-3xl tracking-[0.24em] text-white uppercase font-normal max-w-xl leading-relaxed"
             style={{ fontFamily: "'Regular-Light', serif", letterSpacing: '0.22em' }}
           >
             {unitTitle}
@@ -85,21 +85,21 @@ export default function ContactCardsSection({ contactInfo = {} }: ContactCardsSe
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="flex flex-col items-center text-center space-y-10"
+            className="flex flex-col items-start text-left space-y-10 w-full"
           >
             {/* WANT TO TALK? */}
-            <div className="flex flex-col items-start text-center w-full">
+            <div className="flex flex-col items-start text-left w-full">
               <h2
-                className="text-base sm:text-lg md:text-xl font-serif tracking-[0.2em] text-white uppercase font-bold mb-4 text-center"
+                className="text-base sm:text-lg md:text-xl font-serif tracking-[0.2em] text-white uppercase font-bold mb-4 text-left"
                 style={{ fontFamily: "'Regular-Light', serif", letterSpacing: '0.2em' }}
               >
                 Want to Talk?
               </h2>
 
-              <div className="space-y-2.5 flex flex-col items-center">
+              <div className="space-y-2.5 flex flex-col items-start text-left">
                 <a
                   href={`tel:${salesPhone.replace(/\s+/g, '')}`}
-                  className="text-2xl sm:text-3xl md:text-4xl font-serif text-white hover:text-[#D4AF37] transition-colors block font-normal tracking-wide leading-tight text-center"
+                  className="text-2xl sm:text-3xl md:text-4xl font-serif text-white hover:text-[#D4AF37] transition-colors block font-normal tracking-wide leading-tight text-left"
                   style={{ fontFamily: "'Regular-Light', serif" }}
                 >
                   {salesPhone.startsWith('+') ? salesPhone : `+91 ${salesPhone}`}
@@ -108,7 +108,7 @@ export default function ContactCardsSection({ contactInfo = {} }: ContactCardsSe
                 {supportPhone && supportPhone !== salesPhone && (
                   <a
                     href={`tel:${supportPhone.replace(/\s+/g, '')}`}
-                    className="text-2xl sm:text-3xl md:text-4xl font-serif text-white hover:text-[#D4AF37] transition-colors block font-normal tracking-wide leading-tight text-center"
+                    className="text-2xl sm:text-3xl md:text-4xl font-serif text-white hover:text-[#D4AF37] transition-colors block font-normal tracking-wide leading-tight text-left"
                     style={{ fontFamily: "'Regular-Light', serif" }}
                   >
                     {supportPhone.startsWith('+') ? supportPhone : `+91 ${supportPhone}`}
@@ -117,19 +117,18 @@ export default function ContactCardsSection({ contactInfo = {} }: ContactCardsSe
               </div>
 
               {/* Email & WhatsApp Link */}
-              <div className="mt-5 flex flex-wrap items-center justify-center gap-3.5 text-xs sm:text-sm text-[#A3A3A3]">
+              <div className="mt-5 flex flex-col items-start justify-start gap-2 text-xs sm:text-sm text-[#A3A3A3]">
                 <a
                   href={`mailto:${salesEmail}`}
-                  className="hover:text-[#D4AF37] transition-colors underline-offset-4 hover:underline"
+                  className="hover:text-[#D4AF37] transition-colors underline-offset-4 hover:underline text-left"
                 >
                   {salesEmail}
                 </a>
-                <span className="text-[#333]">•</span>
                 <a
                   href={waUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-[#25D366] hover:text-[#32E675] font-medium transition-colors"
+                  className="inline-flex items-center gap-1.5 text-[#25D366] hover:text-[#32E675] font-medium transition-colors text-left"
                 >
                   <MessageCircle className="w-4 h-4 fill-[#25D366]" />
                   <span>WhatsApp Us</span>
@@ -138,15 +137,15 @@ export default function ContactCardsSection({ contactInfo = {} }: ContactCardsSe
             </div>
 
             {/* SOCIAL MEDIA */}
-            <div className="flex flex-col items-start sm:items-center text-left sm:text-center w-full pt-1">
+            <div className="flex flex-col items-start text-left w-full pt-1">
               <h2
-                className="text-base sm:text-lg md:text-xl font-serif tracking-[0.2em] text-white uppercase font-bold mb-4 text-left sm:text-center w-full"
+                className="text-base sm:text-lg md:text-xl font-serif tracking-[0.2em] text-white uppercase font-bold mb-4 text-left w-full"
                 style={{ fontFamily: "'Regular-Light', serif", letterSpacing: '0.2em' }}
               >
                 Social Media
               </h2>
 
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-start sm:justify-center gap-3 sm:gap-4 md:gap-5 text-xs text-[#A3A3A3] w-full sm:w-auto">
+              <div className="flex flex-col items-start justify-start gap-3 text-xs sm:text-sm text-[#A3A3A3] w-full">
                 <a
                   href={contactInfo.instagram_url || 'https://instagram.com'}
                   target="_blank"
@@ -155,7 +154,6 @@ export default function ContactCardsSection({ contactInfo = {} }: ContactCardsSe
                 >
                   Instagram
                 </a>
-                <span className="hidden sm:inline text-[#333] select-none">/</span>
                 <a
                   href={contactInfo.facebook_url || 'https://facebook.com'}
                   target="_blank"
@@ -164,7 +162,6 @@ export default function ContactCardsSection({ contactInfo = {} }: ContactCardsSe
                 >
                   Facebook
                 </a>
-                <span className="hidden sm:inline text-[#333] select-none">/</span>
                 <a
                   href={contactInfo.linkedin_url || 'https://linkedin.com'}
                   target="_blank"
@@ -173,7 +170,6 @@ export default function ContactCardsSection({ contactInfo = {} }: ContactCardsSe
                 >
                   LinkedIn
                 </a>
-                <span className="hidden sm:inline text-[#333] select-none">/</span>
                 <a
                   href={contactInfo.whatsapp_url || waUrl}
                   target="_blank"

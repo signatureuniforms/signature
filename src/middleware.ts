@@ -31,6 +31,11 @@ export async function middleware(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname
 
+  // Protect all /api/admin/* endpoints
+  if (pathname.startsWith('/api/admin') && !user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   // Protect all /admin/* routes except /admin (login page)
   const isAdminRoute = pathname.startsWith('/admin')
   const isAdminLogin = pathname === '/admin' || pathname === '/admin/'

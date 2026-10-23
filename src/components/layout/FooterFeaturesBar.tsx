@@ -1,5 +1,6 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
 import { motion, type Variants } from 'framer-motion'
 import type { FooterFeatureItem } from '@/types'
 
@@ -36,6 +37,13 @@ const itemVariants: Variants = {
 }
 
 export default function FooterFeaturesBar({ items }: FooterFeaturesBarProps) {
+  const pathname = usePathname()
+
+  // Only show this features bar on the home page ('/'). On all other pages, hide it.
+  if (pathname !== '/') {
+    return null
+  }
+
   // Strict rule: No mock data and no fallback data.
   // If no items are present in DB, do not render this section.
   if (!items || items.length === 0) {

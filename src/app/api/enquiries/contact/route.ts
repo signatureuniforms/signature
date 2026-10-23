@@ -5,6 +5,12 @@ import { contactEnquirySchema } from '@/lib/validations'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
+
+    // Anti-bot honeypot check
+    if (body.company_website_hp || body.hp_field) {
+      return NextResponse.json({ error: 'Invalid submission' }, { status: 400 })
+    }
+
     const parsed = contactEnquirySchema.safeParse(body)
 
     if (!parsed.success) {

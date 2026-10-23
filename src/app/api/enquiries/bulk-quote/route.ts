@@ -28,6 +28,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Please select a uniform category.' }, { status: 400 })
     }
 
+    // Anti-bot honeypot check
+    const honeypot = (formData.get('company_hp') || formData.get('hp_field')) as string | null
+    if (honeypot && honeypot.trim().length > 0) {
+      return NextResponse.json({ error: 'Invalid submission' }, { status: 400 })
+    }
+
     const quantity = quantityRaw && !isNaN(parseInt(quantityRaw, 10)) ? parseInt(quantityRaw, 10) : null
 
     // Upload optional reference image to Cloudinary
@@ -35,6 +41,18 @@ export async function POST(request: NextRequest) {
     const imageFile = formData.get('image') as File | null
 
     if (imageFile && imageFile.size > 0 && typeof imageFile.arrayBuffer === 'function') {
+      // Maximum 10MB limit
+      const MAX_FILE_SIZE = 10 * 1024 * 1024
+      if (imageFile.size > MAX_FILE_SIZE) {
+        return NextResponse.json({ error: 'Uploaded image file must be smaller than 10MB.' }, { status: 400 })
+      }
+
+      // Valid image mime types only
+      const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/avif']
+      if (imageFile.type && !ALLOWED_MIME_TYPES.includes(imageFile.type.toLowerCase())) {
+        return NextResponse.json({ error: 'Please upload a valid image file (JPG, PNG, WEBP).' }, { status: 400 })
+      }
+
       try {
         const bytes = await imageFile.arrayBuffer()
         const buffer = Buffer.from(bytes)
