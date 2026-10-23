@@ -78,7 +78,8 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
   return (
     <section
       ref={sectionRef}
-      className="relative py-14 lg:py-24 bg-[#0A0A0A] text-white w-full overflow-hidden"
+      style={{ backgroundImage: 'none' }}
+      className="relative py-14 lg:py-24 bg-[#0A0A0A] text-white w-full overflow-hidden no-bg-grid"
       aria-labelledby="craftsmanship-heading"
     >
       {/* Background Decorative Gold Ambient Glows */}

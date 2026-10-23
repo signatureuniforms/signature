@@ -30,7 +30,7 @@ export default async function CategoriesPage() {
   )
 
   return (
-    <div className="bg-[#0A0A0A] text-white min-h-screen">
+    <div style={{ backgroundImage: 'none' }} className="bg-[#0A0A0A] text-white min-h-screen no-bg-grid" data-page="categories-page">
       {/* ─── Header: Content Left, Actions Right ────────────────────────────── */}
       <section className="pt-32 sm:pt-36 pb-12 sm:pb-16 px-4 sm:px-6 md:px-8 lg:px-10 w-full">
         <div className="w-full flex flex-col lg:flex-row lg:items-end justify-between gap-8">

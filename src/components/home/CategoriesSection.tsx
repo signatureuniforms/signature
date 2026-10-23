@@ -181,7 +181,8 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
   return (
     <section
       ref={sectionRef}
-      className="py-12 sm:py-5 lg:py-10 bg-[#0A0A0A] w-full overflow-hidden"
+      style={{ backgroundImage: 'none' }}
+      className="py-12 sm:py-5 lg:py-10 bg-[#0A0A0A] w-full overflow-hidden no-bg-grid"
       aria-labelledby="shop-categories-heading"
     >
       <div className="w-full mx-auto">

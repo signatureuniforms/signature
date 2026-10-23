@@ -32,7 +32,7 @@ export default async function ContactPage() {
   const { contactInfo } = await getContactPageData()
 
   return (
-    <div className="bg-[#0A0A0A] text-white min-h-screen">
+    <div style={{ backgroundImage: 'none' }} className="bg-[#0A0A0A] text-white min-h-screen no-bg-grid" data-page="contact-page">
       {/* 1. Brand Unit & Contact Cards */}
       <ContactCardsSection contactInfo={contactInfo} />
 

@@ -92,7 +92,8 @@ export default function HomeContactSection({ contactInfo }: HomeContactSectionPr
     <section
       ref={sectionRef}
       id="home-contact-section"
-      className="relative w-full bg-[#0A0A0A] text-white py-12 lg:py-20 overflow-hidden"
+      style={{ backgroundImage: 'none' }}
+      className="relative w-full bg-[#0A0A0A] text-white py-12 lg:py-20 overflow-hidden no-bg-grid"
       aria-labelledby="home-contact-heading"
     >
       {/* Background Subtle Ambient Glow */}

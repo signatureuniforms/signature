@@ -45,14 +45,17 @@ export default function ContactCardsSection({ contactInfo = {} }: ContactCardsSe
     'Kottayils Signature Uniform by Hari'
 
   return (
-    <section className="w-full bg-[#0A0A0A] text-white pt-28 sm:pt-32 pb-12 sm:pb-16 overflow-hidden">
+    <section
+      style={{ backgroundImage: 'none' }}
+      className="w-full bg-[#0A0A0A] text-white pt-20 sm:pt-28 md:pt-32 pb-12 sm:pb-16 overflow-hidden no-bg-grid"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
-        {/* Top Logo & Brand Title */}
+        {/* Top Logo & Brand Title (Hidden in mobile view as requested) */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="flex flex-col items-center justify-center text-center mb-10 sm:mb-14"
+          className="hidden md:flex flex-col items-center justify-center text-center mb-10 sm:mb-14"
         >
           {/* Real Logo */}
           <div className="flex justify-center items-center mb-4">

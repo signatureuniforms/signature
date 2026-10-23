@@ -73,9 +73,9 @@ export default async function CategoryDetailPage({ params }: Props) {
   }))
 
   return (
-    <div className="bg-[#0A0A0A] text-white min-h-screen">
+    <div style={{ backgroundImage: 'none' }} className="bg-[#0A0A0A] text-white min-h-screen no-bg-grid" data-page="category-page">
       {/* Category Header */}
-      <section className="relative bg-[#0A0A0A] text-white pt-32 sm:pt-36 pb-14 sm:pb-16 px-4 sm:px-6 md:px-8 lg:px-10 w-full overflow-hidden min-h-[300px] flex items-center">
+      <section style={{ backgroundImage: 'none' }} className="relative bg-[#0A0A0A] text-white pt-32 sm:pt-36 pb-14 sm:pb-16 px-4 sm:px-6 md:px-8 lg:px-10 w-full overflow-hidden min-h-[300px] flex items-center no-bg-grid">
         {/* Background Category Image with Vignette & Gradients */}
         {categoryImageUrl && (
           <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">

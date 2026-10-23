@@ -196,19 +196,13 @@
 
 /* =========================================================================
    Checkered Grid Pattern (Cheque type: Vertical and Horizontal lines)
-   Applied to all black section backgrounds across the website
-   without changing any other code or UI layout.
+   Retained on Hero, About, Video Banner, and Process Timeline sections.
    ========================================================================= */
-body,
-section[class*="bg-[#0A0A0A]" i],
-section[class*="bg-[#0a0a0a]"],
-section[class*="bg-black"],
-main[class*="bg-[#0A0A0A]" i],
-main[class*="bg-[#0a0a0a]"],
-main[class*="bg-black"],
-div[class*="bg-[#0A0A0A]" i][class*="min-h-screen"],
-div[class*="bg-[#0a0a0a]"][class*="min-h-screen"],
-div[class*="bg-black"][class*="min-h-screen"] {
+.bg-grid-pattern,
+section[aria-label="Hero Showcase"],
+section[aria-labelledby="about-heading"],
+section[aria-label="Video Showcase"],
+section[aria-labelledby="process-heading"] {
   background-color: #0A0A0A;
   background-image: 
     linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
@@ -216,16 +210,29 @@ div[class*="bg-black"][class*="min-h-screen"] {
   background-size: 40px 40px;
 }
 
-/* Footer Section: Solid black background only, no checkered/grid lines */
+/* Sections that must have pure solid black background ONLY (no grid lines):
+   1. Brand section (TrustedBrandsSection)
+   2. Brand craftsmanship (CraftsmanshipSection)
+   3. Why choose section (WhyChooseUsSection)
+   4. Category page & section (CategoriesSection, /categories, /categories/[slug])
+   5. Get in touch section (ProcessGetInTouchSection)
+   6. Contact page (/contact - ContactCardsSection, HomeContactSection)
+   7. Footer section
+*/
+.no-bg-grid,
+[data-no-grid="true"],
+section[aria-labelledby="trusted-brands-heading"],
+section[aria-labelledby="craftsmanship-heading"],
+section[aria-labelledby="why-choose-us-heading"],
+section[aria-labelledby="categories-heading"],
+section[aria-labelledby="get-in-touch-heading"],
+section[aria-labelledby="contact-heading"],
+div[data-page="category-page"],
+div[data-page="categories-page"],
+div[data-page="contact-page"],
 footer,
-footer[class*="bg-[#0A0A0A]" i],
-footer[class*="bg-[#0a0a0a]"],
-footer[class*="bg-black"],
 footer * {
   background-image: none !important;
-}
-
-footer {
   background-color: #0A0A0A !important;
 }
 

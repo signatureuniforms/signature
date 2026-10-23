@@ -178,7 +178,11 @@ export default function WhyChooseUsSection({ items, content }: WhyChooseUsSectio
   )
 
   return (
-    <section className="py-10 lg:pt-20 lg:pb-10 bg-[#0A0A0A] text-white w-full overflow-hidden" aria-labelledby="why-heading">
+    <section
+      style={{ backgroundImage: 'none' }}
+      className="py-10 lg:pt-20 lg:pb-10 bg-[#0A0A0A] text-white w-full overflow-hidden no-bg-grid"
+      aria-labelledby="why-heading"
+    >
       {hasImage ? (
         /* 2-COLUMN LAYOUT: Left Image + Right Accordion (Exact same heights, centered on Y axis) */
         <div className="w-full px-2 sm:px-6 md:px-8 lg:px-10">
