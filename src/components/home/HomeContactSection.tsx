@@ -184,21 +184,43 @@ export default function HomeContactSection({ contactInfo }: HomeContactSectionPr
             className="w-full space-y-4"
           >
             {result && (
-              <div
-                className={`p-4 rounded-lg text-xs sm:text-sm flex items-start gap-3 transition-all ${
+              <motion.div
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35 }}
+                className={`p-4 sm:p-5 rounded-2xl flex items-start gap-3.5 transition-all ${
                   result.type === 'success'
-                    ? 'bg-emerald-950/60 text-emerald-200 border border-emerald-500/40'
-                    : 'bg-red-950/60 text-red-200 border border-red-500/40'
+                    ? 'bg-[#141414] text-white border border-[#D4AF37]/35 shadow-[0_4px_24px_rgba(212,175,55,0.08)]'
+                    : 'bg-[#141414] text-white border border-red-500/35 shadow-[0_4px_24px_rgba(239,68,68,0.08)]'
                 }`}
                 role="alert"
               >
-                {result.type === 'success' ? (
-                  <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-                ) : (
-                  <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
-                )}
-                <span className="flex-1 leading-relaxed">{result.text}</span>
-              </div>
+                <div
+                  className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${
+                    result.type === 'success'
+                      ? 'bg-[#D4AF37]/10 text-[#D4AF37] border border-[#D4AF37]/25'
+                      : 'bg-red-500/10 text-red-400 border border-red-500/25'
+                  }`}
+                >
+                  {result.type === 'success' ? (
+                    <CheckCircle2 className="w-4 h-4 text-[#D4AF37]" />
+                  ) : (
+                    <AlertCircle className="w-4 h-4 text-red-400" />
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p
+                    className={`font-semibold text-xs sm:text-sm tracking-wide ${
+                      result.type === 'success' ? 'text-[#D4AF37]' : 'text-red-400'
+                    }`}
+                  >
+                    {result.type === 'success' ? 'Enquiry Submitted Successfully' : 'Submission Failed'}
+                  </p>
+                  <p className="text-[#C4C4C4] text-xs sm:text-sm mt-1 leading-relaxed">
+                    {result.text}
+                  </p>
+                </div>
+              </motion.div>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4" noValidate>

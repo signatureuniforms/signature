@@ -162,7 +162,7 @@ export default function ProcessGetInTouchSection({ contactInfo }: ProcessGetInTo
           <button
             type="button"
             onClick={() => openDrawer({ category: 'Our Process' })}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full bg-[#D4AF37] text-black font-semibold text-xs tracking-wider uppercase hover:bg-[#E5C158] transition-all duration-300 shadow-lg shadow-[#D4AF37]/15 cursor-pointer"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-md bg-[#D4AF37] text-black font-semibold text-xs tracking-wider uppercase hover:bg-[#E5C158] transition-all duration-300 shadow-lg shadow-[#D4AF37]/15 cursor-pointer"
           >
             <span>Request a Custom Quote</span>
             <ArrowRight className="w-3.5 h-3.5" />

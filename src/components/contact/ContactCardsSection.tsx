@@ -138,47 +138,47 @@ export default function ContactCardsSection({ contactInfo = {} }: ContactCardsSe
             </div>
 
             {/* SOCIAL MEDIA */}
-            <div className="flex flex-col items-start text-center w-full pt-1">
+            <div className="flex flex-col items-start sm:items-center text-left sm:text-center w-full pt-1">
               <h2
-                className="text-base sm:text-lg md:text-xl font-serif tracking-[0.2em] text-white uppercase font-bold mb-4 text-center"
+                className="text-base sm:text-lg md:text-xl font-serif tracking-[0.2em] text-white uppercase font-bold mb-4 text-left sm:text-center w-full"
                 style={{ fontFamily: "'Regular-Light', serif", letterSpacing: '0.2em' }}
               >
                 Social Media
               </h2>
 
-              <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-5 text-sm text-[#A3A3A3]">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-start sm:justify-center gap-3 sm:gap-4 md:gap-5 text-xs text-[#A3A3A3] w-full sm:w-auto">
                 <a
                   href={contactInfo.instagram_url || 'https://instagram.com'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-[#D4AF37] transition-colors uppercase tracking-wider text-xs font-medium"
+                  className="hover:text-[#D4AF37] transition-colors uppercase tracking-wider font-medium text-left"
                 >
                   Instagram
                 </a>
-                <span className="text-[#333]">/</span>
+                <span className="hidden sm:inline text-[#333] select-none">/</span>
                 <a
                   href={contactInfo.facebook_url || 'https://facebook.com'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-[#D4AF37] transition-colors uppercase tracking-wider text-xs font-medium"
+                  className="hover:text-[#D4AF37] transition-colors uppercase tracking-wider font-medium text-left"
                 >
                   Facebook
                 </a>
-                <span className="text-[#333]">/</span>
+                <span className="hidden sm:inline text-[#333] select-none">/</span>
                 <a
                   href={contactInfo.linkedin_url || 'https://linkedin.com'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-[#D4AF37] transition-colors uppercase tracking-wider text-xs font-medium"
+                  className="hover:text-[#D4AF37] transition-colors uppercase tracking-wider font-medium text-left"
                 >
                   LinkedIn
                 </a>
-                <span className="text-[#333]">/</span>
+                <span className="hidden sm:inline text-[#333] select-none">/</span>
                 <a
                   href={contactInfo.whatsapp_url || waUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-[#25D366] transition-colors uppercase tracking-wider text-xs font-medium"
+                  className="hover:text-[#25D366] transition-colors uppercase tracking-wider font-medium text-left"
                 >
                   WhatsApp
                 </a>
