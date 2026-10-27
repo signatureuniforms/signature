@@ -103,7 +103,7 @@ export default function FeaturedProductsSection({ products }: { products: Produc
                   <BulkQuoteButton
                     productName={product.name}
                     category={product.category?.name || 'Uniform Manufacturing'}
-                    className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0A0A] font-semibold text-xs rounded-xl transition-all cursor-pointer shadow-sm"
+                    className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0A0A] font-semibold text-xs rounded-full transition-all cursor-pointer shadow-sm"
                   >
                     <span>Request Quote</span>
                   </BulkQuoteButton>
@@ -111,7 +111,7 @@ export default function FeaturedProductsSection({ products }: { products: Produc
                     href={waUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 bg-[#0A0A0A] hover:bg-[#25D366] text-[#A3A3A3] hover:text-white rounded-xl text-xs font-semibold transition-all border border-[#2A2A2A] hover:border-[#25D366]"
+                    className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 bg-[#0A0A0A] hover:bg-[#25D366] text-[#A3A3A3] hover:text-white rounded-full text-xs font-semibold transition-all border border-[#2A2A2A] hover:border-[#25D366]"
                     aria-label={`Enquire about ${product.name} on WhatsApp`}
                   >
                     <MessageCircle size={14} />

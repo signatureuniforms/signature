@@ -116,7 +116,6 @@ export default function WhyChooseUsSection({ items, content }: WhyChooseUsSectio
       >
         {headingText}
       </h2>
-      <div className="w-12 h-[1.5px] bg-[#D4AF37] mt-3" />
     </motion.div>
   )
 
@@ -180,7 +179,7 @@ export default function WhyChooseUsSection({ items, content }: WhyChooseUsSectio
   return (
     <section
       style={{ backgroundImage: 'none' }}
-      className="py-10 lg:pt-20 lg:pb-10 bg-[#0A0A0A] text-white w-full overflow-hidden no-bg-grid"
+      className="py-10 lg:pt-10 lg:pb-10 bg-[#0A0A0A] text-white w-full overflow-hidden no-bg-grid"
       aria-labelledby="why-heading"
     >
       {hasImage ? (
@@ -221,7 +220,7 @@ export default function WhyChooseUsSection({ items, content }: WhyChooseUsSectio
               initial="hidden"
               whileInView="visible"
               viewport={{ once: false, amount: 0.15 }}
-              className="w-full flex flex-col justify-center my-auto"
+              className="w-full flex flex-col justify-center my-auto p-3"
             >
               {renderHeader()}
               {renderAccordion()}

@@ -271,7 +271,7 @@ export default function HomeContactSection({ contactInfo }: HomeContactSectionPr
                   type="submit"
                   disabled={submitting}
                   id="contact-form-submit"
-                  className="btn-gold-sweep inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-[#D4AF37] hover:bg-[#E5C158] active:scale-[0.99] text-[#0A0A0A] font-bold text-xs uppercase tracking-widest rounded-none transition-all duration-200 cursor-pointer disabled:opacity-50 shadow-md"
+                  className="btn-gold-sweep inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-[#D4AF37] hover:bg-[#E5C158] active:scale-[0.99] text-[#0A0A0A] font-bold text-xs uppercase tracking-widest rounded-full transition-all duration-200 cursor-pointer disabled:opacity-50 shadow-md"
                 >
                   {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin text-[#0A0A0A]" />}
                   <span>{submitting ? 'Sending...' : 'Send Enquiry'}</span>

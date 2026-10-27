@@ -102,54 +102,56 @@ export default function FooterSections({
           </AnimatePresence>
         </div>
 
-        {/* 2. Uniform Categories Accordion Item */}
-        <div className="border-b border-[#2A2A2A]">
-          <button
-            type="button"
-            onClick={() => toggleSection('categories')}
-            className="w-full py-4 flex items-center justify-between text-left group cursor-pointer"
-            aria-expanded={openSection === 'categories'}
-          >
-            <span className="text-xs font-semibold text-white group-hover:text-[#D4AF37] uppercase tracking-[0.2em] transition-colors">
-              Uniform Categories
-            </span>
-            <ChevronDown
-              size={16}
-              className={`text-[#D4AF37] transition-transform duration-300 ${
-                openSection === 'categories' ? 'rotate-180' : ''
-              }`}
-            />
-          </button>
-          <AnimatePresence initial={false}>
-            {openSection === 'categories' && (
-              <motion.div
-                key="categories-content"
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                className="overflow-hidden"
-              >
-                <ul className="space-y-3 pb-5 pt-1 pl-1">
-                  {categoryLinks.map((link) => (
-                    <li key={link.href}>
-                      <Link
-                        href={link.href}
-                        className="text-xs text-[#A3A3A3] hover:text-[#D4AF37] transition-colors duration-200 inline-flex items-center gap-1.5 group"
-                      >
-                        <span>{link.label}</span>
-                        <ArrowUpRight
-                          size={11}
-                          className="opacity-0 group-hover:opacity-100 transition-opacity text-[#D4AF37]"
-                        />
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+        {/* 2. Uniform Categories Accordion Item (Only shown if categories available) */}
+        {categoryLinks.length > 0 && (
+          <div className="border-b border-[#2A2A2A]">
+            <button
+              type="button"
+              onClick={() => toggleSection('categories')}
+              className="w-full py-4 flex items-center justify-between text-left group cursor-pointer"
+              aria-expanded={openSection === 'categories'}
+            >
+              <span className="text-xs font-semibold text-white group-hover:text-[#D4AF37] uppercase tracking-[0.2em] transition-colors">
+                Uniform Categories
+              </span>
+              <ChevronDown
+                size={16}
+                className={`text-[#D4AF37] transition-transform duration-300 ${
+                  openSection === 'categories' ? 'rotate-180' : ''
+                }`}
+              />
+            </button>
+            <AnimatePresence initial={false}>
+              {openSection === 'categories' && (
+                <motion.div
+                  key="categories-content"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                  className="overflow-hidden"
+                >
+                  <ul className="space-y-3 pb-5 pt-1 pl-1">
+                    {categoryLinks.map((link) => (
+                      <li key={link.href}>
+                        <Link
+                          href={link.href}
+                          className="text-xs text-[#A3A3A3] hover:text-[#D4AF37] transition-colors duration-200 inline-flex items-center gap-1.5 group"
+                        >
+                          <span>{link.label}</span>
+                          <ArrowUpRight
+                            size={11}
+                            className="opacity-0 group-hover:opacity-100 transition-opacity text-[#D4AF37]"
+                          />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        )}
 
         {/* 3. Contact Details Accordion Item */}
         <div className="border-b border-[#2A2A2A]">
@@ -271,28 +273,30 @@ export default function FooterSections({
           </ul>
         </div>
 
-        {/* Uniform Categories */}
-        <div className="lg:col-span-3">
-          <h3 className="text-xs font-semibold text-white uppercase tracking-[0.2em] mb-4">
-            Uniform Categories
-          </h3>
-          <ul className="space-y-2.5">
-            {categoryLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="text-xs text-[#A3A3A3] hover:text-[#D4AF37] transition-colors duration-200 inline-flex items-center gap-1 group"
-                >
-                  <span>{link.label}</span>
-                  <ArrowUpRight
-                    size={11}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity text-[#D4AF37]"
-                  />
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {/* Uniform Categories (Only shown if categories available) */}
+        {categoryLinks.length > 0 && (
+          <div className="lg:col-span-3">
+            <h3 className="text-xs font-semibold text-white uppercase tracking-[0.2em] mb-4">
+              Uniform Categories
+            </h3>
+            <ul className="space-y-2.5">
+              {categoryLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-xs text-[#A3A3A3] hover:text-[#D4AF37] transition-colors duration-200 inline-flex items-center gap-1 group"
+                  >
+                    <span>{link.label}</span>
+                    <ArrowUpRight
+                      size={11}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity text-[#D4AF37]"
+                    />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* Contact */}
         <div className="lg:col-span-3">

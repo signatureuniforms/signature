@@ -34,7 +34,7 @@ export default function TrustedBrandsSection({ data }: TrustedBrandsSectionProps
     <section
       ref={sectionRef}
       style={{ backgroundImage: 'none' }}
-      className="py-12 sm:py-16 lg:py-20 bg-[#0A0A0A] w-full overflow-hidden no-bg-grid"
+      className="pb-12 sm:py-16 lg:pb-20 bg-[#0A0A0A] w-full overflow-hidden no-bg-grid"
       aria-labelledby="trusted-brands-heading"
     >
       <div className="w-full px-2 sm:px-6 md:px-8 lg:px-10">

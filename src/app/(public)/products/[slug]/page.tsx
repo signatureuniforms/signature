@@ -252,7 +252,7 @@ export default async function ProductDetailPage({ params }: Props) {
                 href={waUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-center gap-2.5 py-4 bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold text-sm tracking-wide rounded-lg transition-all shadow-md hover:shadow-lg cursor-pointer"
+                className="w-full inline-flex items-center justify-center gap-2.5 py-4 bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold text-sm tracking-wide rounded-full transition-all shadow-md hover:shadow-lg cursor-pointer"
               >
                 <MessageCircle className="w-5 h-5 fill-white text-white" />
                 <span>Enquire via WhatsApp</span>
@@ -261,7 +261,7 @@ export default async function ProductDetailPage({ params }: Props) {
               <BulkQuoteButton
                 productName={product.name}
                 category={product.category?.name || 'Uniform Manufacturing'}
-                className="w-full inline-flex items-center justify-center gap-2 py-4 bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0A0A] font-bold text-xs sm:text-sm tracking-widest uppercase rounded-lg shadow-lg cursor-pointer transition-colors"
+                className="w-full inline-flex items-center justify-center gap-2 py-4 bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0A0A] font-bold text-xs sm:text-sm tracking-widest uppercase rounded-full shadow-lg cursor-pointer transition-colors"
               >
                 <span>Request a Bulk Quotation</span>
               </BulkQuoteButton>

@@ -8,9 +8,13 @@ import type { Category } from '@/types'
 
 interface CategoriesSectionProps {
   categories: Category[]
+  subheading?: string
 }
 
-export default function CategoriesSection({ categories }: CategoriesSectionProps) {
+export default function CategoriesSection({
+  categories,
+  subheading = 'Our Collections',
+}: CategoriesSectionProps) {
   // Mock data removed as requested. Only render if categories are present.
   if (!categories || categories.length === 0) {
     return null
@@ -191,8 +195,13 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
           {/* Spacer to keep heading perfectly centered on desktop */}
           <div className="hidden sm:block w-20 shrink-0" aria-hidden="true" />
 
-          {/* Main Heading & Description: text-left on mobile, centered on desktop */}
-          <div className="flex-1 text-left sm:text-center">
+          {/* Main Heading & Description: centered on all screens */}
+          <div className="flex-1 text-center">
+            {subheading && (
+              <span className="text-[10px] sm:text-xs font-semibold tracking-[0.25em] uppercase text-[#D4AF37] block mb-2 sm:mb-2.5 font-sans">
+                {subheading}
+              </span>
+            )}
             <h2
               id="shop-categories-heading"
               className="text-lg sm:text-xl md:text-2xl font-normal font-serif tracking-[0.25em] text-white uppercase leading-tight mb-2 sm:mb-2.5"
@@ -255,8 +264,8 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
                   shouldReduceMotion || !isInitialBatch
                     ? { opacity: 1, x: 0 }
                     : isInView
-                    ? { opacity: 1, x: 0 }
-                    : { opacity: 0, x: 80 }
+                      ? { opacity: 1, x: 0 }
+                      : { opacity: 0, x: 80 }
                 }
                 transition={{
                   duration: shouldReduceMotion ? 0 : 0.8,
@@ -315,6 +324,26 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
               </motion.div>
             )
           })}
+        </div>
+
+        {/* Mobile Arrow Controls: Centered beneath category cards */}
+        <div className="flex sm:hidden items-center justify-center gap-6 mt-6">
+          <button
+            type="button"
+            onClick={handlePrev}
+            aria-label="Previous category"
+            className="p-2 text-white hover:text-[#D4AF37] active:scale-90 transition-all cursor-pointer select-none"
+          >
+            <ArrowLeft className="w-6 h-6 stroke-[1.5]" />
+          </button>
+          <button
+            type="button"
+            onClick={handleNext}
+            aria-label="Next category"
+            className="p-2 text-white hover:text-[#D4AF37] active:scale-90 transition-all cursor-pointer select-none"
+          >
+            <ArrowRight className="w-6 h-6 stroke-[1.5]" />
+          </button>
         </div>
       </div>
     </section>

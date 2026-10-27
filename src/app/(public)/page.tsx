@@ -7,7 +7,7 @@ import TrustedBrandsSection from '@/components/home/TrustedBrandsSection'
 import VideoBannerSection from '@/components/home/VideoBannerSection'
 import CraftsmanshipSection from '@/components/home/CraftsmanshipSection'
 import WhyChooseUsSection from '@/components/home/WhyChooseUsSection'
-import HomeContactSection from '@/components/home/HomeContactSection'
+import ProcessGetInTouchSection from '@/components/process/ProcessGetInTouchSection'
 import FeaturedProductsSection from '@/components/home/FeaturedProductsSection'
 import type { AboutSectionContent, TrustedBrandsContent, VideoBannerContent, CraftsmanshipContent, WhyChooseUsContent } from '@/types'
 
@@ -192,7 +192,7 @@ export default async function HomePage() {
       <WhyChooseUsSection items={whyItems} content={whyContent} />
 
       {/* 8. Contact Section (Directly at Why Choose Us bottom) */}
-      <HomeContactSection contactInfo={contactInfo} />
+      <ProcessGetInTouchSection contactInfo={contactInfo} />
 
       {/* 9. Featured Products */}
       <FeaturedProductsSection products={products} />

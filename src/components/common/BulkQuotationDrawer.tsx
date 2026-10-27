@@ -435,7 +435,7 @@ export function BulkQuotationDrawer({ isOpen, onClose, defaultCategory, defaultP
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="btn-gold-sweep w-full py-3.5 sm:py-4 bg-black disabled:opacity-50 text-white rounded-none font-bold text-xs tracking-[0.2em] uppercase transition-all duration-200 shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                      className="btn-gold-sweep w-full py-3.5 sm:py-4 bg-black disabled:opacity-50 text-white rounded-full font-bold text-xs tracking-[0.2em] uppercase transition-all duration-200 shadow-md flex items-center justify-center gap-2 cursor-pointer"
                     >
                       {isSubmitting ? (
                         <>

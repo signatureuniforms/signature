@@ -108,22 +108,22 @@ export default function Navbar() {
                 src="/logo/logo.png"
                 alt="Signature Uniforms by Hari"
                 width={200}
-                height={72}
-                className="h-14 sm:h-16 md:h-[68px] w-auto object-contain"
+                height={56}
+                className="h-10 sm:h-12 md:h-[50px] w-auto object-contain"
                 priority
               />
             </motion.div>
           </Link>
 
           {/* Desktop nav links */}
-          <nav className="hidden lg:flex items-center gap-1.5 !font-sans" aria-label="Main navigation">
+          <nav className="hidden lg:flex items-center gap-1 !font-sans" aria-label="Main navigation">
             {NAV_LINKS.map((link) => {
               const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="relative px-4 py-2 text-[14px] uppercase transition-colors duration-200 rounded-xl hover:text-[#E5C158] !font-sans"
+                  className="relative px-3.5 py-1.5 text-[13px] sm:text-[14px] uppercase transition-colors duration-200 rounded-lg hover:text-[#E5C158] !font-sans"
                   style={{
                     color: isActive ? '#D4AF37' : '#ffffff',
                   }}
@@ -140,7 +140,7 @@ export default function Navbar() {
             <Link
               href="/contact"
               id="navbar-enquiry-now-cta"
-              className="btn-gold-sweep inline-flex items-center justify-center gap-2 py-2.5 px-6 bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0A0A]  text-[15px] rounded-md tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 hover:shadow-[0_4px_16px_rgba(212,175,55,0.3)] cursor-pointer"
+              className="btn-gold-sweep inline-flex items-center justify-center gap-2 py-2 px-5 bg-[#D4AF37] hover:bg-[#E5C158] text-black text-[14px] font-medium rounded-full tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 hover:shadow-[0_4px_16px_rgba(212,175,55,0.3)] cursor-pointer"
             >
               Enquiry Now
             </Link>
@@ -291,7 +291,7 @@ export default function Navbar() {
                 <Link
                   href="/contact"
                   onClick={() => setMobileOpen(false)}
-                  className="btn-gold-sweep flex items-center justify-center w-full py-3.5 px-6 bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0A0A] font-semibold text-sm rounded-none tracking-widest uppercase transition-all duration-300 shadow-xl active:scale-98 cursor-pointer"
+                  className="btn-gold-sweep flex items-center justify-center w-full py-3.5 px-6 bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0A0A] font-semibold text-sm rounded-full tracking-widest uppercase transition-all duration-300 shadow-xl active:scale-98 cursor-pointer"
                   id="mobile-enquiry-now-cta"
                 >
                   <span>Enquiry Now</span>

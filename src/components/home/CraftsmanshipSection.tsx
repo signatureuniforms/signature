@@ -54,13 +54,16 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
   const isInView = useInView(sectionRef, { once: false, amount: 0.15 })
   const shouldReduceMotion = useReducedMotion()
 
+  const features = (data?.features || []).filter(
+    (feat) => !feat.title?.toLowerCase().includes('quality assurance')
+  )
+
   // Strict rule: No mock data and no fallback data.
   // If no data exists or no features have been created in the DB, do not render this section.
-  if (!data || !data.features || data.features.length === 0) {
+  if (!data || features.length === 0) {
     return null
   }
 
-  const features = data.features
   const editorialEase = [0.22, 1, 0.36, 1] as const
 
   const mainImageUrl = getHighQualityImageUrl(data.main_image_url)
@@ -79,7 +82,7 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
     <section
       ref={sectionRef}
       style={{ backgroundImage: 'none' }}
-      className="relative py-14 lg:py-24 bg-[#0A0A0A] text-white w-full overflow-hidden no-bg-grid"
+      className="relative py-14 lg:py-20 bg-[#0A0A0A] text-white w-full overflow-hidden no-bg-grid"
       aria-labelledby="craftsmanship-heading"
     >
       {/* Background Decorative Gold Ambient Glows */}
@@ -92,7 +95,7 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[650px] h-[300px] bg-gradient-to-r from-[#D4AF37]/10 via-[#E5C158]/5 to-[#D4AF37]/10 rounded-full blur-[120px] opacity-60" />
       </div>
 
-      <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10 max-w-7xl mx-auto">
+      <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10 mx-auto">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: -30 }}
@@ -122,9 +125,6 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
             {data.title || data.heading}
           </h2>
 
-          {/* Gold Accent Divider */}
-          <div className="w-12 h-[1.5px] bg-[#D4AF37] mx-auto mb-5" />
-
           {/* Description */}
           {data.description && (
             <p className="text-[#A3A3A3] text-xs sm:text-sm leading-relaxed whitespace-pre-line max-w-2xl mx-auto">
@@ -152,15 +152,14 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
                 delay: shouldReduceMotion ? 0 : 0.15,
                 ease: editorialEase,
               }}
-              className={`group relative rounded-2xl overflow-hidden bg-[#121212] shadow-2xl ${
-                hasAnyInset ? 'lg:col-span-7 xl:col-span-8' : 'lg:col-span-12'
-              } min-h-[280px] sm:min-h-[380px] lg:min-h-[440px] flex flex-col justify-end`}
+              className={`group relative rounded-2xl overflow-hidden bg-[#121212] shadow-2xl ${hasAnyInset ? 'lg:col-span-7 xl:col-span-8' : 'lg:col-span-12'
+                } h-[280px] sm:h-[360px] lg:h-[450px]`}
             >
               {mainImageUrl ? (
                 <img
                   src={mainImageUrl}
                   alt={data.title || data.heading || 'Craftsmanship Showcase'}
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
+                  className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
                   loading="lazy"
                 />
               ) : (
@@ -168,28 +167,11 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
                   <Sparkles className="w-12 h-12 opacity-30 text-[#D4AF37]" />
                 </div>
               )}
-
-              {/* Cinematic Vignette Gradients */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-black/10 to-black/10 pointer-events-none" />
-
-              {/* Bottom Floating Glass Badge */}
-              <div className="relative z-10 p-5 sm:p-7 flex flex-wrap items-center justify-between gap-3">
-                <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md text-white shadow-lg">
-                  <span className="w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse" />
-                  <span className="text-[11px] sm:text-xs font-medium tracking-wider uppercase text-[#E5C158]">
-                    Master Tailoring & Manufacturing
-                  </span>
-                </div>
-                <div className="hidden sm:inline-flex items-center gap-1.5 text-[11px] text-[#A3A3A3] font-mono tracking-wide">
-                  <Check className="w-3.5 h-3.5 text-[#D4AF37]" />
-                  <span>Industrial Standard Facility</span>
-                </div>
-              </div>
             </motion.div>
 
-            {/* Inset Images Column */}
+            {/* Inset Images Column - Same height on mobile, locked 1:1 to first image on lg */}
             {hasAnyInset && (
-              <div className="lg:col-span-5 xl:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-4 sm:gap-6">
+              <div className="lg:col-span-5 xl:col-span-4 flex flex-col gap-4 sm:gap-6 lg:h-[450px]">
                 {/* Inset 1: Fabric Selection */}
                 {hasInsetImage1 && (
                   <motion.div
@@ -206,26 +188,14 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
                       delay: shouldReduceMotion ? 0 : 0.25,
                       ease: editorialEase,
                     }}
-                    className={`group relative rounded-2xl overflow-hidden bg-[#121212] shadow-xl ${
-                      hasInsetImage2 ? 'flex-1 min-h-[190px] lg:min-h-[208px]' : 'w-full min-h-[280px] lg:min-h-[440px]'
-                    } flex flex-col justify-end`}
+                    className="group relative rounded-2xl overflow-hidden bg-[#121212] shadow-xl w-full h-[280px] sm:h-[360px] lg:h-auto lg:flex-1 min-h-0"
                   >
                     <img
                       src={insetImage1Url}
                       alt="Fabric selection"
-                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
                       loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent pointer-events-none" />
-
-                    <div className="relative z-10 p-4 sm:p-5">
-                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/65 backdrop-blur-md text-white shadow-md">
-                        <Layers className="w-3.5 h-3.5 text-[#D4AF37]" />
-                        <span className="text-[11px] font-medium tracking-wide uppercase text-[#E5C158]">
-                          Premium Fabric Selection
-                        </span>
-                      </div>
-                    </div>
                   </motion.div>
                 )}
 
@@ -245,26 +215,14 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
                       delay: shouldReduceMotion ? 0 : 0.35,
                       ease: editorialEase,
                     }}
-                    className={`group relative rounded-2xl overflow-hidden bg-[#121212] shadow-xl ${
-                      hasInsetImage1 ? 'flex-1 min-h-[190px] lg:min-h-[208px]' : 'w-full min-h-[280px] lg:min-h-[440px]'
-                    } flex flex-col justify-end`}
+                    className="group relative rounded-2xl overflow-hidden bg-[#121212] shadow-xl w-full h-[280px] sm:h-[360px] lg:h-auto lg:flex-1 min-h-0"
                   >
                     <img
                       src={insetImage2Url}
                       alt="Finished uniforms"
-                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
                       loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent pointer-events-none" />
-
-                    <div className="relative z-10 p-4 sm:p-5">
-                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/65 backdrop-blur-md text-white shadow-md">
-                        <Shirt className="w-3.5 h-3.5 text-[#D4AF37]" />
-                        <span className="text-[11px] font-medium tracking-wide uppercase text-[#E5C158]">
-                          Finishing & Presentation
-                        </span>
-                      </div>
-                    </div>
                   </motion.div>
                 )}
               </div>
@@ -272,7 +230,7 @@ export default function CraftsmanshipSection({ data }: CraftsmanshipSectionProps
           </div>
 
           {/* BOTTOM ROW: Integrated Luxury Bento Feature Tiles */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 pt-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 pt-2">
             {features.map((feat, idx) => {
               const numberLabel = String(idx + 1).padStart(2, '0')
 

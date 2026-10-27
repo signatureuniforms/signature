@@ -29,7 +29,6 @@ export default function AboutSection({ data, showCta = true }: AboutSectionProps
 
   // Animation easing curves (smooth, premium cinematic motion)
   const editorialEase = [0.22, 1, 0.36, 1] as const
-  const curtainEase = [0.35, 0, 0.2, 1] as const
 
   return (
     <section
@@ -153,7 +152,7 @@ export default function AboutSection({ data, showCta = true }: AboutSectionProps
                 <Link
                   href="/about"
                   id="about-view-more-cta"
-                  className="btn-gold-sweep inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0A0A] font-semibold text-sm rounded-md tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 hover:shadow-[0_4px_20px_rgba(212,175,55,0.3)] cursor-pointer group"
+                  className="btn-gold-sweep inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0A0A] font-semibold text-sm rounded-full tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 hover:shadow-[0_4px_20px_rgba(212,175,55,0.3)] cursor-pointer group"
                   aria-label="View more about Signature Uniforms"
                 >
                   <span>View More</span>
@@ -163,63 +162,39 @@ export default function AboutSection({ data, showCta = true }: AboutSectionProps
             )}
           </div>
 
-          {/* Right Side: Image with Slower Top-to-Bottom Curtain Reveal */}
+          {/* Right Side: Image with Normal Reveal Animation */}
           {data.image_url && (
             <div className="lg:col-span-6">
-              <div
-                className="relative rounded-none overflow-hidden shadow-2xl bg-zinc-950 group rounded-xl"
+              <motion.div
+                initial={{ opacity: 0, y: 60 }}
+                animate={
+                  shouldReduceMotion
+                    ? { opacity: 1, y: 0 }
+                    : isInView
+                      ? { opacity: 1, y: 0 }
+                      : { opacity: 0, y: 60 }
+                }
+                transition={{
+                  duration: shouldReduceMotion ? 0 : 0.85,
+                  delay: shouldReduceMotion ? 0 : 0.2,
+                  ease: editorialEase,
+                }}
+                className="relative overflow-hidden shadow-2xl bg-zinc-950 group rounded-xl"
                 style={{ aspectRatio: '4/3' }}
               >
-                {/* Image Wrapper with subtle reveal zoom effect */}
-                <motion.div
-                  className="relative w-full h-full"
-                  initial={{ scale: 1 }}
-                  animate={
-                    shouldReduceMotion
-                      ? { scale: 1 }
-                      : isInView
-                        ? { scale: [1, 1.05, 1] }
-                        : { scale: 1 }
-                  }
-                  transition={{
-                    duration: shouldReduceMotion ? 0 : isInView ? 1.8 : 0,
-                    delay: 0,
-                    times: [0, 0.45, 1],
-                    ease: [0.25, 1, 0.5, 1],
-                  }}
-                >
-                  <Image
-                    src={data.image_url}
-                    alt={data.heading || 'About Signature Uniforms'}
-                    fill
-                    className="object-contain transition-transform duration-700 rounded-xl"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    priority={false}
-                  />
-                  <div
-                    className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"
-                    aria-hidden="true"
-                  />
-                </motion.div>
-
-                {/* Solid Curtain Layer - reveals downward at slower speed */}
-                <motion.div
-                  className="absolute inset-0 bg-[#0a0a0a] z-10 pointer-events-none"
-                  initial={{ y: '0%' }}
-                  animate={
-                    shouldReduceMotion
-                      ? { y: '100%', opacity: 0 }
-                      : isInView
-                        ? { y: '100%' }
-                        : { y: '0%' }
-                  }
-                  transition={{
-                    duration: shouldReduceMotion ? 0 : isInView ? 1.7 : 0,
-                    delay: 0,
-                    ease: curtainEase,
-                  }}
+                <Image
+                  src={data.image_url}
+                  alt={data.heading || 'About Signature Uniforms'}
+                  fill
+                  className="object-contain transition-transform duration-700 ease-out group-hover:scale-105 rounded-xl"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  priority={false}
                 />
-              </div>
+                <div
+                  className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none rounded-xl"
+                  aria-hidden="true"
+                />
+              </motion.div>
             </div>
           )}
         </div>

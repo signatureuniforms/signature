@@ -62,7 +62,7 @@ export default function VideoBannerSection({ data }: VideoBannerSectionProps) {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full overflow-hidden bg-[#0A0A0A] text-white py-5 lg:py-10 h-[60vh] sm:h-[70vh] min-h-[480px] max-h-[750px]"
+      className="relative w-full overflow-hidden bg-[#0A0A0A] text-white py-5 lg:py-10 h-[60vh] sm:h-[60vh] min-h-[480px] max-h-[750px]"
       aria-label={data.heading || 'Video Showcase'}
     >
       {/* Background Video (Buffered once and looped from browser cache) */}

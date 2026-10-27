@@ -170,14 +170,7 @@ export default function ContactCardsSection({ contactInfo = {} }: ContactCardsSe
                 >
                   LinkedIn
                 </a>
-                <a
-                  href={contactInfo.whatsapp_url || waUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-[#25D366] transition-colors uppercase tracking-wider font-medium text-left"
-                >
-                  WhatsApp
-                </a>
+
               </div>
             </div>
           </motion.div>
@@ -197,7 +190,7 @@ export default function ContactCardsSection({ contactInfo = {} }: ContactCardsSe
                 Address
               </h2>
 
-              <p className="text-base sm:text-lg md:text-xl text-neutral-300 font-light leading-relaxed whitespace-pre-line max-w-sm text-center">
+              <p className="text-base sm:text-lg md:text-xl text-neutral-300 font-light leading-relaxed whitespace-pre-line max-w-sm text-left">
                 {corporateAddress}
               </p>
             </div>
@@ -252,7 +245,7 @@ export default function ContactCardsSection({ contactInfo = {} }: ContactCardsSe
               href={mapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="shrink-0 p-2.5 rounded-none bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0A0A] font-bold transition-all shadow-md cursor-pointer hover:scale-105 active:scale-95 flex items-center justify-center"
+              className="shrink-0 p-2.5 rounded-full bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0A0A] font-bold transition-all shadow-md cursor-pointer hover:scale-105 active:scale-95 flex items-center justify-center"
               aria-label="Open in Google Maps"
               title="Get Directions on Google Maps"
             >
@@ -284,7 +277,7 @@ function resolveMapEmbedUrl(rawEmbedUrl?: string, address?: string): string {
         const q = url.searchParams.get('q')
         if (q) return `https://maps.google.com/maps?q=${encodeURIComponent(q)}&t=&z=15&ie=UTF8&iwloc=&output=embed`
       }
-    } catch {}
+    } catch { }
     return `https://maps.google.com/maps?q=${encodeURIComponent(trimmed)}&t=&z=15&ie=UTF8&iwloc=&output=embed`
   }
 
