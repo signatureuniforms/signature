@@ -36,10 +36,14 @@ function getHighQualityImageUrl(url?: string | null): string {
   if (!trimmed) return ''
 
   if (trimmed.includes('res.cloudinary.com') && trimmed.includes('/upload/')) {
-    if (trimmed.includes('/upload/f_auto') || trimmed.includes('/upload/q_')) {
-      return trimmed
-    }
-    return trimmed.replace('/upload/', '/upload/f_auto,q_auto:best,e_sharpen:40,dpr_2.0/')
+    // Strip any existing lossy transforms so we start from the original asset
+    const clean = trimmed
+      .replace(/\/upload\/[^/]*f_auto[^/]*\//, '/upload/')
+      .replace(/\/upload\/[^/]*q_[^/]*\//, '/upload/')
+      .replace(/\/upload\/[^/]*w_[^/]*\//, '/upload/')
+
+    // Upscale with crisp bicubic scaling to 1400px width with 100% quality and edge sharpening
+    return clean.replace('/upload/', '/upload/w_1400,c_scale,q_100,e_sharpen:50/')
   }
 
   return trimmed

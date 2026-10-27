@@ -104,7 +104,7 @@ export default function HomeContactSection({ contactInfo }: HomeContactSectionPr
 
       <div className="relative z-10 max-w-4xl mx-auto px-2 sm:px-6 lg:px-8">
         {/* Section Header: Styled identically to About Section */}
-        <div className="mb-10 lg:mb-14">
+        <div className="mb-10 lg:mb-14 text-center flex flex-col items-center">
           <motion.span
             initial={{ opacity: 0, y: 20 }}
             animate={
@@ -118,7 +118,7 @@ export default function HomeContactSection({ contactInfo }: HomeContactSectionPr
               duration: shouldReduceMotion ? 0 : 0.7,
               ease: editorialEase,
             }}
-            className="text-xs font-semibold tracking-[0.2em] uppercase text-[#D4AF37] block mb-3 font-sans"
+            className="text-xs font-semibold tracking-[0.2em] uppercase text-[#D4AF37] block mb-3 font-sans text-center"
           >
             Get In Touch
           </motion.span>
@@ -138,31 +138,11 @@ export default function HomeContactSection({ contactInfo }: HomeContactSectionPr
               delay: shouldReduceMotion ? 0 : 0.1,
               ease: editorialEase,
             }}
-            className="text-lg sm:text-xl md:text-2xl font-normal text-white uppercase leading-tight mb-4 font-serif tracking-[0.25em]"
+            className="text-lg sm:text-xl md:text-2xl font-normal text-white uppercase leading-tight mb-2 font-serif tracking-[0.25em] text-center"
             style={{ fontFamily: "'Regular-Light', serif", letterSpacing: '0.22em' }}
           >
             CONTACT
           </motion.h2>
-
-          {/* Underline / Gold Accent Line matching About Section */}
-          <motion.div
-            initial={{ opacity: 0, scaleX: 0 }}
-            animate={
-              shouldReduceMotion
-                ? { opacity: 1, scaleX: 1 }
-                : isInView
-                ? { opacity: 1, scaleX: 1 }
-                : { opacity: 0, scaleX: 0 }
-            }
-            transition={{
-              duration: shouldReduceMotion ? 0 : 0.6,
-              delay: shouldReduceMotion ? 0 : 0.2,
-              ease: editorialEase,
-            }}
-            style={{ transformOrigin: 'left' }}
-            className="w-16 h-[2px] bg-[#D4AF37]"
-            aria-hidden="true"
-          />
         </div>
 
         {/* Contact Form Container (Contact Info column removed as requested) */}

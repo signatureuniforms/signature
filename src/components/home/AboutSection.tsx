@@ -147,7 +147,7 @@ export default function AboutSection({ data, showCta = true }: AboutSectionProps
                   delay: shouldReduceMotion ? 0 : isInView ? 0.45 : 0,
                   ease: editorialEase,
                 }}
-                className={data.image_url ? '' : 'flex justify-center'}
+                className={data.image_url ? 'hidden lg:block' : 'flex justify-center'}
               >
                 <Link
                   href="/about"
@@ -195,6 +195,36 @@ export default function AboutSection({ data, showCta = true }: AboutSectionProps
                   aria-hidden="true"
                 />
               </motion.div>
+
+              {/* Mobile CTA Button: Bottom Center of Image */}
+              {shouldShowCta && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={
+                    shouldReduceMotion
+                      ? { opacity: 1, y: 0 }
+                      : isInView
+                        ? { opacity: 1, y: 0 }
+                        : { opacity: 0, y: 20 }
+                  }
+                  transition={{
+                    duration: shouldReduceMotion ? 0 : isInView ? 0.7 : 0,
+                    delay: shouldReduceMotion ? 0 : isInView ? 0.35 : 0,
+                    ease: editorialEase,
+                  }}
+                  className="flex lg:hidden justify-center pt-6 sm:pt-8"
+                >
+                  <Link
+                    href="/about"
+                    id="about-view-more-cta-mobile"
+                    className="btn-gold-sweep inline-flex items-center justify-center gap-2.5 px-8 py-3.5 bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0A0A] font-semibold text-sm rounded-full tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 hover:shadow-[0_4px_20px_rgba(212,175,55,0.3)] cursor-pointer group"
+                    aria-label="View more about Signature Uniforms"
+                  >
+                    <span>View More</span>
+                    <ArrowRight size={17} className="transition-transform duration-200 group-hover:translate-x-1" />
+                  </Link>
+                </motion.div>
+              )}
             </div>
           )}
         </div>

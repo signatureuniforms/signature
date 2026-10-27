@@ -95,7 +95,7 @@ export default async function Footer() {
   return (
     <>
       {/* Footer Top Features Bar */}
-      <FooterFeaturesBar items={features} />
+      {/* <FooterFeaturesBar items={features} /> */}
 
       <footer className="bg-[#0A0A0A] text-white" role="contentinfo">
         {/* Main footer content */}
