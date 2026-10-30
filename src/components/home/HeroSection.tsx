@@ -84,16 +84,10 @@ export default function HeroSection({ hero }: HeroSectionProps) {
         )}
 
         {!desktopVideoUrl && !mobileVideoUrl && (
-          <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-[#0A0A0A] via-[#171717] to-[#0A0A0A] flex items-center justify-center">
+          <div className="absolute inset-0 w-full h-full bg-[#0A0A0A] flex items-center justify-center">
             <div className="w-[500px] h-[500px] bg-[#D4AF37]/[0.05] rounded-full blur-[140px] pointer-events-none" />
           </div>
         )}
-
-        {/* Dark shade overlay across entire video */}
-        <div
-          className="absolute inset-0 bg-black/20 pointer-events-none"
-          aria-hidden="true"
-        />
       </div>
 
       {/* ── Hero Content (Bottom Center) ─────────────────────────────────── */}
@@ -109,7 +103,7 @@ export default function HeroSection({ hero }: HeroSectionProps) {
             {/* Main Headline */}
             {title && (
               <h1
-                className="text-2xl sm:text-4xl  font-normal leading-[1.2] md:leading-[56px] font-serif tracking-[0.25em] text-white uppercase mb-3 text-center drop-shadow-md"
+                className="text-2xl sm:text-4xl leading-[1.2] md:leading-[56px] font-serif font-bold tracking-[0.25em] text-[#D4AF37] uppercase mb-3 text-center drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)]"
                 style={{ fontFamily: "'Regular-Light', serif", letterSpacing: '0.22em' }}
               >
                 {title}
@@ -118,7 +112,7 @@ export default function HeroSection({ hero }: HeroSectionProps) {
 
             {/* Subtitle */}
             {subtitle && (
-              <p className="text-white/90 font-sans text-xs sm:text-sm tracking-[0.22em] uppercase font-light mb-6">
+              <p className="text-white/95 font-sans text-xs sm:text-sm tracking-[0.22em] uppercase font-light mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]">
                 {subtitle}
               </p>
             )}
@@ -127,7 +121,7 @@ export default function HeroSection({ hero }: HeroSectionProps) {
             {ctaText && ctaLink && (
               <Link
                 href={ctaLink}
-                className="group relative inline-flex flex-col items-center text-xs tracking-[0.25em] text-white uppercase transition-colors"
+                className="group relative inline-flex flex-col items-center text-xs tracking-[0.25em] text-white uppercase transition-colors drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]"
                 id="hero-discover-more-cta"
               >
                 <span className="pb-1 transition-opacity group-hover:text-[#D4AF37] font-medium">
