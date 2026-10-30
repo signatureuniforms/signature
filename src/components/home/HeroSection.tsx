@@ -90,6 +90,12 @@ export default function HeroSection({ hero }: HeroSectionProps) {
         )}
       </div>
 
+      {/* ── Black Gradient Behind Content ─────────────────────────────────── */}
+      <div
+        className="absolute inset-x-0 bottom-0 h-72 sm:h-88 md:h-[400px] bg-gradient-to-t from-black via-black/75 to-transparent pointer-events-none z-10"
+        aria-hidden="true"
+      />
+
       {/* ── Hero Content (Bottom Center) ─────────────────────────────────── */}
       {(title || subtitle || (ctaText && ctaLink)) && (
         <div className="relative z-20 w-full h-full flex flex-col items-center justify-end p-2 sm:px-12 sm:pb-16 md:pb-20 sm:pt-0 text-center pointer-events-none">
@@ -103,7 +109,7 @@ export default function HeroSection({ hero }: HeroSectionProps) {
             {/* Main Headline */}
             {title && (
               <h1
-                className="text-2xl sm:text-4xl leading-[1.2] md:leading-[56px] font-serif font-bold tracking-[0.25em] text-[#D4AF37] uppercase mb-3 text-center drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)]"
+                className="text-2xl sm:text-4xl leading-[1.2] md:leading-[56px] font-serif font-normal tracking-[0.25em] text-white uppercase mb-3 text-center drop-shadow-md"
                 style={{ fontFamily: "'Regular-Light', serif", letterSpacing: '0.22em' }}
               >
                 {title}
@@ -112,7 +118,7 @@ export default function HeroSection({ hero }: HeroSectionProps) {
 
             {/* Subtitle */}
             {subtitle && (
-              <p className="text-white/95 font-sans text-xs sm:text-sm tracking-[0.22em] uppercase font-light mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]">
+              <p className="text-white/90 font-sans text-xs sm:text-sm tracking-[0.22em] uppercase font-light mb-6">
                 {subtitle}
               </p>
             )}
@@ -121,7 +127,7 @@ export default function HeroSection({ hero }: HeroSectionProps) {
             {ctaText && ctaLink && (
               <Link
                 href={ctaLink}
-                className="group relative inline-flex flex-col items-center text-xs tracking-[0.25em] text-white uppercase transition-colors drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]"
+                className="group relative inline-flex flex-col items-center text-xs tracking-[0.25em] text-white uppercase transition-colors"
                 id="hero-discover-more-cta"
               >
                 <span className="pb-1 transition-opacity group-hover:text-[#D4AF37] font-medium">
